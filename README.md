@@ -3,10 +3,13 @@
 A custom Home Assistant dashboard card focused on solar generation, household
 load, battery state, grid flow, and daily energy totals.
 
+![Solar & Battery Card preview](docs/production-preview.png)
+
 ## Status
 
-Design direction approved. The next milestone is the production Home Assistant
-card and native `getConfigForm()` editor schema.
+The first production milestone is implemented: a Lit/TypeScript custom card,
+native `getConfigForm()` editor schema, entity-driven live values, and 24-hour
+history sourced from Home Assistant's history API.
 
 The verified visual prototype is preserved in [`prototype/`](prototype/).
 
@@ -33,10 +36,15 @@ grid_power: sensor.grid_power
 solar_energy_today: sensor.solar_energy_today
 home_energy_today: sensor.home_energy_today
 battery_energy_today: sensor.battery_energy_today
-grid_energy_today: sensor.grid_export_energy_today
+export_energy_today: sensor.grid_export_energy_today
+battery_capacity: 27
+battery_positive_is_charging: true
+grid_positive_is_export: true
+show_power_chart: true
 ```
 
-Entity names and sign conventions will be finalized during implementation.
+The first five entity fields are required. Daily energy entities and usable
+battery capacity are optional.
 
 ## Prototype
 
@@ -48,3 +56,33 @@ npm run dev
 
 The prototype is a design reference, not the production Home Assistant card.
 
+## Development
+
+```sh
+npm install
+npm run dev
+```
+
+The development server opens a representative Home Assistant state fixture.
+
+Run the complete verification:
+
+```sh
+npm run check
+```
+
+The production bundle is emitted to `dist/solar-battery-card.js`.
+
+## Manual installation
+
+1. Copy `dist/solar-battery-card.js` to
+   `<config>/www/solar-battery-card.js`.
+2. Add `/local/solar-battery-card.js` as a JavaScript module dashboard
+   resource.
+3. Add the card from Home Assistant's card picker and configure its entities
+   in the visual editor.
+
+## Sign conventions
+
+The card defaults to positive battery power meaning charging and positive grid
+power meaning export. Both conventions can be reversed in the visual editor.

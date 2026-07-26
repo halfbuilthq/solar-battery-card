@@ -1,0 +1,87 @@
+:root {
+  color: #111522;
+  background: #eef2f5;
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-synthesis: none;
+  --primary-text-color: #111522;
+  --secondary-text-color: #687286;
+  --card-background-color: #fff;
+  --divider-color: #e2e5e9;
+  --success-color: #2d963f;
+  --warning-color: #df8700;
+  --info-color: #1976d2;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+main {
+  display: grid;
+  grid-template-columns: minmax(250px, 370px) minmax(360px, 506px);
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(38px, 8vw, 110px);
+  padding: 38px;
+}
+
+.demo-copy {
+  align-self: center;
+}
+
+.demo-copy .eyebrow {
+  color: #1976d2;
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.demo-copy h1 {
+  margin: 12px 0 10px;
+  font-size: clamp(34px, 5vw, 56px);
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.demo-copy p {
+  max-width: 34ch;
+  margin: 0;
+  color: #687286;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+solar-battery-card {
+  width: min(100%, 506px);
+}
+
+@media (max-width: 880px) {
+  main {
+    grid-template-columns: minmax(320px, 506px);
+  }
+
+  .demo-copy {
+    display: none;
+  }
+}
+
+@media (max-width: 540px) {
+  main {
+    display: block;
+    padding: 0;
+  }
+
+  solar-battery-card {
+    width: 100%;
+  }
+}
+
