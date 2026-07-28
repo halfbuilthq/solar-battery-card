@@ -126,7 +126,7 @@ export class SolarBatteryCard extends LitElement {
   getGridOptions() {
     return {
       columns: 12,
-      min_columns: 6
+      min_columns: 3
     };
   }
 
