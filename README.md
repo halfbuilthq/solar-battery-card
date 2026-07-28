@@ -11,9 +11,7 @@ The first production milestone is implemented: a Lit/TypeScript custom card,
 native `getConfigForm()` editor schema, entity-driven live values, and 24-hour
 history sourced from Home Assistant's history API.
 
-The verified visual prototype is preserved in [`prototype/`](prototype/).
-
-## Planned card
+## Features
 
 - Battery state of charge and charging/discharging outlook
 - Live solar, home, battery, and grid power in kW
@@ -59,16 +57,6 @@ Until the card is accepted into the default HACS catalog:
 
 After the repository is accepted into the default HACS catalog, search for
 **Solar & Battery Card** directly without adding a custom repository.
-
-## Prototype
-
-```sh
-cd prototype
-npm install
-npm run dev
-```
-
-The prototype is a design reference, not the production Home Assistant card.
 
 ## Development
 
