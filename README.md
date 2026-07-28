@@ -46,6 +46,20 @@ show_power_chart: true
 The first five entity fields are required. Daily energy entities and usable
 battery capacity are optional.
 
+## HACS installation
+
+Until the card is accepted into the default HACS catalog:
+
+1. Open HACS in Home Assistant.
+2. Open the three-dot menu and select **Custom repositories**.
+3. Add `https://github.com/halfbuilthq/solar-battery-card` as a
+   **Dashboard** repository.
+4. Find **Solar & Battery Card** in HACS and select **Download**.
+5. Refresh Home Assistant, then add the card from the dashboard card picker.
+
+After the repository is accepted into the default HACS catalog, search for
+**Solar & Battery Card** directly without adding a custom repository.
+
 ## Prototype
 
 ```sh
@@ -88,3 +102,7 @@ The card defaults to positive battery power meaning charging and positive grid
 power meaning export. Both conventions can be reversed in the visual editor.
 The selected battery convention is applied consistently to the live status and
 the 24-hour chart. Charging is plotted above zero and discharging below zero.
+
+## License
+
+[MIT](LICENSE)

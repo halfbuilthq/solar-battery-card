@@ -2,6 +2,15 @@
   "name": "ha-solar-battery-card",
   "version": "0.1.0",
   "description": "A battery-first solar and energy dashboard card for Home Assistant.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/halfbuilthq/solar-battery-card.git"
+  },
+  "bugs": {
+    "url": "https://github.com/halfbuilthq/solar-battery-card/issues"
+  },
+  "homepage": "https://github.com/halfbuilthq/solar-battery-card#readme",
   "type": "module",
   "main": "dist/solar-battery-card.js",
   "files": [
