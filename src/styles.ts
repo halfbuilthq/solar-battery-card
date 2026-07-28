@@ -418,15 +418,15 @@ export const cardStyles = css`
     );
     box-shadow: 0 7px 22px rgba(18, 26, 42, 0.18);
     pointer-events: none;
-    transform: translateX(-50%);
     backdrop-filter: blur(8px);
   }
 
-  .chart-tooltip.align-left {
-    transform: translateX(0);
+  .chart-tooltip.place-right {
+    margin-left: 14px;
   }
 
-  .chart-tooltip.align-right {
+  .chart-tooltip.place-left {
+    margin-left: -14px;
     transform: translateX(-100%);
   }
 

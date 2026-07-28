@@ -9,6 +9,7 @@ import {
 } from "./config";
 import {
   chartPositionPercent,
+  chartTooltipPosition,
   nearestChartPointIndex
 } from "./chart";
 import { fetchPowerHistory } from "./history";
@@ -31,6 +32,7 @@ const CHART_HEIGHT = 126;
 const HISTORY_REFRESH_MS = 5 * 60 * 1000;
 
 type ChartKey = "solar" | "home" | "battery";
+type ChartPointer = ReturnType<typeof chartTooltipPosition>;
 
 function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
@@ -88,7 +90,8 @@ export class SolarBatteryCard extends LitElement {
     _history: { state: true },
     _historyLoading: { state: true },
     _historyFailed: { state: true },
-    _activeChartIndex: { state: true }
+    _activeChartIndex: { state: true },
+    _chartPointer: { state: true }
   };
 
   static styles = cardStyles;
@@ -99,6 +102,7 @@ export class SolarBatteryCard extends LitElement {
   private _historyLoading = false;
   private _historyFailed = false;
   private _activeChartIndex?: number;
+  private _chartPointer?: ChartPointer;
   private _lastHistoryKey = "";
   private _lastHistoryFetch = 0;
 
@@ -167,6 +171,12 @@ export class SolarBatteryCard extends LitElement {
 
   private _inspectChart(event: PointerEvent, pointCount: number): void {
     const bounds = (event.currentTarget as HTMLElement).getBoundingClientRect();
+    this._chartPointer = chartTooltipPosition(
+      event.clientX - bounds.left,
+      event.clientY - bounds.top,
+      bounds.width,
+      bounds.height
+    );
     const index = nearestChartPointIndex(
       event.clientX,
       bounds.left,
@@ -177,10 +187,14 @@ export class SolarBatteryCard extends LitElement {
   }
 
   private _leaveChart(event: PointerEvent): void {
-    if (event.pointerType === "mouse") this._activeChartIndex = undefined;
+    if (event.pointerType === "mouse") {
+      this._activeChartIndex = undefined;
+      this._chartPointer = undefined;
+    }
   }
 
   private _navigateChart(event: KeyboardEvent, pointCount: number): void {
+    this._chartPointer = undefined;
     if (event.key === "Escape") {
       this._activeChartIndex = undefined;
       return;
@@ -241,14 +255,14 @@ export class SolarBatteryCard extends LitElement {
             key,
             coordinate: chartCoordinates(points, key, minValue, maxValue)[activeIndex]
           }));
-    const tooltipAlignment =
-      activePosition === undefined
-        ? ""
-        : activePosition < 34
-          ? "align-left"
-          : activePosition > 66
-            ? "align-right"
-            : "";
+    const tooltipPlacement =
+      this._chartPointer?.placement ??
+      (activePosition !== undefined && activePosition > 64
+        ? "place-left"
+        : "place-right");
+    const tooltipStyle = this._chartPointer
+      ? `left: ${this._chartPointer.x}px; top: ${this._chartPointer.top}px`
+      : `left: ${activePosition ?? 0}%`;
     const tooltipTime = activePoint
       ? new Intl.DateTimeFormat(locale, {
           hour: "numeric",
@@ -268,6 +282,7 @@ export class SolarBatteryCard extends LitElement {
         @keydown=${(event: KeyboardEvent) => this._navigateChart(event, points.length)}
         @blur=${() => {
           this._activeChartIndex = undefined;
+          this._chartPointer = undefined;
         }}
       >
         <svg
@@ -322,8 +337,8 @@ export class SolarBatteryCard extends LitElement {
         ${activePoint && activePosition !== undefined
           ? html`
               <div
-                class="chart-tooltip ${tooltipAlignment}"
-                style="left: ${activePosition}%"
+                class="chart-tooltip ${tooltipPlacement}"
+                style=${tooltipStyle}
                 aria-live="polite"
               >
                 <time>${tooltipTime}</time>
