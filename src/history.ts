@@ -24,8 +24,7 @@ function seriesByEntity(
 
 function normalizedPower(state: HassEntity | undefined, reference: HassEntity | undefined) {
   if (!state) return 0;
-  return Math.max(
-    0,
+  return (
     powerInKw({
       ...state,
       attributes: {
@@ -100,8 +99,8 @@ export async function fetchPowerHistory(
       start.getTime() + (index / (BUCKET_COUNT - 1)) * (end.getTime() - start.getTime());
     return {
       timestamp,
-      solar: valueAt(solar, timestamp, hass.states[entities.solar]),
-      home: valueAt(home, timestamp, hass.states[entities.home]),
+      solar: Math.max(0, valueAt(solar, timestamp, hass.states[entities.solar])),
+      home: Math.max(0, valueAt(home, timestamp, hass.states[entities.home])),
       battery: valueAt(battery, timestamp, hass.states[entities.battery])
     };
   });

@@ -86,3 +86,5 @@ The production bundle is emitted to `dist/solar-battery-card.js`.
 
 The card defaults to positive battery power meaning charging and positive grid
 power meaning export. Both conventions can be reversed in the visual editor.
+The selected battery convention is applied consistently to the live status and
+the 24-hour chart. Charging is plotted above zero and discharging below zero.

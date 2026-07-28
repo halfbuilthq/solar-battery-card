@@ -43,7 +43,7 @@ describe("power history", () => {
           ],
           [
             sample(ids.battery, 0, start.toISOString()),
-            sample(ids.battery, 1200, end.toISOString())
+            sample(ids.battery, -1200, end.toISOString())
           ]
         ] as T;
       }
@@ -54,6 +54,6 @@ describe("power history", () => {
     expect(points[0].solar).toBe(0);
     expect(points.at(-1)?.solar).toBe(2.4);
     expect(points[12].solar).toBeGreaterThan(1.2);
+    expect(points.at(-1)?.battery).toBe(-1.2);
   });
 });
-

@@ -321,6 +321,13 @@ export const cardStyles = css`
     vector-effect: non-scaling-stroke;
   }
 
+  .zero-line {
+    stroke: var(--secondary-text-color, #687286);
+    stroke-width: 1.5;
+    stroke-opacity: 0.55;
+    vector-effect: non-scaling-stroke;
+  }
+
   .chart-line {
     fill: none;
     stroke-linecap: round;

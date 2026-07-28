@@ -35,12 +35,14 @@ function clamp(value: number, min: number, max: number): number {
 function chartCoordinates(
   points: HistoryPoint[],
   key: ChartKey,
+  minValue: number,
   maxValue: number
 ): Array<[number, number]> {
   if (points.length === 0) return [];
+  const range = Math.max(0.1, maxValue - minValue);
   return points.map((point, index) => [
     (index / Math.max(1, points.length - 1)) * CHART_WIDTH,
-    CHART_HEIGHT - (point[key] / maxValue) * (CHART_HEIGHT - 8) - 4
+    4 + ((maxValue - point[key]) / range) * (CHART_HEIGHT - 8)
   ]);
 }
 
@@ -71,7 +73,7 @@ function fallbackHistory(
     timestamp: now - (solarShape.length - 1 - index) * 2.4 * 60 * 60 * 1000,
     solar: shape * Math.max(solar, 0.1),
     home: homeShape[index] * Math.max(home, 0.1),
-    battery: batteryShape[index] * Math.max(Math.abs(battery), 0.1)
+    battery: batteryShape[index] * battery
   }));
 }
 
@@ -160,14 +162,22 @@ export class SolarBatteryCard extends LitElement {
   }
 
   private _renderChart(points: HistoryPoint[]) {
+    const values = points.flatMap((point) => [
+      point.solar,
+      point.home,
+      point.battery
+    ]);
+    const minValue = Math.min(0, ...values);
     const maxValue = Math.max(
       0.1,
-      ...points.flatMap((point) => [point.solar, point.home, point.battery])
+      ...values
     );
+    const range = Math.max(0.1, maxValue - minValue);
+    const zeroY = 4 + (maxValue / range) * (CHART_HEIGHT - 8);
     const series: Array<{ key: ChartKey; path: string; end: [number, number] }> = (
       ["solar", "home", "battery"] as ChartKey[]
     ).map((key) => {
-      const coordinates = chartCoordinates(points, key, maxValue);
+      const coordinates = chartCoordinates(points, key, minValue, maxValue);
       return {
         key,
         path: smoothPath(coordinates),
@@ -191,6 +201,13 @@ export class SolarBatteryCard extends LitElement {
             const x = (index / 4) * CHART_WIDTH;
             return svg`<line class="grid-line" x1=${x} y1="0" x2=${x} y2=${CHART_HEIGHT}></line>`;
           })}
+          <line
+            class="zero-line"
+            x1="0"
+            y1=${zeroY}
+            x2=${CHART_WIDTH}
+            y2=${zeroY}
+          ></line>
           ${series.map(
             ({ key, path, end }) => svg`
               <path class="chart-line ${key}" d=${path}></path>
@@ -217,8 +234,9 @@ export class SolarBatteryCard extends LitElement {
     const homePower = Math.max(0, powerInKw(entity(hass, config.home_power)) ?? 0);
     const batteryRaw = powerInKw(entity(hass, config.battery_power)) ?? 0;
     const gridRaw = powerInKw(entity(hass, config.grid_power)) ?? 0;
-    const chargingPower =
-      (config.battery_positive_is_charging === false ? -1 : 1) * batteryRaw;
+    const batteryDirection =
+      config.battery_positive_is_charging === false ? -1 : 1;
+    const chargingPower = batteryDirection * batteryRaw;
     const exportPower =
       (config.grid_positive_is_export === false ? -1 : 1) * gridRaw;
     const status =
@@ -234,9 +252,12 @@ export class SolarBatteryCard extends LitElement {
       hour: "numeric",
       minute: "2-digit"
     });
-    const chartPoints =
+    const chartPoints: HistoryPoint[] =
       this._history.length > 1
-        ? this._history
+        ? this._history.map((point) => ({
+            ...point,
+            battery: batteryDirection * point.battery
+          }))
         : fallbackHistory(solarPower, homePower, chargingPower);
 
     const energyStats = [
