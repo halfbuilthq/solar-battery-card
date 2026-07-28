@@ -304,8 +304,18 @@ export const cardStyles = css`
   }
 
   .chart-wrap {
+    position: relative;
     height: 126px;
     margin-top: 10px;
+    border-radius: 5px;
+    outline: none;
+    touch-action: pan-y;
+    user-select: none;
+  }
+
+  .chart-wrap:focus-visible {
+    outline: 2px solid var(--info-color, #1976d2);
+    outline-offset: 3px;
   }
 
   .chart-wrap svg {
@@ -313,6 +323,7 @@ export const cardStyles = css`
     width: 100%;
     height: 100%;
     overflow: visible;
+    pointer-events: none;
   }
 
   .grid-line {
@@ -362,6 +373,102 @@ export const cardStyles = css`
 
   .chart-line.battery {
     stroke-dasharray: 7 7;
+  }
+
+  .inspection-line {
+    stroke: var(--primary-text-color, #101521);
+    stroke-dasharray: 3 4;
+    stroke-opacity: 0.45;
+    stroke-width: 1.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .inspection-dot {
+    stroke: var(--ha-card-background, var(--card-background-color, #fff));
+    stroke-width: 2.5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .inspection-dot.solar {
+    fill: var(--warning-color, #df8700);
+  }
+
+  .inspection-dot.home {
+    fill: #6d35c4;
+  }
+
+  .inspection-dot.battery {
+    fill: var(--success-color, #2d963f);
+  }
+
+  .chart-tooltip {
+    position: absolute;
+    z-index: 2;
+    top: 8px;
+    width: 166px;
+    padding: 9px 10px;
+    border: 1px solid
+      color-mix(in srgb, var(--primary-text-color, #101521) 14%, transparent);
+    border-radius: 10px;
+    color: var(--primary-text-color, #101521);
+    background: color-mix(
+      in srgb,
+      var(--ha-card-background, var(--card-background-color, #fff)) 94%,
+      transparent
+    );
+    box-shadow: 0 7px 22px rgba(18, 26, 42, 0.18);
+    pointer-events: none;
+    transform: translateX(-50%);
+    backdrop-filter: blur(8px);
+  }
+
+  .chart-tooltip.align-left {
+    transform: translateX(0);
+  }
+
+  .chart-tooltip.align-right {
+    transform: translateX(-100%);
+  }
+
+  .chart-tooltip time {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--secondary-text-color, #687286);
+    font-size: 10px;
+    font-weight: 700;
+  }
+
+  .tooltip-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 11px;
+  }
+
+  .tooltip-item + .tooltip-item {
+    margin-top: 4px;
+  }
+
+  .tooltip-item span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+  }
+
+  .tooltip-item i {
+    width: 7px;
+    height: 7px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .tooltip-item strong {
+    color: var(--primary-text-color, #101521);
+    font-size: 11px;
+    white-space: nowrap;
   }
 
   .chart-axis {

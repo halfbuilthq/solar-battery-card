@@ -7,6 +7,10 @@ import {
   normalizeConfig,
   validateConfig
 } from "./config";
+import {
+  chartPositionPercent,
+  nearestChartPointIndex
+} from "./chart";
 import { fetchPowerHistory } from "./history";
 import type {
   HistoryPoint,
@@ -83,7 +87,8 @@ export class SolarBatteryCard extends LitElement {
     _config: { state: true },
     _history: { state: true },
     _historyLoading: { state: true },
-    _historyFailed: { state: true }
+    _historyFailed: { state: true },
+    _activeChartIndex: { state: true }
   };
 
   static styles = cardStyles;
@@ -93,6 +98,7 @@ export class SolarBatteryCard extends LitElement {
   private _history: HistoryPoint[] = [];
   private _historyLoading = false;
   private _historyFailed = false;
+  private _activeChartIndex?: number;
   private _lastHistoryKey = "";
   private _lastHistoryFetch = 0;
 
@@ -115,9 +121,7 @@ export class SolarBatteryCard extends LitElement {
 
   getGridOptions() {
     return {
-      rows: this._config?.show_power_chart === false ? 8 : 11,
       columns: 12,
-      min_rows: 7,
       min_columns: 6
     };
   }
@@ -161,7 +165,39 @@ export class SolarBatteryCard extends LitElement {
     }
   }
 
-  private _renderChart(points: HistoryPoint[]) {
+  private _inspectChart(event: PointerEvent, pointCount: number): void {
+    const bounds = (event.currentTarget as HTMLElement).getBoundingClientRect();
+    const index = nearestChartPointIndex(
+      event.clientX,
+      bounds.left,
+      bounds.width,
+      pointCount
+    );
+    if (index !== this._activeChartIndex) this._activeChartIndex = index;
+  }
+
+  private _leaveChart(event: PointerEvent): void {
+    if (event.pointerType === "mouse") this._activeChartIndex = undefined;
+  }
+
+  private _navigateChart(event: KeyboardEvent, pointCount: number): void {
+    if (event.key === "Escape") {
+      this._activeChartIndex = undefined;
+      return;
+    }
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+
+    event.preventDefault();
+    const current = this._activeChartIndex ?? pointCount - 1;
+    this._activeChartIndex =
+      event.key === "Home"
+        ? 0
+        : event.key === "End"
+          ? pointCount - 1
+          : clamp(current + (event.key === "ArrowLeft" ? -1 : 1), 0, pointCount - 1);
+  }
+
+  private _renderChart(points: HistoryPoint[], locale?: string) {
     const values = points.flatMap((point) => [
       point.solar,
       point.home,
@@ -184,9 +220,56 @@ export class SolarBatteryCard extends LitElement {
         end: coordinates.at(-1) ?? [CHART_WIDTH, CHART_HEIGHT]
       };
     });
+    const activeIndex =
+      this._activeChartIndex === undefined
+        ? undefined
+        : clamp(this._activeChartIndex, 0, points.length - 1);
+    const activePoint =
+      activeIndex === undefined ? undefined : points[activeIndex];
+    const activeX =
+      activeIndex === undefined
+        ? undefined
+        : (activeIndex / Math.max(1, points.length - 1)) * CHART_WIDTH;
+    const activePosition =
+      activeIndex === undefined
+        ? undefined
+        : chartPositionPercent(activeIndex, points.length);
+    const activeCoordinates =
+      activeIndex === undefined
+        ? []
+        : (["solar", "home", "battery"] as ChartKey[]).map((key) => ({
+            key,
+            coordinate: chartCoordinates(points, key, minValue, maxValue)[activeIndex]
+          }));
+    const tooltipAlignment =
+      activePosition === undefined
+        ? ""
+        : activePosition < 34
+          ? "align-left"
+          : activePosition > 66
+            ? "align-right"
+            : "";
+    const tooltipTime = activePoint
+      ? new Intl.DateTimeFormat(locale, {
+          hour: "numeric",
+          minute: "2-digit"
+        }).format(activePoint.timestamp)
+      : "";
 
     return html`
-      <div class="chart-wrap">
+      <div
+        class="chart-wrap"
+        role="group"
+        tabindex="0"
+        aria-label="Inspect solar, home and battery power history"
+        @pointerdown=${(event: PointerEvent) => this._inspectChart(event, points.length)}
+        @pointermove=${(event: PointerEvent) => this._inspectChart(event, points.length)}
+        @pointerleave=${this._leaveChart}
+        @keydown=${(event: KeyboardEvent) => this._navigateChart(event, points.length)}
+        @blur=${() => {
+          this._activeChartIndex = undefined;
+        }}
+      >
         <svg
           viewBox="0 0 ${CHART_WIDTH} ${CHART_HEIGHT}"
           role="img"
@@ -214,7 +297,61 @@ export class SolarBatteryCard extends LitElement {
               <circle class="end-dot ${key}" cx=${end[0]} cy=${end[1]} r="4.5"></circle>
             `
           )}
+          ${activeX === undefined
+            ? nothing
+            : svg`
+                <line
+                  class="inspection-line"
+                  x1=${activeX}
+                  y1="0"
+                  x2=${activeX}
+                  y2=${CHART_HEIGHT}
+                ></line>
+                ${activeCoordinates.map(
+                  ({ key, coordinate }) => svg`
+                    <circle
+                      class="inspection-dot ${key}"
+                      cx=${coordinate[0]}
+                      cy=${coordinate[1]}
+                      r="5"
+                    ></circle>
+                  `
+                )}
+              `}
         </svg>
+        ${activePoint && activePosition !== undefined
+          ? html`
+              <div
+                class="chart-tooltip ${tooltipAlignment}"
+                style="left: ${activePosition}%"
+                aria-live="polite"
+              >
+                <time>${tooltipTime}</time>
+                ${[
+                  { key: "solar", label: "Solar", value: activePoint.solar, signed: false },
+                  { key: "home", label: "Home", value: activePoint.home, signed: false },
+                  {
+                    key: "battery",
+                    label: "Battery",
+                    value: activePoint.battery,
+                    signed: true
+                  }
+                ].map(
+                  (item) => html`
+                    <div class="tooltip-item ${item.key}">
+                      <span><i></i>${item.label}</span>
+                      <strong>
+                        ${formatValue(item.value, "kW", {
+                          signed: item.signed,
+                          locale
+                        })}
+                      </strong>
+                    </div>
+                  `
+                )}
+              </div>
+            `
+          : nothing}
       </div>
     `;
   }
@@ -378,7 +515,7 @@ export class SolarBatteryCard extends LitElement {
                     <h2>Power · 24 hours</h2>
                     <time>${timeFormatter.format(new Date())}</time>
                   </div>
-                  ${this._renderChart(chartPoints)}
+                  ${this._renderChart(chartPoints, locale)}
                   <div class="chart-axis" aria-hidden="true">
                     <span>24h ago</span>
                     <span>18h</span>

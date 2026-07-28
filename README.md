@@ -15,10 +15,10 @@ history sourced from Home Assistant's history API.
 
 - Battery state of charge and charging/discharging outlook
 - Live solar, home, battery, and grid power in kW
-- 24-hour power history
+- Interactive 24-hour power history with mouse, touch, and keyboard inspection
 - Daily generated, consumed, stored, imported, and exported energy in kWh
 - Native Home Assistant visual configuration using entity selectors
-- Responsive dashboard layout
+- Responsive full-width dashboard layout with automatic height
 - HACS-compatible packaging
 
 ## Proposed configuration
