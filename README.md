@@ -1,15 +1,14 @@
 # Solar & Battery Card for Home Assistant
 
+[![HACS Default](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/default)
+[![GitHub release](https://img.shields.io/github/v/release/halfbuilthq/solar-battery-card)](https://github.com/halfbuilthq/solar-battery-card/releases)
+[![CI](https://github.com/halfbuilthq/solar-battery-card/actions/workflows/ci.yml/badge.svg)](https://github.com/halfbuilthq/solar-battery-card/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/github/license/halfbuilthq/solar-battery-card)](LICENSE)
+
 A custom Home Assistant dashboard card focused on solar generation, household
 load, battery state, grid flow, and daily energy totals.
 
 ![Solar & Battery Card preview](docs/production-preview.png)
-
-## Status
-
-The first production milestone is implemented: a Lit/TypeScript custom card,
-native `getConfigForm()` editor schema, entity-driven live values, and 24-hour
-history sourced from Home Assistant's history API.
 
 ## Features
 
@@ -19,9 +18,9 @@ history sourced from Home Assistant's history API.
 - Daily generated, consumed, stored, imported, and exported energy in kWh
 - Native Home Assistant visual configuration using entity selectors
 - Responsive full-width dashboard layout with automatic height
-- HACS-compatible packaging
+- Available in the default HACS catalogue
 
-## Proposed configuration
+## Configuration
 
 ```yaml
 type: custom:solar-battery-card
@@ -44,19 +43,16 @@ show_power_chart: true
 The first five entity fields are required. Daily energy entities and usable
 battery capacity are optional.
 
-## HACS installation
+## Install with HACS
 
-Until the card is accepted into the default HACS catalog:
+[![Open your Home Assistant instance and open this repository inside HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=halfbuilthq&repository=solar-battery-card&category=plugin)
 
-1. Open HACS in Home Assistant.
-2. Open the three-dot menu and select **Custom repositories**.
-3. Add `https://github.com/halfbuilthq/solar-battery-card` as a
-   **Dashboard** repository.
-4. Find **Solar & Battery Card** in HACS and select **Download**.
-5. Refresh Home Assistant, then add the card from the dashboard card picker.
-
-After the repository is accepted into the default HACS catalog, search for
-**Solar & Battery Card** directly without adding a custom repository.
+1. Select the button above, or open **HACS → Dashboard** in Home Assistant.
+2. Search for **Solar & Battery Card**—no custom repository is required.
+3. Open the repository and select **Download**.
+4. Refresh Home Assistant when prompted.
+5. Add **Solar & Battery Card** from the dashboard card picker and configure it
+   using the visual editor.
 
 ## Development
 
