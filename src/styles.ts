@@ -148,7 +148,7 @@ export const cardStyles = css`
     background: color-mix(
       in srgb,
       var(--success-color, #2d963f) 4%,
-      var(--ha-card-background, #fff)
+      var(--ha-card-background, var(--card-background-color, #fff))
     );
   }
 
