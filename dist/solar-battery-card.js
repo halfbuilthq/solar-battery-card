@@ -605,7 +605,7 @@ const te = Ut`
     background: color-mix(
       in srgb,
       var(--success-color, #2d963f) 11%,
-      var(--ha-card-background, #fff)
+      var(--ha-card-background, var(--card-background-color, #fff))
     );
     font-size: 13px;
     font-weight: 700;
@@ -616,7 +616,7 @@ const te = Ut`
     background: color-mix(
       in srgb,
       var(--warning-color, #d97706) 11%,
-      var(--ha-card-background, #fff)
+      var(--ha-card-background, var(--card-background-color, #fff))
     );
   }
 
@@ -625,7 +625,7 @@ const te = Ut`
     background: color-mix(
       in srgb,
       var(--secondary-text-color, #687286) 9%,
-      var(--ha-card-background, #fff)
+      var(--ha-card-background, var(--card-background-color, #fff))
     );
   }
 
@@ -648,7 +648,7 @@ const te = Ut`
     background: color-mix(
       in srgb,
       var(--success-color, #2d963f) 4%,
-      var(--ha-card-background, #fff)
+      var(--ha-card-background, var(--card-background-color, #fff))
     );
   }
 
