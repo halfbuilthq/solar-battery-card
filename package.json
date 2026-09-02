@@ -1,6 +1,6 @@
 {
   "name": "ha-solar-battery-card",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A battery-first solar and energy dashboard card for Home Assistant.",
   "license": "MIT",
   "repository": {
@@ -14,7 +14,7 @@
   "type": "module",
   "main": "dist/solar-battery-card.js",
   "files": [
-    "dist",
+    "dist/solar-battery-card.js",
     "README.md",
     "hacs.json"
   ],

@@ -187,10 +187,12 @@ export class SolarBatteryCard extends LitElement {
   }
 
   private _leaveChart(event: PointerEvent): void {
-    if (event.pointerType === "mouse") {
-      this._activeChartIndex = undefined;
-      this._chartPointer = undefined;
-    }
+    if (event.pointerType === "mouse") this._clearChartInspection();
+  }
+
+  private _clearChartInspection(): void {
+    this._activeChartIndex = undefined;
+    this._chartPointer = undefined;
   }
 
   private _navigateChart(event: KeyboardEvent, pointCount: number): void {
@@ -279,11 +281,9 @@ export class SolarBatteryCard extends LitElement {
         @pointerdown=${(event: PointerEvent) => this._inspectChart(event, points.length)}
         @pointermove=${(event: PointerEvent) => this._inspectChart(event, points.length)}
         @pointerleave=${this._leaveChart}
+        @pointercancel=${this._clearChartInspection}
         @keydown=${(event: KeyboardEvent) => this._navigateChart(event, points.length)}
-        @blur=${() => {
-          this._activeChartIndex = undefined;
-          this._chartPointer = undefined;
-        }}
+        @blur=${this._clearChartInspection}
       >
         <svg
           viewBox="0 0 ${CHART_WIDTH} ${CHART_HEIGHT}"
