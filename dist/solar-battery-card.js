@@ -1,201 +1,201 @@
-var Ht = "M16.67,4H15V2H9V4H7.33A1.33,1.33 0 0,0 6,5.33V20.66C6,21.4 6.6,22 7.33,22H16.66C17.4,22 18,21.4 18,20.67V5.33C18,4.6 17.4,4 16.67,4M11,20V14.5H9L13,7V12.5H15";
-const j = globalThis, et = j.ShadowRoot && (j.ShadyCSS === void 0 || j.ShadyCSS.nativeShadow) && "adoptedStyleSheets" in Document.prototype && "replace" in CSSStyleSheet.prototype, rt = /* @__PURE__ */ Symbol(), nt = /* @__PURE__ */ new WeakMap();
-let bt = class {
-  constructor(t, e, r) {
-    if (this._$cssResult$ = !0, r !== rt) throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");
-    this.cssText = t, this.t = e;
+var Le = "M16.67,4H15V2H9V4H7.33A1.33,1.33 0 0,0 6,5.33V20.66C6,21.4 6.6,22 7.33,22H16.66C17.4,22 18,21.4 18,20.67V5.33C18,4.6 17.4,4 16.67,4M11,20V14.5H9L13,7V12.5H15";
+const V = globalThis, re = V.ShadowRoot && (V.ShadyCSS === void 0 || V.ShadyCSS.nativeShadow) && "adoptedStyleSheets" in Document.prototype && "replace" in CSSStyleSheet.prototype, ie = /* @__PURE__ */ Symbol(), le = /* @__PURE__ */ new WeakMap();
+let $e = class {
+  constructor(e, r, t) {
+    if (this._$cssResult$ = !0, t !== ie) throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");
+    this.cssText = e, this.t = r;
   }
   get styleSheet() {
-    let t = this.o;
-    const e = this.t;
-    if (et && t === void 0) {
-      const r = e !== void 0 && e.length === 1;
-      r && (t = nt.get(e)), t === void 0 && ((this.o = t = new CSSStyleSheet()).replaceSync(this.cssText), r && nt.set(e, t));
+    let e = this.o;
+    const r = this.t;
+    if (re && e === void 0) {
+      const t = r !== void 0 && r.length === 1;
+      t && (e = le.get(r)), e === void 0 && ((this.o = e = new CSSStyleSheet()).replaceSync(this.cssText), t && le.set(r, e));
     }
-    return t;
+    return e;
   }
   toString() {
     return this.cssText;
   }
 };
-const Tt = (o) => new bt(typeof o == "string" ? o : o + "", void 0, rt), It = (o, ...t) => {
-  const e = o.length === 1 ? o[0] : t.reduce((r, i, s) => r + ((a) => {
-    if (a._$cssResult$ === !0) return a.cssText;
-    if (typeof a == "number") return a;
-    throw Error("Value passed to 'css' function must be a 'css' function result: " + a + ". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.");
-  })(i) + o[s + 1], o[0]);
-  return new bt(e, o, rt);
-}, Ut = (o, t) => {
-  if (et) o.adoptedStyleSheets = t.map((e) => e instanceof CSSStyleSheet ? e : e.styleSheet);
-  else for (const e of t) {
-    const r = document.createElement("style"), i = j.litNonce;
-    i !== void 0 && r.setAttribute("nonce", i), r.textContent = e.cssText, o.appendChild(r);
+const Ie = (i) => new $e(typeof i == "string" ? i : i + "", void 0, ie), Ne = (i, ...e) => {
+  const r = i.length === 1 ? i[0] : e.reduce((t, o, a) => t + ((s) => {
+    if (s._$cssResult$ === !0) return s.cssText;
+    if (typeof s == "number") return s;
+    throw Error("Value passed to 'css' function must be a 'css' function result: " + s + ". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.");
+  })(o) + i[a + 1], i[0]);
+  return new $e(r, i, ie);
+}, Ue = (i, e) => {
+  if (re) i.adoptedStyleSheets = e.map((r) => r instanceof CSSStyleSheet ? r : r.styleSheet);
+  else for (const r of e) {
+    const t = document.createElement("style"), o = V.litNonce;
+    o !== void 0 && t.setAttribute("nonce", o), t.textContent = r.cssText, i.appendChild(t);
   }
-}, lt = et ? (o) => o : (o) => o instanceof CSSStyleSheet ? ((t) => {
-  let e = "";
-  for (const r of t.cssRules) e += r.cssText;
-  return Tt(e);
-})(o) : o;
-const { is: zt, defineProperty: Rt, getOwnPropertyDescriptor: Nt, getOwnPropertyNames: Ot, getOwnPropertySymbols: Lt, getPrototypeOf: Dt } = Object, W = globalThis, ct = W.trustedTypes, Bt = ct ? ct.emptyScript : "", Ft = W.reactiveElementPolyfillSupport, U = (o, t) => o, Q = { toAttribute(o, t) {
-  switch (t) {
+}, ce = re ? (i) => i : (i) => i instanceof CSSStyleSheet ? ((e) => {
+  let r = "";
+  for (const t of e.cssRules) r += t.cssText;
+  return Ie(r);
+})(i) : i;
+const { is: De, defineProperty: Oe, getOwnPropertyDescriptor: Re, getOwnPropertyNames: Be, getOwnPropertySymbols: Fe, getPrototypeOf: je } = Object, G = globalThis, de = G.trustedTypes, Ve = de ? de.emptyScript : "", qe = G.reactiveElementPolyfillSupport, I = (i, e) => i, ee = { toAttribute(i, e) {
+  switch (e) {
     case Boolean:
-      o = o ? Bt : null;
+      i = i ? Ve : null;
       break;
     case Object:
     case Array:
-      o = o == null ? o : JSON.stringify(o);
+      i = i == null ? i : JSON.stringify(i);
   }
-  return o;
-}, fromAttribute(o, t) {
-  let e = o;
-  switch (t) {
+  return i;
+}, fromAttribute(i, e) {
+  let r = i;
+  switch (e) {
     case Boolean:
-      e = o !== null;
+      r = i !== null;
       break;
     case Number:
-      e = o === null ? null : Number(o);
+      r = i === null ? null : Number(i);
       break;
     case Object:
     case Array:
       try {
-        e = JSON.parse(o);
+        r = JSON.parse(i);
       } catch {
-        e = null;
+        r = null;
       }
   }
-  return e;
-} }, $t = (o, t) => !zt(o, t), ht = { attribute: !0, type: String, converter: Q, reflect: !1, useDefault: !1, hasChanged: $t };
-Symbol.metadata ??= /* @__PURE__ */ Symbol("metadata"), W.litPropertyMetadata ??= /* @__PURE__ */ new WeakMap();
-let E = class extends HTMLElement {
-  static addInitializer(t) {
-    this._$Ei(), (this.l ??= []).push(t);
+  return r;
+} }, we = (i, e) => !De(i, e), he = { attribute: !0, type: String, converter: ee, reflect: !1, useDefault: !1, hasChanged: we };
+Symbol.metadata ??= /* @__PURE__ */ Symbol("metadata"), G.litPropertyMetadata ??= /* @__PURE__ */ new WeakMap();
+let k = class extends HTMLElement {
+  static addInitializer(e) {
+    this._$Ei(), (this.l ??= []).push(e);
   }
   static get observedAttributes() {
     return this.finalize(), this._$Eh && [...this._$Eh.keys()];
   }
-  static createProperty(t, e = ht) {
-    if (e.state && (e.attribute = !1), this._$Ei(), this.prototype.hasOwnProperty(t) && ((e = Object.create(e)).wrapped = !0), this.elementProperties.set(t, e), !e.noAccessor) {
-      const r = /* @__PURE__ */ Symbol(), i = this.getPropertyDescriptor(t, r, e);
-      i !== void 0 && Rt(this.prototype, t, i);
+  static createProperty(e, r = he) {
+    if (r.state && (r.attribute = !1), this._$Ei(), this.prototype.hasOwnProperty(e) && ((r = Object.create(r)).wrapped = !0), this.elementProperties.set(e, r), !r.noAccessor) {
+      const t = /* @__PURE__ */ Symbol(), o = this.getPropertyDescriptor(e, t, r);
+      o !== void 0 && Oe(this.prototype, e, o);
     }
   }
-  static getPropertyDescriptor(t, e, r) {
-    const { get: i, set: s } = Nt(this.prototype, t) ?? { get() {
-      return this[e];
-    }, set(a) {
-      this[e] = a;
+  static getPropertyDescriptor(e, r, t) {
+    const { get: o, set: a } = Re(this.prototype, e) ?? { get() {
+      return this[r];
+    }, set(s) {
+      this[r] = s;
     } };
-    return { get: i, set(a) {
-      const l = i?.call(this);
-      s?.call(this, a), this.requestUpdate(t, l, r);
+    return { get: o, set(s) {
+      const c = o?.call(this);
+      a?.call(this, s), this.requestUpdate(e, c, t);
     }, configurable: !0, enumerable: !0 };
   }
-  static getPropertyOptions(t) {
-    return this.elementProperties.get(t) ?? ht;
+  static getPropertyOptions(e) {
+    return this.elementProperties.get(e) ?? he;
   }
   static _$Ei() {
-    if (this.hasOwnProperty(U("elementProperties"))) return;
-    const t = Dt(this);
-    t.finalize(), t.l !== void 0 && (this.l = [...t.l]), this.elementProperties = new Map(t.elementProperties);
+    if (this.hasOwnProperty(I("elementProperties"))) return;
+    const e = je(this);
+    e.finalize(), e.l !== void 0 && (this.l = [...e.l]), this.elementProperties = new Map(e.elementProperties);
   }
   static finalize() {
-    if (this.hasOwnProperty(U("finalized"))) return;
-    if (this.finalized = !0, this._$Ei(), this.hasOwnProperty(U("properties"))) {
-      const e = this.properties, r = [...Ot(e), ...Lt(e)];
-      for (const i of r) this.createProperty(i, e[i]);
+    if (this.hasOwnProperty(I("finalized"))) return;
+    if (this.finalized = !0, this._$Ei(), this.hasOwnProperty(I("properties"))) {
+      const r = this.properties, t = [...Be(r), ...Fe(r)];
+      for (const o of t) this.createProperty(o, r[o]);
     }
-    const t = this[Symbol.metadata];
-    if (t !== null) {
-      const e = litPropertyMetadata.get(t);
-      if (e !== void 0) for (const [r, i] of e) this.elementProperties.set(r, i);
+    const e = this[Symbol.metadata];
+    if (e !== null) {
+      const r = litPropertyMetadata.get(e);
+      if (r !== void 0) for (const [t, o] of r) this.elementProperties.set(t, o);
     }
     this._$Eh = /* @__PURE__ */ new Map();
-    for (const [e, r] of this.elementProperties) {
-      const i = this._$Eu(e, r);
-      i !== void 0 && this._$Eh.set(i, e);
+    for (const [r, t] of this.elementProperties) {
+      const o = this._$Eu(r, t);
+      o !== void 0 && this._$Eh.set(o, r);
     }
     this.elementStyles = this.finalizeStyles(this.styles);
   }
-  static finalizeStyles(t) {
-    const e = [];
-    if (Array.isArray(t)) {
-      const r = new Set(t.flat(1 / 0).reverse());
-      for (const i of r) e.unshift(lt(i));
-    } else t !== void 0 && e.push(lt(t));
-    return e;
+  static finalizeStyles(e) {
+    const r = [];
+    if (Array.isArray(e)) {
+      const t = new Set(e.flat(1 / 0).reverse());
+      for (const o of t) r.unshift(ce(o));
+    } else e !== void 0 && r.push(ce(e));
+    return r;
   }
-  static _$Eu(t, e) {
-    const r = e.attribute;
-    return r === !1 ? void 0 : typeof r == "string" ? r : typeof t == "string" ? t.toLowerCase() : void 0;
+  static _$Eu(e, r) {
+    const t = r.attribute;
+    return t === !1 ? void 0 : typeof t == "string" ? t : typeof e == "string" ? e.toLowerCase() : void 0;
   }
   constructor() {
     super(), this._$Ep = void 0, this.isUpdatePending = !1, this.hasUpdated = !1, this._$Em = null, this._$Ev();
   }
   _$Ev() {
-    this._$ES = new Promise((t) => this.enableUpdating = t), this._$AL = /* @__PURE__ */ new Map(), this._$E_(), this.requestUpdate(), this.constructor.l?.forEach((t) => t(this));
+    this._$ES = new Promise((e) => this.enableUpdating = e), this._$AL = /* @__PURE__ */ new Map(), this._$E_(), this.requestUpdate(), this.constructor.l?.forEach((e) => e(this));
   }
-  addController(t) {
-    (this._$EO ??= /* @__PURE__ */ new Set()).add(t), this.renderRoot !== void 0 && this.isConnected && t.hostConnected?.();
+  addController(e) {
+    (this._$EO ??= /* @__PURE__ */ new Set()).add(e), this.renderRoot !== void 0 && this.isConnected && e.hostConnected?.();
   }
-  removeController(t) {
-    this._$EO?.delete(t);
+  removeController(e) {
+    this._$EO?.delete(e);
   }
   _$E_() {
-    const t = /* @__PURE__ */ new Map(), e = this.constructor.elementProperties;
-    for (const r of e.keys()) this.hasOwnProperty(r) && (t.set(r, this[r]), delete this[r]);
-    t.size > 0 && (this._$Ep = t);
+    const e = /* @__PURE__ */ new Map(), r = this.constructor.elementProperties;
+    for (const t of r.keys()) this.hasOwnProperty(t) && (e.set(t, this[t]), delete this[t]);
+    e.size > 0 && (this._$Ep = e);
   }
   createRenderRoot() {
-    const t = this.shadowRoot ?? this.attachShadow(this.constructor.shadowRootOptions);
-    return Ut(t, this.constructor.elementStyles), t;
+    const e = this.shadowRoot ?? this.attachShadow(this.constructor.shadowRootOptions);
+    return Ue(e, this.constructor.elementStyles), e;
   }
   connectedCallback() {
-    this.renderRoot ??= this.createRenderRoot(), this.enableUpdating(!0), this._$EO?.forEach((t) => t.hostConnected?.());
+    this.renderRoot ??= this.createRenderRoot(), this.enableUpdating(!0), this._$EO?.forEach((e) => e.hostConnected?.());
   }
-  enableUpdating(t) {
+  enableUpdating(e) {
   }
   disconnectedCallback() {
-    this._$EO?.forEach((t) => t.hostDisconnected?.());
+    this._$EO?.forEach((e) => e.hostDisconnected?.());
   }
-  attributeChangedCallback(t, e, r) {
-    this._$AK(t, r);
+  attributeChangedCallback(e, r, t) {
+    this._$AK(e, t);
   }
-  _$ET(t, e) {
-    const r = this.constructor.elementProperties.get(t), i = this.constructor._$Eu(t, r);
-    if (i !== void 0 && r.reflect === !0) {
-      const s = (r.converter?.toAttribute !== void 0 ? r.converter : Q).toAttribute(e, r.type);
-      this._$Em = t, s == null ? this.removeAttribute(i) : this.setAttribute(i, s), this._$Em = null;
+  _$ET(e, r) {
+    const t = this.constructor.elementProperties.get(e), o = this.constructor._$Eu(e, t);
+    if (o !== void 0 && t.reflect === !0) {
+      const a = (t.converter?.toAttribute !== void 0 ? t.converter : ee).toAttribute(r, t.type);
+      this._$Em = e, a == null ? this.removeAttribute(o) : this.setAttribute(o, a), this._$Em = null;
     }
   }
-  _$AK(t, e) {
-    const r = this.constructor, i = r._$Eh.get(t);
-    if (i !== void 0 && this._$Em !== i) {
-      const s = r.getPropertyOptions(i), a = typeof s.converter == "function" ? { fromAttribute: s.converter } : s.converter?.fromAttribute !== void 0 ? s.converter : Q;
-      this._$Em = i;
-      const l = a.fromAttribute(e, s.type);
-      this[i] = l ?? this._$Ej?.get(i) ?? l, this._$Em = null;
+  _$AK(e, r) {
+    const t = this.constructor, o = t._$Eh.get(e);
+    if (o !== void 0 && this._$Em !== o) {
+      const a = t.getPropertyOptions(o), s = typeof a.converter == "function" ? { fromAttribute: a.converter } : a.converter?.fromAttribute !== void 0 ? a.converter : ee;
+      this._$Em = o;
+      const c = s.fromAttribute(r, a.type);
+      this[o] = c ?? this._$Ej?.get(o) ?? c, this._$Em = null;
     }
   }
-  requestUpdate(t, e, r, i = !1, s) {
-    if (t !== void 0) {
-      const a = this.constructor;
-      if (i === !1 && (s = this[t]), r ??= a.getPropertyOptions(t), !((r.hasChanged ?? $t)(s, e) || r.useDefault && r.reflect && s === this._$Ej?.get(t) && !this.hasAttribute(a._$Eu(t, r)))) return;
-      this.C(t, e, r);
+  requestUpdate(e, r, t, o = !1, a) {
+    if (e !== void 0) {
+      const s = this.constructor;
+      if (o === !1 && (a = this[e]), t ??= s.getPropertyOptions(e), !((t.hasChanged ?? we)(a, r) || t.useDefault && t.reflect && a === this._$Ej?.get(e) && !this.hasAttribute(s._$Eu(e, t)))) return;
+      this.C(e, r, t);
     }
     this.isUpdatePending === !1 && (this._$ES = this._$EP());
   }
-  C(t, e, { useDefault: r, reflect: i, wrapped: s }, a) {
-    r && !(this._$Ej ??= /* @__PURE__ */ new Map()).has(t) && (this._$Ej.set(t, a ?? e ?? this[t]), s !== !0 || a !== void 0) || (this._$AL.has(t) || (this.hasUpdated || r || (e = void 0), this._$AL.set(t, e)), i === !0 && this._$Em !== t && (this._$Eq ??= /* @__PURE__ */ new Set()).add(t));
+  C(e, r, { useDefault: t, reflect: o, wrapped: a }, s) {
+    t && !(this._$Ej ??= /* @__PURE__ */ new Map()).has(e) && (this._$Ej.set(e, s ?? r ?? this[e]), a !== !0 || s !== void 0) || (this._$AL.has(e) || (this.hasUpdated || t || (r = void 0), this._$AL.set(e, r)), o === !0 && this._$Em !== e && (this._$Eq ??= /* @__PURE__ */ new Set()).add(e));
   }
   async _$EP() {
     this.isUpdatePending = !0;
     try {
       await this._$ES;
-    } catch (e) {
-      Promise.reject(e);
+    } catch (r) {
+      Promise.reject(r);
     }
-    const t = this.scheduleUpdate();
-    return t != null && await t, !this.isUpdatePending;
+    const e = this.scheduleUpdate();
+    return e != null && await e, !this.isUpdatePending;
   }
   scheduleUpdate() {
     return this.performUpdate();
@@ -204,28 +204,28 @@ let E = class extends HTMLElement {
     if (!this.isUpdatePending) return;
     if (!this.hasUpdated) {
       if (this.renderRoot ??= this.createRenderRoot(), this._$Ep) {
-        for (const [i, s] of this._$Ep) this[i] = s;
+        for (const [o, a] of this._$Ep) this[o] = a;
         this._$Ep = void 0;
       }
-      const r = this.constructor.elementProperties;
-      if (r.size > 0) for (const [i, s] of r) {
-        const { wrapped: a } = s, l = this[i];
-        a !== !0 || this._$AL.has(i) || l === void 0 || this.C(i, void 0, s, l);
+      const t = this.constructor.elementProperties;
+      if (t.size > 0) for (const [o, a] of t) {
+        const { wrapped: s } = a, c = this[o];
+        s !== !0 || this._$AL.has(o) || c === void 0 || this.C(o, void 0, a, c);
       }
     }
-    let t = !1;
-    const e = this._$AL;
+    let e = !1;
+    const r = this._$AL;
     try {
-      t = this.shouldUpdate(e), t ? (this.willUpdate(e), this._$EO?.forEach((r) => r.hostUpdate?.()), this.update(e)) : this._$EM();
-    } catch (r) {
-      throw t = !1, this._$EM(), r;
+      e = this.shouldUpdate(r), e ? (this.willUpdate(r), this._$EO?.forEach((t) => t.hostUpdate?.()), this.update(r)) : this._$EM();
+    } catch (t) {
+      throw e = !1, this._$EM(), t;
     }
-    t && this._$AE(e);
+    e && this._$AE(r);
   }
-  willUpdate(t) {
+  willUpdate(e) {
   }
-  _$AE(t) {
-    this._$EO?.forEach((e) => e.hostUpdated?.()), this.hasUpdated || (this.hasUpdated = !0, this.firstUpdated(t)), this.updated(t);
+  _$AE(e) {
+    this._$EO?.forEach((r) => r.hostUpdated?.()), this.hasUpdated || (this.hasUpdated = !0, this.firstUpdated(e)), this.updated(e);
   }
   _$EM() {
     this._$AL = /* @__PURE__ */ new Map(), this.isUpdatePending = !1;
@@ -236,83 +236,83 @@ let E = class extends HTMLElement {
   getUpdateComplete() {
     return this._$ES;
   }
-  shouldUpdate(t) {
+  shouldUpdate(e) {
     return !0;
   }
-  update(t) {
-    this._$Eq &&= this._$Eq.forEach((e) => this._$ET(e, this[e])), this._$EM();
+  update(e) {
+    this._$Eq &&= this._$Eq.forEach((r) => this._$ET(r, this[r])), this._$EM();
   }
-  updated(t) {
+  updated(e) {
   }
-  firstUpdated(t) {
+  firstUpdated(e) {
   }
 };
-E.elementStyles = [], E.shadowRootOptions = { mode: "open" }, E[U("elementProperties")] = /* @__PURE__ */ new Map(), E[U("finalized")] = /* @__PURE__ */ new Map(), Ft?.({ ReactiveElement: E }), (W.reactiveElementVersions ??= []).push("2.1.2");
-const ot = globalThis, dt = (o) => o, V = ot.trustedTypes, pt = V ? V.createPolicy("lit-html", { createHTML: (o) => o }) : void 0, wt = "$lit$", $ = `lit$${Math.random().toFixed(9).slice(2)}$`, At = "?" + $, jt = `<${At}>`, C = document, R = () => C.createComment(""), N = (o) => o === null || typeof o != "object" && typeof o != "function", it = Array.isArray, Vt = (o) => it(o) || typeof o?.[Symbol.iterator] == "function", Y = `[ 	
-\f\r]`, M = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, ut = /-->/g, gt = />/g, w = RegExp(`>|${Y}(?:([^\\s"'>=/]+)(${Y}*=${Y}*(?:[^ 	
-\f\r"'\`<>=]|("|')|))|$)`, "g"), ft = /'/g, mt = /"/g, St = /^(?:script|style|textarea|title)$/i, Ct = (o) => (t, ...e) => ({ _$litType$: o, strings: t, values: e }), x = Ct(1), H = Ct(2), k = /* @__PURE__ */ Symbol.for("lit-noChange"), g = /* @__PURE__ */ Symbol.for("lit-nothing"), yt = /* @__PURE__ */ new WeakMap(), S = C.createTreeWalker(C, 129);
-function Et(o, t) {
-  if (!it(o) || !o.hasOwnProperty("raw")) throw Error("invalid template strings array");
-  return pt !== void 0 ? pt.createHTML(t) : t;
+k.elementStyles = [], k.shadowRootOptions = { mode: "open" }, k[I("elementProperties")] = /* @__PURE__ */ new Map(), k[I("finalized")] = /* @__PURE__ */ new Map(), qe?.({ ReactiveElement: k }), (G.reactiveElementVersions ??= []).push("2.1.2");
+const oe = globalThis, pe = (i) => i, q = oe.trustedTypes, ue = q ? q.createPolicy("lit-html", { createHTML: (i) => i }) : void 0, Ae = "$lit$", w = `lit$${Math.random().toFixed(9).slice(2)}$`, Se = "?" + w, We = `<${Se}>`, C = document, U = () => C.createComment(""), D = (i) => i === null || typeof i != "object" && typeof i != "function", ae = Array.isArray, Ge = (i) => ae(i) || typeof i?.[Symbol.iterator] == "function", X = `[ 	
+\f\r]`, T = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, ge = /-->/g, fe = />/g, A = RegExp(`>|${X}(?:([^\\s"'>=/]+)(${X}*=${X}*(?:[^ 	
+\f\r"'\`<>=]|("|')|))|$)`, "g"), ye = /'/g, _e = /"/g, Ee = /^(?:script|style|textarea|title)$/i, Ce = (i) => (e, ...r) => ({ _$litType$: i, strings: e, values: r }), x = Ce(1), M = Ce(2), H = /* @__PURE__ */ Symbol.for("lit-noChange"), f = /* @__PURE__ */ Symbol.for("lit-nothing"), me = /* @__PURE__ */ new WeakMap(), E = C.createTreeWalker(C, 129);
+function ke(i, e) {
+  if (!ae(i) || !i.hasOwnProperty("raw")) throw Error("invalid template strings array");
+  return ue !== void 0 ? ue.createHTML(e) : e;
 }
-const qt = (o, t) => {
-  const e = o.length - 1, r = [];
-  let i, s = t === 2 ? "<svg>" : t === 3 ? "<math>" : "", a = M;
-  for (let l = 0; l < e; l++) {
-    const n = o[l];
-    let d, c, h = -1, u = 0;
-    for (; u < n.length && (a.lastIndex = u, c = a.exec(n), c !== null); ) u = a.lastIndex, a === M ? c[1] === "!--" ? a = ut : c[1] !== void 0 ? a = gt : c[2] !== void 0 ? (St.test(c[2]) && (i = RegExp("</" + c[2], "g")), a = w) : c[3] !== void 0 && (a = w) : a === w ? c[0] === ">" ? (a = i ?? M, h = -1) : c[1] === void 0 ? h = -2 : (h = a.lastIndex - c[2].length, d = c[1], a = c[3] === void 0 ? w : c[3] === '"' ? mt : ft) : a === mt || a === ft ? a = w : a === ut || a === gt ? a = M : (a = w, i = void 0);
-    const f = a === w && o[l + 1].startsWith("/>") ? " " : "";
-    s += a === M ? n + jt : h >= 0 ? (r.push(d), n.slice(0, h) + wt + n.slice(h) + $ + f) : n + $ + (h === -2 ? l : f);
+const Ke = (i, e) => {
+  const r = i.length - 1, t = [];
+  let o, a = e === 2 ? "<svg>" : e === 3 ? "<math>" : "", s = T;
+  for (let c = 0; c < r; c++) {
+    const n = i[c];
+    let p, d, h = -1, g = 0;
+    for (; g < n.length && (s.lastIndex = g, d = s.exec(n), d !== null); ) g = s.lastIndex, s === T ? d[1] === "!--" ? s = ge : d[1] !== void 0 ? s = fe : d[2] !== void 0 ? (Ee.test(d[2]) && (o = RegExp("</" + d[2], "g")), s = A) : d[3] !== void 0 && (s = A) : s === A ? d[0] === ">" ? (s = o ?? T, h = -1) : d[1] === void 0 ? h = -2 : (h = s.lastIndex - d[2].length, p = d[1], s = d[3] === void 0 ? A : d[3] === '"' ? _e : ye) : s === _e || s === ye ? s = A : s === ge || s === fe ? s = T : (s = A, o = void 0);
+    const y = s === A && i[c + 1].startsWith("/>") ? " " : "";
+    a += s === T ? n + We : h >= 0 ? (t.push(p), n.slice(0, h) + Ae + n.slice(h) + w + y) : n + w + (h === -2 ? c : y);
   }
-  return [Et(o, s + (o[e] || "<?>") + (t === 2 ? "</svg>" : t === 3 ? "</math>" : "")), r];
+  return [ke(i, a + (i[r] || "<?>") + (e === 2 ? "</svg>" : e === 3 ? "</math>" : "")), t];
 };
 class O {
-  constructor({ strings: t, _$litType$: e }, r) {
-    let i;
+  constructor({ strings: e, _$litType$: r }, t) {
+    let o;
     this.parts = [];
-    let s = 0, a = 0;
-    const l = t.length - 1, n = this.parts, [d, c] = qt(t, e);
-    if (this.el = O.createElement(d, r), S.currentNode = this.el.content, e === 2 || e === 3) {
+    let a = 0, s = 0;
+    const c = e.length - 1, n = this.parts, [p, d] = Ke(e, r);
+    if (this.el = O.createElement(p, t), E.currentNode = this.el.content, r === 2 || r === 3) {
       const h = this.el.content.firstChild;
       h.replaceWith(...h.childNodes);
     }
-    for (; (i = S.nextNode()) !== null && n.length < l; ) {
-      if (i.nodeType === 1) {
-        if (i.hasAttributes()) for (const h of i.getAttributeNames()) if (h.endsWith(wt)) {
-          const u = c[a++], f = i.getAttribute(h).split($), _ = /([.?@])?(.*)/.exec(u);
-          n.push({ type: 1, index: s, name: _[2], strings: f, ctor: _[1] === "." ? Gt : _[1] === "?" ? Kt : _[1] === "@" ? Yt : G }), i.removeAttribute(h);
-        } else h.startsWith($) && (n.push({ type: 6, index: s }), i.removeAttribute(h));
-        if (St.test(i.tagName)) {
-          const h = i.textContent.split($), u = h.length - 1;
-          if (u > 0) {
-            i.textContent = V ? V.emptyScript : "";
-            for (let f = 0; f < u; f++) i.append(h[f], R()), S.nextNode(), n.push({ type: 2, index: ++s });
-            i.append(h[u], R());
+    for (; (o = E.nextNode()) !== null && n.length < c; ) {
+      if (o.nodeType === 1) {
+        if (o.hasAttributes()) for (const h of o.getAttributeNames()) if (h.endsWith(Ae)) {
+          const g = d[s++], y = o.getAttribute(h).split(w), b = /([.?@])?(.*)/.exec(g);
+          n.push({ type: 1, index: a, name: b[2], strings: y, ctor: b[1] === "." ? Xe : b[1] === "?" ? Ze : b[1] === "@" ? Je : K }), o.removeAttribute(h);
+        } else h.startsWith(w) && (n.push({ type: 6, index: a }), o.removeAttribute(h));
+        if (Ee.test(o.tagName)) {
+          const h = o.textContent.split(w), g = h.length - 1;
+          if (g > 0) {
+            o.textContent = q ? q.emptyScript : "";
+            for (let y = 0; y < g; y++) o.append(h[y], U()), E.nextNode(), n.push({ type: 2, index: ++a });
+            o.append(h[g], U());
           }
         }
-      } else if (i.nodeType === 8) if (i.data === At) n.push({ type: 2, index: s });
+      } else if (o.nodeType === 8) if (o.data === Se) n.push({ type: 2, index: a });
       else {
         let h = -1;
-        for (; (h = i.data.indexOf($, h + 1)) !== -1; ) n.push({ type: 7, index: s }), h += $.length - 1;
+        for (; (h = o.data.indexOf(w, h + 1)) !== -1; ) n.push({ type: 7, index: a }), h += w.length - 1;
       }
-      s++;
+      a++;
     }
   }
-  static createElement(t, e) {
-    const r = C.createElement("template");
-    return r.innerHTML = t, r;
+  static createElement(e, r) {
+    const t = C.createElement("template");
+    return t.innerHTML = e, t;
   }
 }
-function P(o, t, e = o, r) {
-  if (t === k) return t;
-  let i = r !== void 0 ? e._$Co?.[r] : e._$Cl;
-  const s = N(t) ? void 0 : t._$litDirective$;
-  return i?.constructor !== s && (i?._$AO?.(!1), s === void 0 ? i = void 0 : (i = new s(o), i._$AT(o, e, r)), r !== void 0 ? (e._$Co ??= [])[r] = i : e._$Cl = i), i !== void 0 && (t = P(o, i._$AS(o, t.values), i, r)), t;
+function P(i, e, r = i, t) {
+  if (e === H) return e;
+  let o = t !== void 0 ? r._$Co?.[t] : r._$Cl;
+  const a = D(e) ? void 0 : e._$litDirective$;
+  return o?.constructor !== a && (o?._$AO?.(!1), a === void 0 ? o = void 0 : (o = new a(i), o._$AT(i, r, t)), t !== void 0 ? (r._$Co ??= [])[t] = o : r._$Cl = o), o !== void 0 && (e = P(i, o._$AS(i, e.values), o, t)), e;
 }
-class Wt {
-  constructor(t, e) {
-    this._$AV = [], this._$AN = void 0, this._$AD = t, this._$AM = e;
+class Ye {
+  constructor(e, r) {
+    this._$AV = [], this._$AN = void 0, this._$AD = e, this._$AM = r;
   }
   get parentNode() {
     return this._$AM.parentNode;
@@ -320,35 +320,35 @@ class Wt {
   get _$AU() {
     return this._$AM._$AU;
   }
-  u(t) {
-    const { el: { content: e }, parts: r } = this._$AD, i = (t?.creationScope ?? C).importNode(e, !0);
-    S.currentNode = i;
-    let s = S.nextNode(), a = 0, l = 0, n = r[0];
+  u(e) {
+    const { el: { content: r }, parts: t } = this._$AD, o = (e?.creationScope ?? C).importNode(r, !0);
+    E.currentNode = o;
+    let a = E.nextNode(), s = 0, c = 0, n = t[0];
     for (; n !== void 0; ) {
-      if (a === n.index) {
-        let d;
-        n.type === 2 ? d = new L(s, s.nextSibling, this, t) : n.type === 1 ? d = new n.ctor(s, n.name, n.strings, this, t) : n.type === 6 && (d = new Xt(s, this, t)), this._$AV.push(d), n = r[++l];
+      if (s === n.index) {
+        let p;
+        n.type === 2 ? p = new R(a, a.nextSibling, this, e) : n.type === 1 ? p = new n.ctor(a, n.name, n.strings, this, e) : n.type === 6 && (p = new Qe(a, this, e)), this._$AV.push(p), n = t[++c];
       }
-      a !== n?.index && (s = S.nextNode(), a++);
+      s !== n?.index && (a = E.nextNode(), s++);
     }
-    return S.currentNode = C, i;
+    return E.currentNode = C, o;
   }
-  p(t) {
-    let e = 0;
-    for (const r of this._$AV) r !== void 0 && (r.strings !== void 0 ? (r._$AI(t, r, e), e += r.strings.length - 2) : r._$AI(t[e])), e++;
+  p(e) {
+    let r = 0;
+    for (const t of this._$AV) t !== void 0 && (t.strings !== void 0 ? (t._$AI(e, t, r), r += t.strings.length - 2) : t._$AI(e[r])), r++;
   }
 }
-class L {
+class R {
   get _$AU() {
     return this._$AM?._$AU ?? this._$Cv;
   }
-  constructor(t, e, r, i) {
-    this.type = 2, this._$AH = g, this._$AN = void 0, this._$AA = t, this._$AB = e, this._$AM = r, this.options = i, this._$Cv = i?.isConnected ?? !0;
+  constructor(e, r, t, o) {
+    this.type = 2, this._$AH = f, this._$AN = void 0, this._$AA = e, this._$AB = r, this._$AM = t, this.options = o, this._$Cv = o?.isConnected ?? !0;
   }
   get parentNode() {
-    let t = this._$AA.parentNode;
-    const e = this._$AM;
-    return e !== void 0 && t?.nodeType === 11 && (t = e.parentNode), t;
+    let e = this._$AA.parentNode;
+    const r = this._$AM;
+    return r !== void 0 && e?.nodeType === 11 && (e = r.parentNode), e;
   }
   get startNode() {
     return this._$AA;
@@ -356,135 +356,135 @@ class L {
   get endNode() {
     return this._$AB;
   }
-  _$AI(t, e = this) {
-    t = P(this, t, e), N(t) ? t === g || t == null || t === "" ? (this._$AH !== g && this._$AR(), this._$AH = g) : t !== this._$AH && t !== k && this._(t) : t._$litType$ !== void 0 ? this.$(t) : t.nodeType !== void 0 ? this.T(t) : Vt(t) ? this.k(t) : this._(t);
+  _$AI(e, r = this) {
+    e = P(this, e, r), D(e) ? e === f || e == null || e === "" ? (this._$AH !== f && this._$AR(), this._$AH = f) : e !== this._$AH && e !== H && this._(e) : e._$litType$ !== void 0 ? this.$(e) : e.nodeType !== void 0 ? this.T(e) : Ge(e) ? this.k(e) : this._(e);
   }
-  O(t) {
-    return this._$AA.parentNode.insertBefore(t, this._$AB);
+  O(e) {
+    return this._$AA.parentNode.insertBefore(e, this._$AB);
   }
-  T(t) {
-    this._$AH !== t && (this._$AR(), this._$AH = this.O(t));
+  T(e) {
+    this._$AH !== e && (this._$AR(), this._$AH = this.O(e));
   }
-  _(t) {
-    this._$AH !== g && N(this._$AH) ? this._$AA.nextSibling.data = t : this.T(C.createTextNode(t)), this._$AH = t;
+  _(e) {
+    this._$AH !== f && D(this._$AH) ? this._$AA.nextSibling.data = e : this.T(C.createTextNode(e)), this._$AH = e;
   }
-  $(t) {
-    const { values: e, _$litType$: r } = t, i = typeof r == "number" ? this._$AC(t) : (r.el === void 0 && (r.el = O.createElement(Et(r.h, r.h[0]), this.options)), r);
-    if (this._$AH?._$AD === i) this._$AH.p(e);
+  $(e) {
+    const { values: r, _$litType$: t } = e, o = typeof t == "number" ? this._$AC(e) : (t.el === void 0 && (t.el = O.createElement(ke(t.h, t.h[0]), this.options)), t);
+    if (this._$AH?._$AD === o) this._$AH.p(r);
     else {
-      const s = new Wt(i, this), a = s.u(this.options);
-      s.p(e), this.T(a), this._$AH = s;
+      const a = new Ye(o, this), s = a.u(this.options);
+      a.p(r), this.T(s), this._$AH = a;
     }
   }
-  _$AC(t) {
-    let e = yt.get(t.strings);
-    return e === void 0 && yt.set(t.strings, e = new O(t)), e;
+  _$AC(e) {
+    let r = me.get(e.strings);
+    return r === void 0 && me.set(e.strings, r = new O(e)), r;
   }
-  k(t) {
-    it(this._$AH) || (this._$AH = [], this._$AR());
-    const e = this._$AH;
-    let r, i = 0;
-    for (const s of t) i === e.length ? e.push(r = new L(this.O(R()), this.O(R()), this, this.options)) : r = e[i], r._$AI(s), i++;
-    i < e.length && (this._$AR(r && r._$AB.nextSibling, i), e.length = i);
+  k(e) {
+    ae(this._$AH) || (this._$AH = [], this._$AR());
+    const r = this._$AH;
+    let t, o = 0;
+    for (const a of e) o === r.length ? r.push(t = new R(this.O(U()), this.O(U()), this, this.options)) : t = r[o], t._$AI(a), o++;
+    o < r.length && (this._$AR(t && t._$AB.nextSibling, o), r.length = o);
   }
-  _$AR(t = this._$AA.nextSibling, e) {
-    for (this._$AP?.(!1, !0, e); t !== this._$AB; ) {
-      const r = dt(t).nextSibling;
-      dt(t).remove(), t = r;
+  _$AR(e = this._$AA.nextSibling, r) {
+    for (this._$AP?.(!1, !0, r); e !== this._$AB; ) {
+      const t = pe(e).nextSibling;
+      pe(e).remove(), e = t;
     }
   }
-  setConnected(t) {
-    this._$AM === void 0 && (this._$Cv = t, this._$AP?.(t));
+  setConnected(e) {
+    this._$AM === void 0 && (this._$Cv = e, this._$AP?.(e));
   }
 }
-class G {
+class K {
   get tagName() {
     return this.element.tagName;
   }
   get _$AU() {
     return this._$AM._$AU;
   }
-  constructor(t, e, r, i, s) {
-    this.type = 1, this._$AH = g, this._$AN = void 0, this.element = t, this.name = e, this._$AM = i, this.options = s, r.length > 2 || r[0] !== "" || r[1] !== "" ? (this._$AH = Array(r.length - 1).fill(new String()), this.strings = r) : this._$AH = g;
+  constructor(e, r, t, o, a) {
+    this.type = 1, this._$AH = f, this._$AN = void 0, this.element = e, this.name = r, this._$AM = o, this.options = a, t.length > 2 || t[0] !== "" || t[1] !== "" ? (this._$AH = Array(t.length - 1).fill(new String()), this.strings = t) : this._$AH = f;
   }
-  _$AI(t, e = this, r, i) {
-    const s = this.strings;
-    let a = !1;
-    if (s === void 0) t = P(this, t, e, 0), a = !N(t) || t !== this._$AH && t !== k, a && (this._$AH = t);
+  _$AI(e, r = this, t, o) {
+    const a = this.strings;
+    let s = !1;
+    if (a === void 0) e = P(this, e, r, 0), s = !D(e) || e !== this._$AH && e !== H, s && (this._$AH = e);
     else {
-      const l = t;
-      let n, d;
-      for (t = s[0], n = 0; n < s.length - 1; n++) d = P(this, l[r + n], e, n), d === k && (d = this._$AH[n]), a ||= !N(d) || d !== this._$AH[n], d === g ? t = g : t !== g && (t += (d ?? "") + s[n + 1]), this._$AH[n] = d;
+      const c = e;
+      let n, p;
+      for (e = a[0], n = 0; n < a.length - 1; n++) p = P(this, c[t + n], r, n), p === H && (p = this._$AH[n]), s ||= !D(p) || p !== this._$AH[n], p === f ? e = f : e !== f && (e += (p ?? "") + a[n + 1]), this._$AH[n] = p;
     }
-    a && !i && this.j(t);
+    s && !o && this.j(e);
   }
-  j(t) {
-    t === g ? this.element.removeAttribute(this.name) : this.element.setAttribute(this.name, t ?? "");
+  j(e) {
+    e === f ? this.element.removeAttribute(this.name) : this.element.setAttribute(this.name, e ?? "");
   }
 }
-class Gt extends G {
+class Xe extends K {
   constructor() {
     super(...arguments), this.type = 3;
   }
-  j(t) {
-    this.element[this.name] = t === g ? void 0 : t;
+  j(e) {
+    this.element[this.name] = e === f ? void 0 : e;
   }
 }
-class Kt extends G {
+class Ze extends K {
   constructor() {
     super(...arguments), this.type = 4;
   }
-  j(t) {
-    this.element.toggleAttribute(this.name, !!t && t !== g);
+  j(e) {
+    this.element.toggleAttribute(this.name, !!e && e !== f);
   }
 }
-class Yt extends G {
-  constructor(t, e, r, i, s) {
-    super(t, e, r, i, s), this.type = 5;
+class Je extends K {
+  constructor(e, r, t, o, a) {
+    super(e, r, t, o, a), this.type = 5;
   }
-  _$AI(t, e = this) {
-    if ((t = P(this, t, e, 0) ?? g) === k) return;
-    const r = this._$AH, i = t === g && r !== g || t.capture !== r.capture || t.once !== r.once || t.passive !== r.passive, s = t !== g && (r === g || i);
-    i && this.element.removeEventListener(this.name, this, r), s && this.element.addEventListener(this.name, this, t), this._$AH = t;
+  _$AI(e, r = this) {
+    if ((e = P(this, e, r, 0) ?? f) === H) return;
+    const t = this._$AH, o = e === f && t !== f || e.capture !== t.capture || e.once !== t.once || e.passive !== t.passive, a = e !== f && (t === f || o);
+    o && this.element.removeEventListener(this.name, this, t), a && this.element.addEventListener(this.name, this, e), this._$AH = e;
   }
-  handleEvent(t) {
-    typeof this._$AH == "function" ? this._$AH.call(this.options?.host ?? this.element, t) : this._$AH.handleEvent(t);
+  handleEvent(e) {
+    typeof this._$AH == "function" ? this._$AH.call(this.options?.host ?? this.element, e) : this._$AH.handleEvent(e);
   }
 }
-class Xt {
-  constructor(t, e, r) {
-    this.element = t, this.type = 6, this._$AN = void 0, this._$AM = e, this.options = r;
+class Qe {
+  constructor(e, r, t) {
+    this.element = e, this.type = 6, this._$AN = void 0, this._$AM = r, this.options = t;
   }
   get _$AU() {
     return this._$AM._$AU;
   }
-  _$AI(t) {
-    P(this, t);
+  _$AI(e) {
+    P(this, e);
   }
 }
-const Zt = ot.litHtmlPolyfillSupport;
-Zt?.(O, L), (ot.litHtmlVersions ??= []).push("3.3.3");
-const Jt = (o, t, e) => {
-  const r = e?.renderBefore ?? t;
-  let i = r._$litPart$;
-  if (i === void 0) {
-    const s = e?.renderBefore ?? null;
-    r._$litPart$ = i = new L(t.insertBefore(R(), s), s, void 0, e ?? {});
+const et = oe.litHtmlPolyfillSupport;
+et?.(O, R), (oe.litHtmlVersions ??= []).push("3.3.3");
+const tt = (i, e, r) => {
+  const t = r?.renderBefore ?? e;
+  let o = t._$litPart$;
+  if (o === void 0) {
+    const a = r?.renderBefore ?? null;
+    t._$litPart$ = o = new R(e.insertBefore(U(), a), a, void 0, r ?? {});
   }
-  return i._$AI(o), i;
+  return o._$AI(i), o;
 };
-const st = globalThis;
-class z extends E {
+const se = globalThis;
+class N extends k {
   constructor() {
     super(...arguments), this.renderOptions = { host: this }, this._$Do = void 0;
   }
   createRenderRoot() {
-    const t = super.createRenderRoot();
-    return this.renderOptions.renderBefore ??= t.firstChild, t;
+    const e = super.createRenderRoot();
+    return this.renderOptions.renderBefore ??= e.firstChild, e;
   }
-  update(t) {
-    const e = this.render();
-    this.hasUpdated || (this.renderOptions.isConnected = this.isConnected), super.update(t), this._$Do = Jt(e, this.renderRoot, this.renderOptions);
+  update(e) {
+    const r = this.render();
+    this.hasUpdated || (this.renderOptions.isConnected = this.isConnected), super.update(e), this._$Do = tt(r, this.renderRoot, this.renderOptions);
   }
   connectedCallback() {
     super.connectedCallback(), this._$Do?.setConnected(!0);
@@ -493,14 +493,14 @@ class z extends E {
     super.disconnectedCallback(), this._$Do?.setConnected(!1);
   }
   render() {
-    return k;
+    return H;
   }
 }
-z._$litElement$ = !0, z.finalized = !0, st.litElementHydrateSupport?.({ LitElement: z });
-const Qt = st.litElementPolyfillSupport;
-Qt?.({ LitElement: z });
-(st.litElementVersions ??= []).push("4.2.2");
-const te = It`
+N._$litElement$ = !0, N.finalized = !0, se.litElementHydrateSupport?.({ LitElement: N });
+const rt = se.litElementPolyfillSupport;
+rt?.({ LitElement: N });
+(se.litElementVersions ??= []).push("4.2.2");
+const it = Ne`
   :host {
     display: block;
     color: var(--primary-text-color, #111522);
@@ -1156,45 +1156,191 @@ const te = It`
       border-top: 1px solid var(--divider-color, #e2e5e9);
     }
   }
-`, ee = {
-  title: "Solar & storage",
+`, He = {
+  "card.default_title": "Solar & storage",
+  "card.subtitle": "Battery outlook",
+  "card.today": "Today",
+  "status.charging": "Charging",
+  "status.discharging": "Discharging",
+  "status.idle": "Idle",
+  "battery.aria_status": "Battery status",
+  "battery.full_by": "Full by {time}",
+  "battery.charging_now": "Charging now",
+  "battery.aria_graphic": "Battery {percent} percent charged",
+  "battery.charging": "Charging battery",
+  "battery.supplying": "Supplying home",
+  "battery.idle": "Battery idle",
+  "power.aria": "Current power",
+  "power.solar": "Solar",
+  "power.home": "Home",
+  "power.battery": "Battery",
+  "power.export": "Export",
+  "chart.heading": "Power · 24 hours",
+  "chart.aria": "Inspect solar, home and battery power history",
+  "chart.axis_start": "24h ago",
+  "chart.axis_now": "Now",
+  "chart.legend_aria": "Chart legend",
+  "chart.history_unavailable": "Live history unavailable · showing current profile",
+  "energy.aria": "Energy today",
+  "energy.generated": "Generated",
+  "energy.consumed": "Consumed",
+  "energy.stored": "Stored",
+  "energy.exported": "Exported",
+  "footer.solar_home_battery_export": "Solar covering home, charging battery and exporting",
+  "footer.solar_home_battery": "Solar covering home and charging the battery",
+  "footer.solar_home": "Solar covering the current home load",
+  "footer.drawing": "Home load is drawing from battery or grid",
+  "picker.description": "A battery-first solar, power and daily energy overview.",
+  "editor.section.live_power": "Live power",
+  "editor.section.daily_energy": "Daily energy",
+  "editor.section.behaviour": "Behaviour",
+  "editor.field.title": "Title",
+  "editor.field.battery_soc": "Battery state of charge",
+  "editor.field.solar_power": "Solar power",
+  "editor.field.home_power": "Home power",
+  "editor.field.battery_power": "Battery power",
+  "editor.field.grid_power": "Grid power",
+  "editor.field.solar_energy_today": "Solar energy today",
+  "editor.field.home_energy_today": "Home energy today",
+  "editor.field.battery_energy_today": "Battery energy stored today",
+  "editor.field.export_energy_today": "Grid energy exported today",
+  "editor.field.battery_capacity": "Usable battery capacity",
+  "editor.field.battery_positive_is_charging": "Positive battery power means charging",
+  "editor.field.grid_positive_is_export": "Positive grid power means export",
+  "editor.field.show_power_chart": "Show 24-hour power chart",
+  "editor.helper.battery_capacity": "Optional. Used to estimate when the battery will be full.",
+  "editor.helper.battery_positive_is_charging": "Turn this off if your integration reports charging as a negative value.",
+  "editor.helper.grid_positive_is_export": "Turn this off if your integration reports grid export as a negative value.",
+  "editor.error.required": "{field} is required."
+}, ot = {
+  "card.default_title": "Solar & Speicher",
+  "card.subtitle": "Batterie-Prognose",
+  "card.today": "Heute",
+  "status.charging": "Lädt",
+  "status.discharging": "Entlädt",
+  "status.idle": "Bereit",
+  "battery.aria_status": "Batteriestatus",
+  "battery.full_by": "Voll um {time}",
+  "battery.charging_now": "Lädt gerade",
+  "battery.aria_graphic": "Batterie zu {percent} Prozent geladen",
+  "battery.charging": "Batterie wird geladen",
+  "battery.supplying": "Versorgt das Haus",
+  "battery.idle": "Batterie im Leerlauf",
+  "power.aria": "Aktuelle Leistung",
+  "power.solar": "Solar",
+  "power.home": "Haus",
+  "power.battery": "Batterie",
+  "power.export": "Einspeisung",
+  "chart.heading": "Leistung · 24 Stunden",
+  "chart.aria": "Verlauf von Solar-, Haus- und Batterieleistung untersuchen",
+  "chart.axis_start": "vor 24 h",
+  "chart.axis_now": "Jetzt",
+  "chart.legend_aria": "Diagrammlegende",
+  "chart.history_unavailable": "Verlauf nicht verfügbar · aktuelles Profil wird gezeigt",
+  "energy.aria": "Energie heute",
+  "energy.generated": "Erzeugt",
+  "energy.consumed": "Verbraucht",
+  "energy.stored": "Gespeichert",
+  "energy.exported": "Eingespeist",
+  "footer.solar_home_battery_export": "Solar deckt das Haus, lädt die Batterie und speist ein",
+  "footer.solar_home_battery": "Solar deckt das Haus und lädt die Batterie",
+  "footer.solar_home": "Solar deckt den aktuellen Hausverbrauch",
+  "footer.drawing": "Hausverbrauch wird aus Batterie oder Netz gedeckt",
+  "picker.description": "Solar-, Leistungs- und Tagesenergieübersicht mit Fokus auf den Speicher.",
+  "editor.section.live_power": "Aktuelle Leistung",
+  "editor.section.daily_energy": "Tagesenergie",
+  "editor.section.behaviour": "Verhalten",
+  "editor.field.title": "Titel",
+  "editor.field.battery_soc": "Batterieladestand",
+  "editor.field.solar_power": "Solarleistung",
+  "editor.field.home_power": "Hausverbrauch",
+  "editor.field.battery_power": "Batterieleistung",
+  "editor.field.grid_power": "Netzleistung",
+  "editor.field.solar_energy_today": "Solarenergie heute",
+  "editor.field.home_energy_today": "Hausverbrauch heute",
+  "editor.field.battery_energy_today": "Heute in die Batterie geladen",
+  "editor.field.export_energy_today": "Heute ins Netz eingespeist",
+  "editor.field.battery_capacity": "Nutzbare Batteriekapazität",
+  "editor.field.battery_positive_is_charging": "Positive Batterieleistung bedeutet Laden",
+  "editor.field.grid_positive_is_export": "Positive Netzleistung bedeutet Einspeisung",
+  "editor.field.show_power_chart": "24-Stunden-Diagramm anzeigen",
+  "editor.helper.battery_capacity": "Optional. Dient der Schätzung, wann die Batterie voll ist.",
+  "editor.helper.battery_positive_is_charging": "Deaktivieren, wenn deine Integration das Laden als negativen Wert meldet.",
+  "editor.helper.grid_positive_is_export": "Deaktivieren, wenn deine Integration die Einspeisung als negativen Wert meldet.",
+  "editor.error.required": "{field} ist erforderlich."
+}, at = {
+  en: He,
+  de: ot
+};
+let Pe;
+function st(i) {
+  i && (Pe = i);
+}
+function nt() {
+  return typeof navigator > "u" ? void 0 : navigator.language;
+}
+function lt(i) {
+  if (!i) return "en";
+  const [e] = i.toLowerCase().split(/[-_]/);
+  return e || "en";
+}
+function l(i, e, r) {
+  const t = lt(e ?? Pe ?? nt()), o = at[t]?.[i] ?? He[i];
+  return r ? Object.entries(r).reduce(
+    (a, [s, c]) => a.split(`{${s}}`).join(String(c)),
+    o
+  ) : o;
+}
+const ct = {
   battery_positive_is_charging: !0,
   grid_positive_is_export: !0,
   show_power_chart: !0
-}, re = [
+}, dt = [
   "battery_soc",
   "solar_power",
   "home_power",
   "battery_power",
   "grid_power"
-], kt = {
-  title: "Title",
-  battery_soc: "Battery state of charge",
-  solar_power: "Solar power",
-  home_power: "Home power",
-  battery_power: "Battery power",
-  grid_power: "Grid power",
-  solar_energy_today: "Solar energy today",
-  home_energy_today: "Home energy today",
-  battery_energy_today: "Battery energy stored today",
-  export_energy_today: "Grid energy exported today",
-  battery_capacity: "Usable battery capacity",
-  battery_positive_is_charging: "Positive battery power means charging",
-  grid_positive_is_export: "Positive grid power means export",
-  show_power_chart: "Show 24-hour power chart"
-}, oe = {
-  battery_capacity: "Optional. Used to estimate when the battery will be full.",
-  battery_positive_is_charging: "Turn this off if your integration reports charging as a negative value.",
-  grid_positive_is_export: "Turn this off if your integration reports grid export as a negative value."
-};
-function ie() {
+], ht = [
+  "title",
+  "battery_soc",
+  "solar_power",
+  "home_power",
+  "battery_power",
+  "grid_power",
+  "solar_energy_today",
+  "home_energy_today",
+  "battery_energy_today",
+  "export_energy_today",
+  "battery_capacity",
+  "battery_positive_is_charging",
+  "grid_positive_is_export",
+  "show_power_chart"
+], pt = [
+  "battery_capacity",
+  "battery_positive_is_charging",
+  "grid_positive_is_export"
+];
+function ut(i) {
+  return ht.includes(i);
+}
+function gt(i) {
+  return pt.includes(i);
+}
+function Te(i) {
+  return l(`editor.field.${i}`);
+}
+function ft(i) {
+  return l(`editor.helper.${i}`);
+}
+function yt() {
   return {
     schema: [
       { name: "title", selector: { text: {} } },
       {
         type: "expandable",
         name: "",
-        title: "Live power",
+        title: l("editor.section.live_power"),
         flatten: !0,
         schema: [
           {
@@ -1215,7 +1361,7 @@ function ie() {
       {
         type: "expandable",
         name: "",
-        title: "Daily energy",
+        title: l("editor.section.daily_energy"),
         flatten: !0,
         schema: [
           {
@@ -1235,7 +1381,7 @@ function ie() {
       {
         type: "expandable",
         name: "",
-        title: "Behaviour",
+        title: l("editor.section.behaviour"),
         flatten: !0,
         schema: [
           {
@@ -1248,178 +1394,180 @@ function ie() {
         ]
       }
     ],
-    computeLabel: (o) => o.name ? kt[o.name] : void 0,
-    computeHelper: (o) => o.name ? oe[o.name] : void 0,
-    assertConfig: (o) => Pt(o)
+    computeLabel: (i) => i.name && ut(i.name) ? Te(i.name) : void 0,
+    computeHelper: (i) => i.name && gt(i.name) ? ft(i.name) : void 0,
+    assertConfig: (i) => Me(i)
   };
 }
-function Pt(o) {
-  for (const t of re)
-    if (!o[t] || typeof o[t] != "string")
-      throw new Error(`${kt[t]} is required.`);
+function Me(i) {
+  for (const e of dt)
+    if (!i[e] || typeof i[e] != "string")
+      throw new Error(
+        l("editor.error.required", void 0, { field: Te(e) })
+      );
 }
-function Mt(o) {
+function ze(i) {
   return {
-    ...ee,
-    ...o,
-    type: o.type || "custom:solar-battery-card"
+    ...ct,
+    ...i,
+    type: i.type || "custom:solar-battery-card"
   };
 }
-function T(o, t, e) {
-  return o ? Object.values(o.states).find((i) => {
-    if (i.attributes.device_class !== t) return !1;
-    const s = `${i.entity_id} ${i.attributes.friendly_name ?? ""}`.toLowerCase();
-    return e.some((a) => s.includes(a));
+function z(i, e, r) {
+  return i ? Object.values(i.states).find((o) => {
+    if (o.attributes.device_class !== e) return !1;
+    const a = `${o.entity_id} ${o.attributes.friendly_name ?? ""}`.toLowerCase();
+    return r.some((s) => a.includes(s));
   })?.entity_id ?? "" : "";
 }
-function se(o) {
-  return Mt({
+function _t(i) {
+  return ze({
     type: "custom:solar-battery-card",
-    battery_soc: T(o, "battery", ["battery", "storage"]) || "sensor.battery_state_of_charge",
-    solar_power: T(o, "power", ["solar", "pv"]) || "sensor.solar_power",
-    home_power: T(o, "power", ["home", "house", "load"]) || "sensor.home_power",
-    battery_power: T(o, "power", ["battery", "storage"]) || "sensor.battery_power",
-    grid_power: T(o, "power", ["grid"]) || "sensor.grid_power"
+    battery_soc: z(i, "battery", ["battery", "storage"]) || "sensor.battery_state_of_charge",
+    solar_power: z(i, "power", ["solar", "pv"]) || "sensor.solar_power",
+    home_power: z(i, "power", ["home", "house", "load"]) || "sensor.home_power",
+    battery_power: z(i, "power", ["battery", "storage"]) || "sensor.battery_power",
+    grid_power: z(i, "power", ["grid"]) || "sensor.grid_power"
   });
 }
-function ae(o, t, e, r) {
-  if (r <= 1 || e <= 0) return 0;
-  const i = Math.min(1, Math.max(0, (o - t) / e));
-  return Math.round(i * (r - 1));
+function mt(i, e, r, t) {
+  if (t <= 1 || r <= 0) return 0;
+  const o = Math.min(1, Math.max(0, (i - e) / r));
+  return Math.round(o * (t - 1));
 }
-function ne(o, t) {
-  return t <= 1 ? 0 : Math.min(t - 1, Math.max(0, o)) / (t - 1) * 100;
+function bt(i, e) {
+  return e <= 1 ? 0 : Math.min(e - 1, Math.max(0, i)) / (e - 1) * 100;
 }
-function le(o, t, e, r, i = 166, s = 88, a = 14) {
-  const l = Math.min(e, Math.max(0, o)), n = Math.min(
-    Math.max(4, r - s - 4),
-    Math.max(4, t - s / 2)
+function vt(i, e, r, t, o = 166, a = 88, s = 14) {
+  const c = Math.min(r, Math.max(0, i)), n = Math.min(
+    Math.max(4, t - a - 4),
+    Math.max(4, e - a / 2)
   );
   return {
-    x: l,
+    x: c,
     top: n,
-    placement: l + a + i > e ? "place-left" : "place-right"
+    placement: c + s + o > r ? "place-left" : "place-right"
   };
 }
-const ce = /* @__PURE__ */ new Set(["unknown", "unavailable", "none", ""]);
-function at(o) {
-  if (!o || ce.has(o.state.toLowerCase())) return;
-  const t = Number(o.state);
-  return Number.isFinite(t) ? t : void 0;
+const xt = /* @__PURE__ */ new Set(["unknown", "unavailable", "none", ""]);
+function ne(i) {
+  if (!i || xt.has(i.state.toLowerCase())) return;
+  const e = Number(i.state);
+  return Number.isFinite(e) ? e : void 0;
 }
-function I(o) {
-  const t = at(o);
-  if (t === void 0) return;
-  const e = o?.attributes.unit_of_measurement?.toLowerCase().replace(/\s/g, "");
-  return e === "w" ? t / 1e3 : e === "mw" ? t / 1e6 : t;
+function L(i) {
+  const e = ne(i);
+  if (e === void 0) return;
+  const r = i?.attributes.unit_of_measurement?.toLowerCase().replace(/\s/g, "");
+  return r === "w" ? e / 1e3 : r === "mw" ? e / 1e6 : e;
 }
-function B(o) {
-  const t = at(o);
-  if (t === void 0) return;
-  const e = o?.attributes.unit_of_measurement?.toLowerCase().replace(/\s/g, "");
-  return e === "wh" ? t / 1e3 : e === "mwh" ? t * 1e3 : t;
+function F(i) {
+  const e = ne(i);
+  if (e === void 0) return;
+  const r = i?.attributes.unit_of_measurement?.toLowerCase().replace(/\s/g, "");
+  return r === "wh" ? e / 1e3 : r === "mwh" ? e * 1e3 : e;
 }
-function F(o, t, e = {}) {
-  if (o === void 0) return "—";
-  const r = e.digits ?? 2;
-  return `${new Intl.NumberFormat(e.locale, {
-    minimumFractionDigits: r,
-    maximumFractionDigits: r,
-    signDisplay: e.signed ? "exceptZero" : "auto"
-  }).format(o)} ${t}`;
+function j(i, e, r = {}) {
+  if (i === void 0) return "—";
+  const t = r.digits ?? 2;
+  return `${new Intl.NumberFormat(r.locale, {
+    minimumFractionDigits: t,
+    maximumFractionDigits: t,
+    signDisplay: r.signed ? "exceptZero" : "auto"
+  }).format(i)} ${e}`;
 }
-function v(o, t) {
-  return t && o ? o.states[t] : void 0;
+function v(i, e) {
+  return e && i ? i.states[e] : void 0;
 }
-function he(o, t, e, r = /* @__PURE__ */ new Date()) {
-  if (o === void 0 || !e || e <= 0 || t <= 0 || o >= 100)
+function $t(i, e, r, t = /* @__PURE__ */ new Date()) {
+  if (i === void 0 || !r || r <= 0 || e <= 0 || i >= 100)
     return;
-  const i = (100 - o) / 100 * e;
-  return new Date(r.getTime() + i / t * 60 * 60 * 1e3);
+  const o = (100 - i) / 100 * r;
+  return new Date(t.getTime() + o / e * 60 * 60 * 1e3);
 }
-const de = 24, _t = 24;
-function X(o, t) {
-  return o.find((e) => e.some((r) => r.entity_id === t)) ?? [];
+const wt = 24, be = 24;
+function Z(i, e) {
+  return i.find((r) => r.some((t) => t.entity_id === e)) ?? [];
 }
-function vt(o, t) {
-  return o ? I({
-    ...o,
+function ve(i, e) {
+  return i ? L({
+    ...i,
     attributes: {
-      ...t?.attributes,
-      ...o.attributes
+      ...e?.attributes,
+      ...i.attributes
     }
   }) ?? 0 : 0;
 }
-function Z(o, t, e) {
-  if (o.length === 0) return 0;
-  let r = o[0], i = o.at(-1) ?? o[0];
-  for (const c of o) {
-    const h = Date.parse(c.last_changed ?? c.last_updated ?? "");
-    if (Number.isFinite(h) && (h <= t && (r = c), h >= t)) {
-      i = c;
+function J(i, e, r) {
+  if (i.length === 0) return 0;
+  let t = i[0], o = i.at(-1) ?? i[0];
+  for (const d of i) {
+    const h = Date.parse(d.last_changed ?? d.last_updated ?? "");
+    if (Number.isFinite(h) && (h <= e && (t = d), h >= e)) {
+      o = d;
       break;
     }
   }
-  const s = Date.parse(r.last_changed ?? r.last_updated ?? ""), a = Date.parse(i.last_changed ?? i.last_updated ?? ""), l = vt(r, e), n = vt(i, e);
-  if (!Number.isFinite(s) || !Number.isFinite(a) || s === a)
-    return l;
-  const d = Math.min(
+  const a = Date.parse(t.last_changed ?? t.last_updated ?? ""), s = Date.parse(o.last_changed ?? o.last_updated ?? ""), c = ve(t, r), n = ve(o, r);
+  if (!Number.isFinite(a) || !Number.isFinite(s) || a === s)
+    return c;
+  const p = Math.min(
     1,
-    Math.max(0, (t - s) / (a - s))
+    Math.max(0, (e - a) / (s - a))
   );
-  return l + (n - l) * d;
+  return c + (n - c) * p;
 }
-async function pe(o, t, e = /* @__PURE__ */ new Date()) {
-  const r = e, i = new Date(r.getTime() - de * 60 * 60 * 1e3), s = [t.solar, t.home, t.battery], a = `history/period/${encodeURIComponent(i.toISOString())}?end_time=${encodeURIComponent(r.toISOString())}&filter_entity_id=${encodeURIComponent(s.join(","))}&minimal_response&no_attributes&significant_changes_only=0`, l = await o.callApi("GET", a), n = X(l, t.solar), d = X(l, t.home), c = X(l, t.battery);
-  return Array.from({ length: _t }, (h, u) => {
-    const f = i.getTime() + u / (_t - 1) * (r.getTime() - i.getTime());
+async function At(i, e, r = /* @__PURE__ */ new Date()) {
+  const t = r, o = new Date(t.getTime() - wt * 60 * 60 * 1e3), a = [e.solar, e.home, e.battery], s = `history/period/${encodeURIComponent(o.toISOString())}?end_time=${encodeURIComponent(t.toISOString())}&filter_entity_id=${encodeURIComponent(a.join(","))}&minimal_response&no_attributes&significant_changes_only=0`, c = await i.callApi("GET", s), n = Z(c, e.solar), p = Z(c, e.home), d = Z(c, e.battery);
+  return Array.from({ length: be }, (h, g) => {
+    const y = o.getTime() + g / (be - 1) * (t.getTime() - o.getTime());
     return {
-      timestamp: f,
-      solar: Math.max(0, Z(n, f, o.states[t.solar])),
-      home: Math.max(0, Z(d, f, o.states[t.home])),
-      battery: Z(c, f, o.states[t.battery])
+      timestamp: y,
+      solar: Math.max(0, J(n, y, i.states[e.solar])),
+      home: Math.max(0, J(p, y, i.states[e.home])),
+      battery: J(d, y, i.states[e.battery])
     };
   });
 }
-const b = 480, A = 126, ue = 300 * 1e3;
-function J(o, t, e) {
-  return Math.min(e, Math.max(t, o));
+const $ = 480, S = 126, St = 300 * 1e3;
+function Q(i, e, r) {
+  return Math.min(r, Math.max(e, i));
 }
-function xt(o, t, e, r) {
-  if (o.length === 0) return [];
-  const i = Math.max(0.1, r - e);
-  return o.map((s, a) => [
-    a / Math.max(1, o.length - 1) * b,
-    4 + (r - s[t]) / i * (A - 8)
+function xe(i, e, r, t) {
+  if (i.length === 0) return [];
+  const o = Math.max(0.1, t - r);
+  return i.map((a, s) => [
+    s / Math.max(1, i.length - 1) * $,
+    4 + (t - a[e]) / o * (S - 8)
   ]);
 }
-function ge(o) {
-  return o.length === 0 ? "" : o.length === 1 ? `M 0 ${o[0][1]} L ${b} ${o[0][1]}` : o.slice(1).reduce((t, [e, r], i) => {
-    const [s, a] = o[i], l = (s + e) / 2;
-    return `${t} C ${l} ${a}, ${l} ${r}, ${e} ${r}`;
-  }, `M ${o[0][0]} ${o[0][1]}`);
+function Et(i) {
+  return i.length === 0 ? "" : i.length === 1 ? `M 0 ${i[0][1]} L ${$} ${i[0][1]}` : i.slice(1).reduce((e, [r, t], o) => {
+    const [a, s] = i[o], c = (a + r) / 2;
+    return `${e} C ${c} ${s}, ${c} ${t}, ${r} ${t}`;
+  }, `M ${i[0][0]} ${i[0][1]}`);
 }
-function fe(o, t, e, r = Date.now()) {
-  const i = [0, 0.02, 0.08, 0.28, 0.58, 0.86, 1, 0.93, 0.7, 0.32, 0.08], s = [0.58, 0.59, 0.6, 0.68, 0.76, 0.78, 0.92, 0.88, 1, 0.98, 1.04], a = [0.25, 0.25, 0.27, 0.38, 0.58, 0.78, 1, 0.96, 0.7, 0.36, 0.2];
-  return i.map((l, n) => ({
-    timestamp: r - (i.length - 1 - n) * 2.4 * 60 * 60 * 1e3,
-    solar: l * Math.max(o, 0.1),
-    home: s[n] * Math.max(t, 0.1),
-    battery: a[n] * e
+function Ct(i, e, r, t = Date.now()) {
+  const o = [0, 0.02, 0.08, 0.28, 0.58, 0.86, 1, 0.93, 0.7, 0.32, 0.08], a = [0.58, 0.59, 0.6, 0.68, 0.76, 0.78, 0.92, 0.88, 1, 0.98, 1.04], s = [0.25, 0.25, 0.27, 0.38, 0.58, 0.78, 1, 0.96, 0.7, 0.36, 0.2];
+  return o.map((c, n) => ({
+    timestamp: t - (o.length - 1 - n) * 2.4 * 60 * 60 * 1e3,
+    solar: c * Math.max(i, 0.1),
+    home: a[n] * Math.max(e, 0.1),
+    battery: s[n] * r
   }));
 }
-const q = class q extends z {
+const W = class W extends N {
   constructor() {
     super(...arguments), this._history = [], this._historyLoading = !1, this._historyFailed = !1, this._lastHistoryKey = "", this._lastHistoryFetch = 0;
   }
   static getConfigForm() {
-    return ie();
+    return yt();
   }
-  static getStubConfig(t) {
-    return se(t);
+  static getStubConfig(e) {
+    return _t(e);
   }
-  setConfig(t) {
-    Pt(t), this._config = Mt({ ...t });
+  setConfig(e) {
+    Me(e), this._config = ze({ ...e });
   }
   getCardSize() {
     return this._config?.show_power_chart === !1 ? 8 : 12;
@@ -1430,22 +1578,22 @@ const q = class q extends z {
       min_columns: 3
     };
   }
-  updated(t) {
-    (t.has("hass") || t.has("_config")) && queueMicrotask(() => {
+  updated(e) {
+    (e.has("hass") || e.has("_config")) && queueMicrotask(() => {
       this._loadHistoryIfNeeded();
     });
   }
   async _loadHistoryIfNeeded() {
-    const t = this._config, e = this.hass;
-    if (!t || !e || t.show_power_chart === !1) return;
-    const r = [t.solar_power, t.home_power, t.battery_power].join("|"), i = Date.now();
-    if (!(this._historyLoading || r === this._lastHistoryKey && i - this._lastHistoryFetch < ue)) {
-      this._historyLoading = !0, this._historyFailed = !1, this._lastHistoryKey = r, this._lastHistoryFetch = i;
+    const e = this._config, r = this.hass;
+    if (!e || !r || e.show_power_chart === !1) return;
+    const t = [e.solar_power, e.home_power, e.battery_power].join("|"), o = Date.now();
+    if (!(this._historyLoading || t === this._lastHistoryKey && o - this._lastHistoryFetch < St)) {
+      this._historyLoading = !0, this._historyFailed = !1, this._lastHistoryKey = t, this._lastHistoryFetch = o;
       try {
-        this._history = await pe(e, {
-          solar: t.solar_power,
-          home: t.home_power,
-          battery: t.battery_power
+        this._history = await At(r, {
+          solar: e.solar_power,
+          home: e.home_power,
+          battery: e.battery_power
         });
       } catch {
         this._history = [], this._historyFailed = !0;
@@ -1454,256 +1602,266 @@ const q = class q extends z {
       }
     }
   }
-  _inspectChart(t, e) {
-    const r = t.currentTarget.getBoundingClientRect();
-    this._chartPointer = le(
-      t.clientX - r.left,
-      t.clientY - r.top,
-      r.width,
-      r.height
+  _inspectChart(e, r) {
+    const t = e.currentTarget.getBoundingClientRect();
+    this._chartPointer = vt(
+      e.clientX - t.left,
+      e.clientY - t.top,
+      t.width,
+      t.height
     );
-    const i = ae(
-      t.clientX,
-      r.left,
-      r.width,
-      e
+    const o = mt(
+      e.clientX,
+      t.left,
+      t.width,
+      r
     );
-    i !== this._activeChartIndex && (this._activeChartIndex = i);
+    o !== this._activeChartIndex && (this._activeChartIndex = o);
   }
-  _leaveChart(t) {
-    t.pointerType === "mouse" && this._clearChartInspection();
+  _leaveChart(e) {
+    e.pointerType === "mouse" && this._clearChartInspection();
   }
   _clearChartInspection() {
     this._activeChartIndex = void 0, this._chartPointer = void 0;
   }
-  _navigateChart(t, e) {
-    if (this._chartPointer = void 0, t.key === "Escape") {
+  _navigateChart(e, r) {
+    if (this._chartPointer = void 0, e.key === "Escape") {
       this._activeChartIndex = void 0;
       return;
     }
-    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(t.key)) return;
-    t.preventDefault();
-    const r = this._activeChartIndex ?? e - 1;
-    this._activeChartIndex = t.key === "Home" ? 0 : t.key === "End" ? e - 1 : J(r + (t.key === "ArrowLeft" ? -1 : 1), 0, e - 1);
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) return;
+    e.preventDefault();
+    const t = this._activeChartIndex ?? r - 1;
+    this._activeChartIndex = e.key === "Home" ? 0 : e.key === "End" ? r - 1 : Q(t + (e.key === "ArrowLeft" ? -1 : 1), 0, r - 1);
   }
-  _renderChart(t, e) {
-    const r = t.flatMap((p) => [
-      p.solar,
-      p.home,
-      p.battery
-    ]), i = Math.min(0, ...r), s = Math.max(
+  _renderChart(e, r) {
+    const t = e.flatMap((u) => [
+      u.solar,
+      u.home,
+      u.battery
+    ]), o = Math.min(0, ...t), a = Math.max(
       0.1,
-      ...r
-    ), a = Math.max(0.1, s - i), l = 4 + s / a * (A - 8), n = ["solar", "home", "battery"].map((p) => {
-      const m = xt(t, p, i, s);
+      ...t
+    ), s = Math.max(0.1, a - o), c = 4 + a / s * (S - 8), n = ["solar", "home", "battery"].map((u) => {
+      const _ = xe(e, u, o, a);
       return {
-        key: p,
-        path: ge(m),
-        end: m.at(-1) ?? [b, A]
+        key: u,
+        path: Et(_),
+        end: _.at(-1) ?? [$, S]
       };
-    }), d = this._activeChartIndex === void 0 ? void 0 : J(this._activeChartIndex, 0, t.length - 1), c = d === void 0 ? void 0 : t[d], h = d === void 0 ? void 0 : d / Math.max(1, t.length - 1) * b, u = d === void 0 ? void 0 : ne(d, t.length), f = d === void 0 ? [] : ["solar", "home", "battery"].map((p) => ({
-      key: p,
-      coordinate: xt(t, p, i, s)[d]
-    })), _ = this._chartPointer?.placement ?? (u !== void 0 && u > 64 ? "place-left" : "place-right"), D = this._chartPointer ? `left: ${this._chartPointer.x}px; top: ${this._chartPointer.top}px` : `left: ${u ?? 0}%`, K = c ? new Intl.DateTimeFormat(e, {
+    }), p = this._activeChartIndex === void 0 ? void 0 : Q(this._activeChartIndex, 0, e.length - 1), d = p === void 0 ? void 0 : e[p], h = p === void 0 ? void 0 : p / Math.max(1, e.length - 1) * $, g = p === void 0 ? void 0 : bt(p, e.length), y = p === void 0 ? [] : ["solar", "home", "battery"].map((u) => ({
+      key: u,
+      coordinate: xe(e, u, o, a)[p]
+    })), b = this._chartPointer?.placement ?? (g !== void 0 && g > 64 ? "place-left" : "place-right"), B = this._chartPointer ? `left: ${this._chartPointer.x}px; top: ${this._chartPointer.top}px` : `left: ${g ?? 0}%`, Y = d ? new Intl.DateTimeFormat(r, {
       hour: "numeric",
       minute: "2-digit"
-    }).format(c.timestamp) : "";
+    }).format(d.timestamp) : "";
     return x`
       <div
         class="chart-wrap"
         role="group"
         tabindex="0"
-        aria-label="Inspect solar, home and battery power history"
-        @pointerdown=${(p) => this._inspectChart(p, t.length)}
-        @pointermove=${(p) => this._inspectChart(p, t.length)}
+        aria-label=${l("chart.aria", r)}
+        @pointerdown=${(u) => this._inspectChart(u, e.length)}
+        @pointermove=${(u) => this._inspectChart(u, e.length)}
         @pointerleave=${this._leaveChart}
         @pointercancel=${this._clearChartInspection}
-        @keydown=${(p) => this._navigateChart(p, t.length)}
+        @keydown=${(u) => this._navigateChart(u, e.length)}
         @blur=${this._clearChartInspection}
       >
         <svg
-          viewBox="0 0 ${b} ${A}"
+          viewBox="0 0 ${$} ${S}"
           role="img"
           aria-label="Solar, home and battery power for the past 24 hours"
           preserveAspectRatio="none"
         >
-          ${[0, 1, 2, 3].map((p) => {
-      const m = p / 3 * A;
-      return H`<line class="grid-line" x1="0" y1=${m} x2=${b} y2=${m}></line>`;
+          ${[0, 1, 2, 3].map((u) => {
+      const _ = u / 3 * S;
+      return M`<line class="grid-line" x1="0" y1=${_} x2=${$} y2=${_}></line>`;
     })}
-          ${[0, 1, 2, 3, 4].map((p) => {
-      const m = p / 4 * b;
-      return H`<line class="grid-line" x1=${m} y1="0" x2=${m} y2=${A}></line>`;
+          ${[0, 1, 2, 3, 4].map((u) => {
+      const _ = u / 4 * $;
+      return M`<line class="grid-line" x1=${_} y1="0" x2=${_} y2=${S}></line>`;
     })}
           <line
             class="zero-line"
             x1="0"
-            y1=${l}
-            x2=${b}
-            y2=${l}
+            y1=${c}
+            x2=${$}
+            y2=${c}
           ></line>
           ${n.map(
-      ({ key: p, path: m, end: y }) => H`
-              <path class="chart-line ${p}" d=${m}></path>
-              <circle class="end-dot ${p}" cx=${y[0]} cy=${y[1]} r="4.5"></circle>
+      ({ key: u, path: _, end: m }) => M`
+              <path class="chart-line ${u}" d=${_}></path>
+              <circle class="end-dot ${u}" cx=${m[0]} cy=${m[1]} r="4.5"></circle>
             `
     )}
-          ${h === void 0 ? g : H`
+          ${h === void 0 ? f : M`
                 <line
                   class="inspection-line"
                   x1=${h}
                   y1="0"
                   x2=${h}
-                  y2=${A}
+                  y2=${S}
                 ></line>
-                ${f.map(
-      ({ key: p, coordinate: m }) => H`
+                ${y.map(
+      ({ key: u, coordinate: _ }) => M`
                     <circle
-                      class="inspection-dot ${p}"
-                      cx=${m[0]}
-                      cy=${m[1]}
+                      class="inspection-dot ${u}"
+                      cx=${_[0]}
+                      cy=${_[1]}
                       r="5"
                     ></circle>
                   `
     )}
               `}
         </svg>
-        ${c && u !== void 0 ? x`
+        ${d && g !== void 0 ? x`
               <div
-                class="chart-tooltip ${_}"
-                style=${D}
+                class="chart-tooltip ${b}"
+                style=${B}
                 aria-live="polite"
               >
-                <time>${K}</time>
+                <time>${Y}</time>
                 ${[
-      { key: "solar", label: "Solar", value: c.solar, signed: !1 },
-      { key: "home", label: "Home", value: c.home, signed: !1 },
+      { key: "solar", label: l("power.solar", r), value: d.solar, signed: !1 },
+      { key: "home", label: l("power.home", r), value: d.home, signed: !1 },
       {
         key: "battery",
-        label: "Battery",
-        value: c.battery,
+        label: l("power.battery", r),
+        value: d.battery,
         signed: !0
       }
     ].map(
-      (p) => x`
-                    <div class="tooltip-item ${p.key}">
-                      <span><i></i>${p.label}</span>
+      (u) => x`
+                    <div class="tooltip-item ${u.key}">
+                      <span><i></i>${u.label}</span>
                       <strong>
-                        ${F(p.value, "kW", {
-        signed: p.signed,
-        locale: e
+                        ${j(u.value, "kW", {
+        signed: u.signed,
+        locale: r
       })}
                       </strong>
                     </div>
                   `
     )}
               </div>
-            ` : g}
+            ` : f}
       </div>
     `;
   }
   render() {
-    const t = this._config;
-    if (!t) return g;
-    const e = this.hass, r = e?.locale?.language ?? e?.language, i = J(
-      at(v(e, t.battery_soc)) ?? 0,
+    const e = this._config;
+    if (!e) return f;
+    const r = this.hass, t = r?.locale?.language ?? r?.language;
+    st(t);
+    const o = Q(
+      ne(v(r, e.battery_soc)) ?? 0,
       0,
       100
-    ), s = Math.max(0, I(v(e, t.solar_power)) ?? 0), a = Math.max(0, I(v(e, t.home_power)) ?? 0), l = I(v(e, t.battery_power)) ?? 0, n = I(v(e, t.grid_power)) ?? 0, d = t.battery_positive_is_charging === !1 ? -1 : 1, c = d * l, h = (t.grid_positive_is_export === !1 ? -1 : 1) * n, u = c > 0.05 ? "charging" : c < -0.05 ? "discharging" : "idle", f = u === "charging" ? "Charging" : u === "discharging" ? "Discharging" : "Idle", _ = he(
-      i,
-      Math.max(0, c),
-      t.battery_capacity
-    ), D = new Intl.DateTimeFormat(r, {
+    ), a = Math.max(0, L(v(r, e.solar_power)) ?? 0), s = Math.max(0, L(v(r, e.home_power)) ?? 0), c = L(v(r, e.battery_power)) ?? 0, n = L(v(r, e.grid_power)) ?? 0, p = e.battery_positive_is_charging === !1 ? -1 : 1, d = p * c, h = (e.grid_positive_is_export === !1 ? -1 : 1) * n, g = d > 0.05 ? "charging" : d < -0.05 ? "discharging" : "idle", y = l(g === "charging" ? "status.charging" : g === "discharging" ? "status.discharging" : "status.idle", t), b = $t(
+      o,
+      Math.max(0, d),
+      e.battery_capacity
+    ), B = new Intl.DateTimeFormat(t, {
       hour: "numeric",
       minute: "2-digit"
-    }), K = this._history.length > 1 ? this._history.map((y) => ({
-      ...y,
-      battery: d * y.battery
-    })) : fe(s, a, c), p = [
+    }), Y = this._history.length > 1 ? this._history.map((m) => ({
+      ...m,
+      battery: p * m.battery
+    })) : Ct(a, s, d), u = [
       {
-        label: "Generated",
-        value: B(v(e, t.solar_energy_today)),
+        label: l("energy.generated", t),
+        value: F(v(r, e.solar_energy_today)),
         tone: "solar"
       },
       {
-        label: "Consumed",
-        value: B(v(e, t.home_energy_today)),
+        label: l("energy.consumed", t),
+        value: F(v(r, e.home_energy_today)),
         tone: "home"
       },
       {
-        label: "Stored",
-        value: B(v(e, t.battery_energy_today)),
+        label: l("energy.stored", t),
+        value: F(v(r, e.battery_energy_today)),
         tone: "battery"
       },
       {
-        label: "Exported",
-        value: B(v(e, t.export_energy_today)),
+        label: l("energy.exported", t),
+        value: F(v(r, e.export_energy_today)),
         tone: "export"
       }
-    ], m = s >= a && c > 0.05 && h > 0.05 ? "Solar covering home, charging battery and exporting" : s >= a && c > 0.05 ? "Solar covering home and charging the battery" : s >= a ? "Solar covering the current home load" : "Home load is drawing from battery or grid";
+    ], _ = a >= s && d > 0.05 && h > 0.05 ? l("footer.solar_home_battery_export", t) : a >= s && d > 0.05 ? l("footer.solar_home_battery", t) : a >= s ? l("footer.solar_home", t) : l("footer.drawing", t);
     return x`
       <ha-card>
         <div class="card">
           <header class="header">
             <div class="title-group">
               <div class="icon-tile" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d=${Ht}></path></svg>
+                <svg viewBox="0 0 24 24"><path d=${Le}></path></svg>
               </div>
               <div>
-                <h1>${t.title || "Solar & storage"}</h1>
-                <p class="subtitle">Battery outlook <span aria-hidden="true">·</span> Today</p>
+                <h1>${e.title || l("card.default_title", t)}</h1>
+                <p class="subtitle">
+                  ${l("card.subtitle", t)}
+                  <span aria-hidden="true">·</span>
+                  ${l("card.today", t)}
+                </p>
               </div>
             </div>
-            <div class="status ${u}">
+            <div class="status ${g}">
               <span class="dot"></span>
-              ${f}
+              ${y}
             </div>
           </header>
 
-          <section class="battery-hero" aria-label="Battery status">
+          <section class="battery-hero" aria-label=${l("battery.aria_status", t)}>
             <div>
-              <div class="percentage">${Math.round(i)}<span>%</span></div>
+              <div class="percentage">${Math.round(o)}<span>%</span></div>
               <strong class="forecast">
-                ${_ ? `Full by ${D.format(_)}` : u === "charging" ? "Charging now" : f}
+                ${b ? l("battery.full_by", t, {
+      time: B.format(b)
+    }) : g === "charging" ? l("battery.charging_now", t) : y}
               </strong>
             </div>
             <div
               class="battery-graphic"
               role="img"
-              aria-label="Battery ${Math.round(i)} percent charged"
+              aria-label=${l("battery.aria_graphic", t, {
+      percent: Math.round(o)
+    })}
             >
               <div class="battery-shell">
-                <div class="battery-fill" style="width: ${i}%"></div>
+                <div class="battery-fill" style="width: ${o}%"></div>
               </div>
               <div class="battery-cap"></div>
             </div>
             <div class="charge-line">
               <span>
-                ${u === "charging" ? "Charging battery" : u === "discharging" ? "Supplying home" : "Battery idle"}
+                ${l(g === "charging" ? "battery.charging" : g === "discharging" ? "battery.supplying" : "battery.idle", t)}
               </span>
               <strong>
-                ${F(c, "kW", {
+                ${j(d, "kW", {
       signed: !0,
-      locale: r
+      locale: t
     })}
               </strong>
             </div>
           </section>
 
-          <section class="power-stats" aria-label="Current power">
+          <section class="power-stats" aria-label=${l("power.aria", t)}>
             ${[
-      { label: "Solar", value: s, tone: "solar", signed: !1 },
-      { label: "Home", value: a, tone: "home", signed: !1 },
-      { label: "Battery", value: c, tone: "battery", signed: !0 },
-      { label: "Export", value: h, tone: "export", signed: !1 }
+      { label: l("power.solar", t), value: a, tone: "solar", signed: !1 },
+      { label: l("power.home", t), value: s, tone: "home", signed: !1 },
+      { label: l("power.battery", t), value: d, tone: "battery", signed: !0 },
+      { label: l("power.export", t), value: h, tone: "export", signed: !1 }
     ].map(
-      (y) => x`
-                <div class="power-stat ${y.tone}">
-                  <span>${y.label}</span>
+      (m) => x`
+                <div class="power-stat ${m.tone}">
+                  <span>${m.label}</span>
                   <strong>
-                    ${F(y.value, "kW", {
-        signed: y.signed,
-        locale: r
+                    ${j(m.value, "kW", {
+        signed: m.signed,
+        locale: t
       })}
                   </strong>
                 </div>
@@ -1711,37 +1869,37 @@ const q = class q extends z {
     )}
           </section>
 
-          ${t.show_power_chart === !1 ? g : x`
+          ${e.show_power_chart === !1 ? f : x`
                 <section class="chart-section">
                   <div class="section-heading">
-                    <h2>Power · 24 hours</h2>
-                    <time>${D.format(/* @__PURE__ */ new Date())}</time>
+                    <h2>${l("chart.heading", t)}</h2>
+                    <time>${B.format(/* @__PURE__ */ new Date())}</time>
                   </div>
-                  ${this._renderChart(K, r)}
+                  ${this._renderChart(Y, t)}
                   <div class="chart-axis" aria-hidden="true">
-                    <span>24h ago</span>
+                    <span>${l("chart.axis_start", t)}</span>
                     <span>18h</span>
                     <span>12h</span>
                     <span>6h</span>
-                    <span>Now</span>
+                    <span>${l("chart.axis_now", t)}</span>
                   </div>
-                  <div class="legend" aria-label="Chart legend">
-                    <span class="solar"><i></i>Solar</span>
-                    <span class="home"><i></i>Home</span>
-                    <span class="battery"><i></i>Battery</span>
+                  <div class="legend" aria-label=${l("chart.legend_aria", t)}>
+                    <span class="solar"><i></i>${l("power.solar", t)}</span>
+                    <span class="home"><i></i>${l("power.home", t)}</span>
+                    <span class="battery"><i></i>${l("power.battery", t)}</span>
                   </div>
-                  ${this._historyFailed ? x`<p class="history-note">Live history unavailable · showing current profile</p>` : g}
+                  ${this._historyFailed ? x`<p class="history-note">${l("chart.history_unavailable", t)}</p>` : f}
                 </section>
               `}
 
-          <section class="energy-stats" aria-label="Energy today">
-            ${p.map(
-      (y) => x`
-                <div class="energy-stat ${y.tone}">
+          <section class="energy-stats" aria-label=${l("energy.aria", t)}>
+            ${u.map(
+      (m) => x`
+                <div class="energy-stat ${m.tone}">
                   <i aria-hidden="true"></i>
                   <div>
-                    <span>${y.label}</span>
-                    <strong>${F(y.value, "kWh", { digits: 1, locale: r })}</strong>
+                    <span>${m.label}</span>
+                    <strong>${j(m.value, "kWh", { digits: 1, locale: t })}</strong>
                   </div>
                 </div>
               `
@@ -1750,14 +1908,14 @@ const q = class q extends z {
 
           <footer class="footer">
             <span class="dot" aria-hidden="true"></span>
-            <span>${m}</span>
+            <span>${_}</span>
           </footer>
         </div>
       </ha-card>
     `;
   }
 };
-q.properties = {
+W.properties = {
   hass: { attribute: !1 },
   _config: { state: !0 },
   _history: { state: !0 },
@@ -1765,17 +1923,17 @@ q.properties = {
   _historyFailed: { state: !0 },
   _activeChartIndex: { state: !0 },
   _chartPointer: { state: !0 }
-}, q.styles = te;
-let tt = q;
-customElements.get("solar-battery-card") || customElements.define("solar-battery-card", tt);
+}, W.styles = it;
+let te = W;
+customElements.get("solar-battery-card") || customElements.define("solar-battery-card", te);
 window.customCards = window.customCards || [];
-window.customCards.some((o) => o.type === "solar-battery-card") || window.customCards.push({
+window.customCards.some((i) => i.type === "solar-battery-card") || window.customCards.push({
   type: "solar-battery-card",
   name: "Solar & Battery Card",
   preview: !0,
-  description: "A battery-first solar, power and daily energy overview."
+  description: l("picker.description")
 });
 export {
-  tt as SolarBatteryCard
+  te as SolarBatteryCard
 };
 //# sourceMappingURL=solar-battery-card.js.map

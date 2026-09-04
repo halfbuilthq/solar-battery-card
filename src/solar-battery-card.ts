@@ -1,6 +1,7 @@
 import { mdiBatteryCharging } from "@mdi/js";
 import { LitElement, html, nothing, svg, type PropertyValues } from "lit";
 import { cardStyles } from "./styles";
+import { localize, setActiveLocale } from "./localize";
 import {
   getConfigForm,
   getStubConfig,
@@ -277,7 +278,7 @@ export class SolarBatteryCard extends LitElement {
         class="chart-wrap"
         role="group"
         tabindex="0"
-        aria-label="Inspect solar, home and battery power history"
+        aria-label=${localize("chart.aria", locale)}
         @pointerdown=${(event: PointerEvent) => this._inspectChart(event, points.length)}
         @pointermove=${(event: PointerEvent) => this._inspectChart(event, points.length)}
         @pointerleave=${this._leaveChart}
@@ -343,11 +344,11 @@ export class SolarBatteryCard extends LitElement {
               >
                 <time>${tooltipTime}</time>
                 ${[
-                  { key: "solar", label: "Solar", value: activePoint.solar, signed: false },
-                  { key: "home", label: "Home", value: activePoint.home, signed: false },
+                  { key: "solar", label: localize("power.solar", locale), value: activePoint.solar, signed: false },
+                  { key: "home", label: localize("power.home", locale), value: activePoint.home, signed: false },
                   {
                     key: "battery",
-                    label: "Battery",
+                    label: localize("power.battery", locale),
                     value: activePoint.battery,
                     signed: true
                   }
@@ -377,6 +378,7 @@ export class SolarBatteryCard extends LitElement {
 
     const hass = this.hass;
     const locale = hass?.locale?.language ?? hass?.language;
+    setActiveLocale(locale);
     const stateOfCharge = clamp(
       numericState(entity(hass, config.battery_soc)) ?? 0,
       0,
@@ -394,7 +396,11 @@ export class SolarBatteryCard extends LitElement {
     const status =
       chargingPower > 0.05 ? "charging" : chargingPower < -0.05 ? "discharging" : "idle";
     const statusLabel =
-      status === "charging" ? "Charging" : status === "discharging" ? "Discharging" : "Idle";
+      status === "charging"
+        ? localize("status.charging", locale)
+        : status === "discharging"
+          ? localize("status.discharging", locale)
+          : localize("status.idle", locale);
     const fullTime = estimateFullTime(
       stateOfCharge,
       Math.max(0, chargingPower),
@@ -414,22 +420,22 @@ export class SolarBatteryCard extends LitElement {
 
     const energyStats = [
       {
-        label: "Generated",
+        label: localize("energy.generated", locale),
         value: energyInKwh(entity(hass, config.solar_energy_today)),
         tone: "solar"
       },
       {
-        label: "Consumed",
+        label: localize("energy.consumed", locale),
         value: energyInKwh(entity(hass, config.home_energy_today)),
         tone: "home"
       },
       {
-        label: "Stored",
+        label: localize("energy.stored", locale),
         value: energyInKwh(entity(hass, config.battery_energy_today)),
         tone: "battery"
       },
       {
-        label: "Exported",
+        label: localize("energy.exported", locale),
         value: energyInKwh(entity(hass, config.export_energy_today)),
         tone: "export"
       }
@@ -437,12 +443,12 @@ export class SolarBatteryCard extends LitElement {
 
     const footer =
       solarPower >= homePower && chargingPower > 0.05 && exportPower > 0.05
-        ? "Solar covering home, charging battery and exporting"
+        ? localize("footer.solar_home_battery_export", locale)
         : solarPower >= homePower && chargingPower > 0.05
-          ? "Solar covering home and charging the battery"
+          ? localize("footer.solar_home_battery", locale)
           : solarPower >= homePower
-            ? "Solar covering the current home load"
-            : "Home load is drawing from battery or grid";
+            ? localize("footer.solar_home", locale)
+            : localize("footer.drawing", locale);
 
     return html`
       <ha-card>
@@ -453,8 +459,12 @@ export class SolarBatteryCard extends LitElement {
                 <svg viewBox="0 0 24 24"><path d=${mdiBatteryCharging}></path></svg>
               </div>
               <div>
-                <h1>${config.title || "Solar & storage"}</h1>
-                <p class="subtitle">Battery outlook <span aria-hidden="true">·</span> Today</p>
+                <h1>${config.title || localize("card.default_title", locale)}</h1>
+                <p class="subtitle">
+                  ${localize("card.subtitle", locale)}
+                  <span aria-hidden="true">·</span>
+                  ${localize("card.today", locale)}
+                </p>
               </div>
             </div>
             <div class="status ${status}">
@@ -463,21 +473,25 @@ export class SolarBatteryCard extends LitElement {
             </div>
           </header>
 
-          <section class="battery-hero" aria-label="Battery status">
+          <section class="battery-hero" aria-label=${localize("battery.aria_status", locale)}>
             <div>
               <div class="percentage">${Math.round(stateOfCharge)}<span>%</span></div>
               <strong class="forecast">
                 ${fullTime
-                  ? `Full by ${timeFormatter.format(fullTime)}`
+                  ? localize("battery.full_by", locale, {
+                      time: timeFormatter.format(fullTime)
+                    })
                   : status === "charging"
-                    ? "Charging now"
+                    ? localize("battery.charging_now", locale)
                     : statusLabel}
               </strong>
             </div>
             <div
               class="battery-graphic"
               role="img"
-              aria-label="Battery ${Math.round(stateOfCharge)} percent charged"
+              aria-label=${localize("battery.aria_graphic", locale, {
+                percent: Math.round(stateOfCharge)
+              })}
             >
               <div class="battery-shell">
                 <div class="battery-fill" style="width: ${stateOfCharge}%"></div>
@@ -487,10 +501,10 @@ export class SolarBatteryCard extends LitElement {
             <div class="charge-line">
               <span>
                 ${status === "charging"
-                  ? "Charging battery"
+                  ? localize("battery.charging", locale)
                   : status === "discharging"
-                    ? "Supplying home"
-                    : "Battery idle"}
+                    ? localize("battery.supplying", locale)
+                    : localize("battery.idle", locale)}
               </span>
               <strong>
                 ${formatValue(chargingPower, "kW", {
@@ -501,12 +515,12 @@ export class SolarBatteryCard extends LitElement {
             </div>
           </section>
 
-          <section class="power-stats" aria-label="Current power">
+          <section class="power-stats" aria-label=${localize("power.aria", locale)}>
             ${[
-              { label: "Solar", value: solarPower, tone: "solar", signed: false },
-              { label: "Home", value: homePower, tone: "home", signed: false },
-              { label: "Battery", value: chargingPower, tone: "battery", signed: true },
-              { label: "Export", value: exportPower, tone: "export", signed: false }
+              { label: localize("power.solar", locale), value: solarPower, tone: "solar", signed: false },
+              { label: localize("power.home", locale), value: homePower, tone: "home", signed: false },
+              { label: localize("power.battery", locale), value: chargingPower, tone: "battery", signed: true },
+              { label: localize("power.export", locale), value: exportPower, tone: "export", signed: false }
             ].map(
               (item) => html`
                 <div class="power-stat ${item.tone}">
@@ -527,29 +541,29 @@ export class SolarBatteryCard extends LitElement {
             : html`
                 <section class="chart-section">
                   <div class="section-heading">
-                    <h2>Power · 24 hours</h2>
+                    <h2>${localize("chart.heading", locale)}</h2>
                     <time>${timeFormatter.format(new Date())}</time>
                   </div>
                   ${this._renderChart(chartPoints, locale)}
                   <div class="chart-axis" aria-hidden="true">
-                    <span>24h ago</span>
+                    <span>${localize("chart.axis_start", locale)}</span>
                     <span>18h</span>
                     <span>12h</span>
                     <span>6h</span>
-                    <span>Now</span>
+                    <span>${localize("chart.axis_now", locale)}</span>
                   </div>
-                  <div class="legend" aria-label="Chart legend">
-                    <span class="solar"><i></i>Solar</span>
-                    <span class="home"><i></i>Home</span>
-                    <span class="battery"><i></i>Battery</span>
+                  <div class="legend" aria-label=${localize("chart.legend_aria", locale)}>
+                    <span class="solar"><i></i>${localize("power.solar", locale)}</span>
+                    <span class="home"><i></i>${localize("power.home", locale)}</span>
+                    <span class="battery"><i></i>${localize("power.battery", locale)}</span>
                   </div>
                   ${this._historyFailed
-                    ? html`<p class="history-note">Live history unavailable · showing current profile</p>`
+                    ? html`<p class="history-note">${localize("chart.history_unavailable", locale)}</p>`
                     : nothing}
                 </section>
               `}
 
-          <section class="energy-stats" aria-label="Energy today">
+          <section class="energy-stats" aria-label=${localize("energy.aria", locale)}>
             ${energyStats.map(
               (item) => html`
                 <div class="energy-stat ${item.tone}">
@@ -583,6 +597,6 @@ if (!window.customCards.some((card) => card.type === "solar-battery-card")) {
     type: "solar-battery-card",
     name: "Solar & Battery Card",
     preview: true,
-    description: "A battery-first solar, power and daily energy overview."
+    description: localize("picker.description")
   });
 }
