@@ -53,6 +53,11 @@ export interface HistoryPoint {
 
 declare global {
   interface Window {
+    loadCardHelpers?: () => Promise<{
+      createCardElement(
+        config: Record<string, unknown>
+      ): HTMLElement | Promise<HTMLElement>;
+    }>;
     customCards?: Array<{
       type: string;
       name: string;
@@ -64,6 +69,6 @@ declare global {
 
   interface HTMLElementTagNameMap {
     "solar-battery-card": HTMLElement;
+    "solar-battery-card-editor": HTMLElement;
   }
 }
-

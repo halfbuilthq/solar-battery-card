@@ -23,6 +23,7 @@ const EN = {
 
   "chart.heading": "Power \u00b7 24 hours",
   "chart.aria": "Inspect solar, home and battery power history",
+  "chart.svg_aria": "Solar, home and battery power for the past 24 hours",
   "chart.axis_start": "24h ago",
   "chart.axis_now": "Now",
   "chart.legend_aria": "Chart legend",
@@ -38,8 +39,6 @@ const EN = {
   "footer.solar_home_battery": "Solar covering home and charging the battery",
   "footer.solar_home": "Solar covering the current home load",
   "footer.drawing": "Home load is drawing from battery or grid",
-
-  "picker.description": "A battery-first solar, power and daily energy overview.",
 
   "editor.section.live_power": "Live power",
   "editor.section.daily_energy": "Daily energy",
@@ -94,6 +93,7 @@ const DE: Record<TranslationKey, string> = {
 
   "chart.heading": "Leistung \u00b7 24 Stunden",
   "chart.aria": "Verlauf von Solar-, Haus- und Batterieleistung untersuchen",
+  "chart.svg_aria": "Solar-, Haus- und Batterieleistung der letzten 24 Stunden",
   "chart.axis_start": "vor 24 h",
   "chart.axis_now": "Jetzt",
   "chart.legend_aria": "Diagrammlegende",
@@ -111,9 +111,6 @@ const DE: Record<TranslationKey, string> = {
   "footer.solar_home_battery": "Solar deckt das Haus und l\u00e4dt die Batterie",
   "footer.solar_home": "Solar deckt den aktuellen Hausverbrauch",
   "footer.drawing": "Hausverbrauch wird aus Batterie oder Netz gedeckt",
-
-  "picker.description":
-    "Solar-, Leistungs- und Tagesenergie\u00fcbersicht mit Fokus auf den Speicher.",
 
   "editor.section.live_power": "Aktuelle Leistung",
   "editor.section.daily_energy": "Tagesenergie",
@@ -147,19 +144,6 @@ export const TRANSLATIONS: Record<string, Partial<Record<TranslationKey, string>
   de: DE
 };
 
-// The card knows the Home Assistant locale from `hass`, but `getConfigForm()` is
-// static and never sees it. The card records the locale here so the editor can
-// reuse it; the browser language is the fallback before the first render.
-let activeLocale: string | undefined;
-
-export function setActiveLocale(locale: string | undefined): void {
-  if (locale) activeLocale = locale;
-}
-
-function browserLocale(): string | undefined {
-  return typeof navigator === "undefined" ? undefined : navigator.language;
-}
-
 export function baseLanguage(locale: string | undefined): string {
   if (!locale) return "en";
   const [language] = locale.toLowerCase().split(/[-_]/);
@@ -171,7 +155,7 @@ export function localize(
   locale?: string,
   placeholders?: Record<string, string | number>
 ): string {
-  const language = baseLanguage(locale ?? activeLocale ?? browserLocale());
+  const language = baseLanguage(locale);
   const template = TRANSLATIONS[language]?.[key] ?? EN[key];
 
   if (!placeholders) return template;

@@ -1,13 +1,14 @@
 import { mdiBatteryCharging } from "@mdi/js";
 import { LitElement, html, nothing, svg, type PropertyValues } from "lit";
 import { cardStyles } from "./styles";
-import { localize, setActiveLocale } from "./localize";
+import { localize } from "./localize";
 import {
-  getConfigForm,
+  cardTitle,
   getStubConfig,
   normalizeConfig,
   validateConfig
 } from "./config";
+import { ensureHaFormLoaded, SolarBatteryCardEditor } from "./editor";
 import {
   chartPositionPercent,
   chartTooltipPosition,
@@ -107,8 +108,9 @@ export class SolarBatteryCard extends LitElement {
   private _lastHistoryKey = "";
   private _lastHistoryFetch = 0;
 
-  static getConfigForm() {
-    return getConfigForm();
+  static async getConfigElement() {
+    await ensureHaFormLoaded();
+    return document.createElement("solar-battery-card-editor");
   }
 
   static getStubConfig(hass?: HomeAssistant) {
@@ -289,7 +291,7 @@ export class SolarBatteryCard extends LitElement {
         <svg
           viewBox="0 0 ${CHART_WIDTH} ${CHART_HEIGHT}"
           role="img"
-          aria-label="Solar, home and battery power for the past 24 hours"
+          aria-label=${localize("chart.svg_aria", locale)}
           preserveAspectRatio="none"
         >
           ${[0, 1, 2, 3].map((index) => {
@@ -378,7 +380,6 @@ export class SolarBatteryCard extends LitElement {
 
     const hass = this.hass;
     const locale = hass?.locale?.language ?? hass?.language;
-    setActiveLocale(locale);
     const stateOfCharge = clamp(
       numericState(entity(hass, config.battery_soc)) ?? 0,
       0,
@@ -459,7 +460,7 @@ export class SolarBatteryCard extends LitElement {
                 <svg viewBox="0 0 24 24"><path d=${mdiBatteryCharging}></path></svg>
               </div>
               <div>
-                <h1>${config.title || localize("card.default_title", locale)}</h1>
+                <h1>${cardTitle(config, locale)}</h1>
                 <p class="subtitle">
                   ${localize("card.subtitle", locale)}
                   <span aria-hidden="true">·</span>
@@ -587,16 +588,26 @@ export class SolarBatteryCard extends LitElement {
   }
 }
 
-if (!customElements.get("solar-battery-card")) {
-  customElements.define("solar-battery-card", SolarBatteryCard);
+if (typeof customElements !== "undefined") {
+  if (!customElements.get("solar-battery-card-editor")) {
+    customElements.define("solar-battery-card-editor", SolarBatteryCardEditor);
+  }
+
+  if (!customElements.get("solar-battery-card")) {
+    customElements.define("solar-battery-card", SolarBatteryCard);
+  }
 }
 
-window.customCards = window.customCards || [];
-if (!window.customCards.some((card) => card.type === "solar-battery-card")) {
-  window.customCards.push({
-    type: "solar-battery-card",
-    name: "Solar & Battery Card",
-    preview: true,
-    description: localize("picker.description")
-  });
+if (typeof window !== "undefined") {
+  window.customCards = window.customCards || [];
+  if (!window.customCards.some((card) => card.type === "solar-battery-card")) {
+    // Card-picker metadata is registered before Home Assistant supplies `hass`, so
+    // it is intentionally stable English rather than pretending to follow HA's locale.
+    window.customCards.push({
+      type: "solar-battery-card",
+      name: "Solar & Battery Card",
+      preview: true,
+      description: "A battery-first solar, power and daily energy overview."
+    });
+  }
 }

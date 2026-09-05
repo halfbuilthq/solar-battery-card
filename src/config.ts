@@ -49,22 +49,22 @@ function isHelpedField(name: string): name is HelpedField {
   return (HELPED_FIELDS as readonly string[]).includes(name);
 }
 
-function fieldLabel(name: LabelledField): string {
-  return localize(`editor.field.${name}` as const);
+function fieldLabel(name: LabelledField, locale?: string): string {
+  return localize(`editor.field.${name}` as const, locale);
 }
 
-function fieldHelper(name: HelpedField): string {
-  return localize(`editor.helper.${name}` as const);
+function fieldHelper(name: HelpedField, locale?: string): string {
+  return localize(`editor.helper.${name}` as const, locale);
 }
 
-export function getConfigForm() {
+export function getConfigForm(locale?: string) {
   return {
     schema: [
       { name: "title", selector: { text: {} } },
       {
         type: "expandable",
         name: "",
-        title: localize("editor.section.live_power"),
+        title: localize("editor.section.live_power", locale),
         flatten: true,
         schema: [
           {
@@ -85,7 +85,7 @@ export function getConfigForm() {
       {
         type: "expandable",
         name: "",
-        title: localize("editor.section.daily_energy"),
+        title: localize("editor.section.daily_energy", locale),
         flatten: true,
         schema: [
           {
@@ -105,7 +105,7 @@ export function getConfigForm() {
       {
         type: "expandable",
         name: "",
-        title: localize("editor.section.behaviour"),
+        title: localize("editor.section.behaviour", locale),
         flatten: true,
         schema: [
           {
@@ -119,21 +119,39 @@ export function getConfigForm() {
       }
     ],
     computeLabel: (schema: { name?: string }) =>
-      schema.name && isLabelledField(schema.name) ? fieldLabel(schema.name) : undefined,
+      schema.name && isLabelledField(schema.name)
+        ? fieldLabel(schema.name, locale)
+        : undefined,
     computeHelper: (schema: { name?: string }) =>
-      schema.name && isHelpedField(schema.name) ? fieldHelper(schema.name) : undefined,
-    assertConfig: (config: SolarBatteryCardConfig) => validateConfig(config)
+      schema.name && isHelpedField(schema.name)
+        ? fieldHelper(schema.name, locale)
+        : undefined,
+    assertConfig: (config: SolarBatteryCardConfig) => validateConfig(config, locale)
   };
 }
 
-export function validateConfig(config: SolarBatteryCardConfig): void {
+export function validateConfig(
+  config: SolarBatteryCardConfig,
+  locale?: string
+): void {
   for (const field of ENTITY_FIELDS) {
     if (!config[field] || typeof config[field] !== "string") {
       throw new Error(
-        localize("editor.error.required", undefined, { field: fieldLabel(field) })
+        localize("editor.error.required", locale, {
+          field: fieldLabel(field, locale)
+        })
       );
     }
   }
+}
+
+export function cardTitle(
+  config: SolarBatteryCardConfig,
+  locale?: string
+): string {
+  return config.title !== undefined
+    ? config.title
+    : localize("card.default_title", locale);
 }
 
 export function normalizeConfig(config: SolarBatteryCardConfig): SolarBatteryCardConfig {
