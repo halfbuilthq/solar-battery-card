@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  cardTitle,
   getConfigForm,
   getStubConfig,
   normalizeConfig,
@@ -32,10 +33,21 @@ describe("card configuration", () => {
     });
   });
 
+  it("localizes only a missing title and preserves every explicit title", () => {
+    expect(cardTitle(validConfig, "de-DE")).toBe("Solar & Speicher");
+    expect(
+      cardTitle({ ...validConfig, title: "Solar & storage" }, "de-DE")
+    ).toBe("Solar & storage");
+    expect(
+      cardTitle({ ...validConfig, title: "Garage solar" }, "de-DE")
+    ).toBe("Garage solar");
+  });
+
   it("provides a built-in HA form schema and stub config", () => {
     const form = getConfigForm();
+    const stub = getStubConfig();
     expect(form.schema.length).toBeGreaterThan(0);
-    expect(getStubConfig().type).toBe("custom:solar-battery-card");
+    expect(stub.type).toBe("custom:solar-battery-card");
+    expect(stub).not.toHaveProperty("title");
   });
 });
-

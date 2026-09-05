@@ -3,6 +3,7 @@ import type { HassEntity } from "../src/types";
 import {
   energyInKwh,
   estimateFullTime,
+  formatValue,
   numericState,
   powerInKw
 } from "../src/values";
@@ -30,6 +31,15 @@ describe("entity values", () => {
     expect(numericState(state("unavailable", "W"))).toBeUndefined();
     expect(numericState(state("not-a-number", "W"))).toBeUndefined();
   });
+
+  it("formats numbers with the supplied locale", () => {
+    expect(formatValue(1234.5, "kW", { digits: 1, locale: "en-US" })).toBe(
+      "1,234.5 kW"
+    );
+    expect(formatValue(1234.5, "kW", { digits: 1, locale: "de-DE" })).toBe(
+      "1.234,5 kW"
+    );
+  });
 });
 
 describe("battery forecast", () => {
@@ -44,4 +54,3 @@ describe("battery forecast", () => {
     expect(estimateFullTime(75, -2, 10)).toBeUndefined();
   });
 });
-

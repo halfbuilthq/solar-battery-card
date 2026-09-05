@@ -1,7 +1,7 @@
+import { localize } from "./localize";
 import type { HomeAssistant, SolarBatteryCardConfig } from "./types";
 
 export const DEFAULT_CONFIG: Partial<SolarBatteryCardConfig> = {
-  title: "Solar & storage",
   battery_positive_is_charging: true,
   grid_positive_is_export: true,
   show_power_chart: true
@@ -15,39 +15,56 @@ const ENTITY_FIELDS = [
   "grid_power"
 ] as const;
 
-const FIELD_LABELS: Record<string, string> = {
-  title: "Title",
-  battery_soc: "Battery state of charge",
-  solar_power: "Solar power",
-  home_power: "Home power",
-  battery_power: "Battery power",
-  grid_power: "Grid power",
-  solar_energy_today: "Solar energy today",
-  home_energy_today: "Home energy today",
-  battery_energy_today: "Battery energy stored today",
-  export_energy_today: "Grid energy exported today",
-  battery_capacity: "Usable battery capacity",
-  battery_positive_is_charging: "Positive battery power means charging",
-  grid_positive_is_export: "Positive grid power means export",
-  show_power_chart: "Show 24-hour power chart"
-};
+const LABELLED_FIELDS = [
+  "title",
+  "battery_soc",
+  "solar_power",
+  "home_power",
+  "battery_power",
+  "grid_power",
+  "solar_energy_today",
+  "home_energy_today",
+  "battery_energy_today",
+  "export_energy_today",
+  "battery_capacity",
+  "battery_positive_is_charging",
+  "grid_positive_is_export",
+  "show_power_chart"
+] as const;
 
-const FIELD_HELPERS: Record<string, string> = {
-  battery_capacity: "Optional. Used to estimate when the battery will be full.",
-  battery_positive_is_charging:
-    "Turn this off if your integration reports charging as a negative value.",
-  grid_positive_is_export:
-    "Turn this off if your integration reports grid export as a negative value."
-};
+const HELPED_FIELDS = [
+  "battery_capacity",
+  "battery_positive_is_charging",
+  "grid_positive_is_export"
+] as const;
 
-export function getConfigForm() {
+type LabelledField = (typeof LABELLED_FIELDS)[number];
+type HelpedField = (typeof HELPED_FIELDS)[number];
+
+function isLabelledField(name: string): name is LabelledField {
+  return (LABELLED_FIELDS as readonly string[]).includes(name);
+}
+
+function isHelpedField(name: string): name is HelpedField {
+  return (HELPED_FIELDS as readonly string[]).includes(name);
+}
+
+function fieldLabel(name: LabelledField, locale?: string): string {
+  return localize(`editor.field.${name}` as const, locale);
+}
+
+function fieldHelper(name: HelpedField, locale?: string): string {
+  return localize(`editor.helper.${name}` as const, locale);
+}
+
+export function getConfigForm(locale?: string) {
   return {
     schema: [
       { name: "title", selector: { text: {} } },
       {
         type: "expandable",
         name: "",
-        title: "Live power",
+        title: localize("editor.section.live_power", locale),
         flatten: true,
         schema: [
           {
@@ -68,7 +85,7 @@ export function getConfigForm() {
       {
         type: "expandable",
         name: "",
-        title: "Daily energy",
+        title: localize("editor.section.daily_energy", locale),
         flatten: true,
         schema: [
           {
@@ -88,7 +105,7 @@ export function getConfigForm() {
       {
         type: "expandable",
         name: "",
-        title: "Behaviour",
+        title: localize("editor.section.behaviour", locale),
         flatten: true,
         schema: [
           {
@@ -102,19 +119,39 @@ export function getConfigForm() {
       }
     ],
     computeLabel: (schema: { name?: string }) =>
-      schema.name ? FIELD_LABELS[schema.name] : undefined,
+      schema.name && isLabelledField(schema.name)
+        ? fieldLabel(schema.name, locale)
+        : undefined,
     computeHelper: (schema: { name?: string }) =>
-      schema.name ? FIELD_HELPERS[schema.name] : undefined,
-    assertConfig: (config: SolarBatteryCardConfig) => validateConfig(config)
+      schema.name && isHelpedField(schema.name)
+        ? fieldHelper(schema.name, locale)
+        : undefined,
+    assertConfig: (config: SolarBatteryCardConfig) => validateConfig(config, locale)
   };
 }
 
-export function validateConfig(config: SolarBatteryCardConfig): void {
+export function validateConfig(
+  config: SolarBatteryCardConfig,
+  locale?: string
+): void {
   for (const field of ENTITY_FIELDS) {
     if (!config[field] || typeof config[field] !== "string") {
-      throw new Error(`${FIELD_LABELS[field]} is required.`);
+      throw new Error(
+        localize("editor.error.required", locale, {
+          field: fieldLabel(field, locale)
+        })
+      );
     }
   }
+}
+
+export function cardTitle(
+  config: SolarBatteryCardConfig,
+  locale?: string
+): string {
+  return config.title !== undefined
+    ? config.title
+    : localize("card.default_title", locale);
 }
 
 export function normalizeConfig(config: SolarBatteryCardConfig): SolarBatteryCardConfig {
@@ -153,4 +190,3 @@ export function getStubConfig(hass?: HomeAssistant): SolarBatteryCardConfig {
     grid_power: findEntity(hass, "power", ["grid"]) || "sensor.grid_power"
   });
 }
-
