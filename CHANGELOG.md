@@ -5,6 +5,8 @@ Semantic Versioning.
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-11
+
 ### Added
 
 - Opt-in blue forecast line in the existing power chart, with daily targets or mapped hourly/half-hourly cumulative forecasts, separate power/energy axes, and Home Assistant-local day boundaries.
