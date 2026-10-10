@@ -4,6 +4,8 @@ import {
   energyInKwh,
   estimateFullTime,
   formatValue,
+  formatPower,
+  formatEnergy,
   numericState,
   powerInKw
 } from "../src/values";
@@ -52,5 +54,26 @@ describe("battery forecast", () => {
   it("does not forecast while idle or discharging", () => {
     expect(estimateFullTime(75, 0, 10)).toBeUndefined();
     expect(estimateFullTime(75, -2, 10)).toBeUndefined();
+  });
+});
+
+describe("display units", () => {
+  it("preserves defaults and formats base units without decimals", () => {
+    expect(formatPower(1.234, undefined, { locale: "en-US" })).toBe("1.23 kW");
+    expect(formatPower(-1.234, "W", { signed: true, locale: "en-US" })).toBe("-1,234 W");
+    expect(formatPower(1.234, "W", { signed: true, locale: "de-DE" })).toBe("+1.234 W");
+    expect(formatPower(0, "W", { signed: true })).toBe("0 W");
+    expect(formatEnergy(1.234, undefined, "en-US")).toBe("1.2 kWh");
+    expect(formatEnergy(1.234, "Wh", "de-DE")).toBe("1.234 Wh");
+    expect(formatEnergy(0, "Wh")).toBe("0 Wh");
+    expect(formatPower(undefined, "W")).toBe("—");
+    expect(formatEnergy(undefined, "Wh")).toBe("—");
+  });
+  it("gives equivalent displays for equivalent sensor inputs", () => {
+    expect(formatPower(powerInKw(state("1234", "W")), "W"))
+      .toBe(formatPower(powerInKw(state("1.234", "kW")), "W"));
+    for (const [value, unit] of [["1234", "Wh"], ["1.234", "kWh"], ["0.001234", "MWh"]]) {
+      expect(formatEnergy(energyInKwh(state(value, unit)), "Wh", "en-US")).toBe("1,234 Wh");
+    }
   });
 });

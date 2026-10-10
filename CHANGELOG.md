@@ -5,6 +5,10 @@ Semantic Versioning.
 
 ## [Unreleased]
 
+### Added
+
+- Configurable W/kW power and Wh/kWh energy display units, preserving existing defaults.
+
 ## [0.2.0] - 2026-09-05
 
 ### Added

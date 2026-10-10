@@ -4,7 +4,9 @@ import type { HomeAssistant, SolarBatteryCardConfig } from "./types";
 export const DEFAULT_CONFIG: Partial<SolarBatteryCardConfig> = {
   battery_positive_is_charging: true,
   grid_positive_is_export: true,
-  show_power_chart: true
+  show_power_chart: true,
+  power_unit: "kW",
+  energy_unit: "kWh"
 };
 
 const ENTITY_FIELDS = [
@@ -17,6 +19,8 @@ const ENTITY_FIELDS = [
 
 const LABELLED_FIELDS = [
   "title",
+  "power_unit",
+  "energy_unit",
   "battery_soc",
   "solar_power",
   "home_power",
@@ -108,6 +112,8 @@ export function getConfigForm(locale?: string) {
         title: localize("editor.section.behaviour", locale),
         flatten: true,
         schema: [
+          { name: "power_unit", selector: { select: { options: ["W", "kW"] } } },
+          { name: "energy_unit", selector: { select: { options: ["Wh", "kWh"] } } },
           {
             name: "battery_capacity",
             selector: { number: { min: 0, max: 500, step: 0.1, unit_of_measurement: "kWh" } }
@@ -134,6 +140,12 @@ export function validateConfig(
   config: SolarBatteryCardConfig,
   locale?: string
 ): void {
+  config = normalizeConfig(config);
+  for (const [field, allowed] of [["power_unit", ["W", "kW"]], ["energy_unit", ["Wh", "kWh"]]] as const) {
+    if (!(allowed as readonly unknown[]).includes(config[field])) {
+      throw new Error(localize("editor.error.unit", locale, { field: fieldLabel(field, locale) }));
+    }
+  }
   for (const field of ENTITY_FIELDS) {
     if (!config[field] || typeof config[field] !== "string") {
       throw new Error(
@@ -155,9 +167,14 @@ export function cardTitle(
 }
 
 export function normalizeConfig(config: SolarBatteryCardConfig): SolarBatteryCardConfig {
+  const cleaned = { ...config };
+  for (const field of ["power_unit", "energy_unit"] as const) {
+    const value: unknown = cleaned[field];
+    if (value === undefined || value === null || value === "") delete cleaned[field];
+  }
   return {
     ...DEFAULT_CONFIG,
-    ...config,
+    ...cleaned,
     type: config.type || "custom:solar-battery-card"
   } as SolarBatteryCardConfig;
 }

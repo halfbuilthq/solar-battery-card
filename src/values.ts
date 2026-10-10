@@ -1,4 +1,4 @@
-import type { HassEntity, HomeAssistant } from "./types";
+import type { HassEntity, HomeAssistant, SolarBatteryCardConfig } from "./types";
 
 const UNAVAILABLE_STATES = new Set(["unknown", "unavailable", "none", ""]);
 
@@ -67,3 +67,25 @@ export function estimateFullTime(
   return new Date(now.getTime() + (remainingKwh / chargingPowerKw) * 60 * 60 * 1000);
 }
 
+
+export function formatPower(
+  value: number | undefined,
+  unit: SolarBatteryCardConfig["power_unit"] = "kW",
+  options: { signed?: boolean; locale?: string } = {}
+): string {
+  return formatValue(value === undefined ? undefined : value * (unit === "W" ? 1000 : 1), unit, {
+    ...options,
+    digits: unit === "W" ? 0 : 2
+  });
+}
+
+export function formatEnergy(
+  value: number | undefined,
+  unit: SolarBatteryCardConfig["energy_unit"] = "kWh",
+  locale?: string
+): string {
+  return formatValue(value === undefined ? undefined : value * (unit === "Wh" ? 1000 : 1), unit, {
+    locale,
+    digits: unit === "Wh" ? 0 : 1
+  });
+}

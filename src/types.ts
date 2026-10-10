@@ -38,6 +38,8 @@ export interface SolarBatteryCardConfig {
   home_energy_today?: string;
   battery_energy_today?: string;
   export_energy_today?: string;
+  power_unit?: "W" | "kW";
+  energy_unit?: "Wh" | "kWh";
   battery_capacity?: number;
   battery_positive_is_charging?: boolean;
   grid_positive_is_export?: boolean;

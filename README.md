@@ -153,6 +153,14 @@ power source such as `battery_charge` or `grid_export`. Integrating the signed
 `battery_power` or `grid_power` entity can subtract discharging or importing
 from the daily value and will not represent total energy stored or exported.
 
+### Display units
+
+Set `power_unit: W` or `power_unit: kW` (default) for live power and chart
+tooltips. Set `energy_unit: Wh` or `energy_unit: kWh` (default) for daily
+energy. These options change only the display; sensors and calculations keep
+their original meaning. W/Wh display whole numbers; kW uses two decimal places
+and kWh uses one. Capacity settings always use kWh.
+
 ### Behaviour settings
 
 - **Usable battery capacity** is the usable—not necessarily nameplate—battery

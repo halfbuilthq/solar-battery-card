@@ -51,3 +51,15 @@ describe("card configuration", () => {
     expect(stub).not.toHaveProperty("title");
   });
 });
+
+describe("display configuration", () => {
+  it("defaults cleared units and accepts supported choices", () => {
+    expect(normalizeConfig(validConfig)).toMatchObject({ power_unit: "kW", energy_unit: "kWh" });
+    expect(() => validateConfig({ ...validConfig, power_unit: "W", energy_unit: "Wh" })).not.toThrow();
+    expect(normalizeConfig({ ...validConfig, power_unit: null } as unknown as SolarBatteryCardConfig).power_unit).toBe("kW");
+  });
+  it("rejects unsupported units", () => {
+    expect(() => validateConfig({ ...validConfig, power_unit: "kWh" } as unknown as SolarBatteryCardConfig)).toThrow("Power display unit");
+    expect(() => validateConfig({ ...validConfig, energy_unit: "W" } as unknown as SolarBatteryCardConfig)).toThrow("Energy display unit");
+  });
+});
