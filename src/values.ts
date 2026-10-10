@@ -89,3 +89,11 @@ export function formatEnergy(
     digits: unit === "Wh" ? 0 : 1
   });
 }
+
+/** A full-day forecast is energy, never instantaneous power or an assumed unit. */
+export function forecastInKwh(entity: HassEntity | undefined): number | undefined {
+  const unit = entity?.attributes.unit_of_measurement?.toLowerCase().replace(/\s/g, "");
+  if (!unit || !["wh", "kwh", "mwh"].includes(unit) || !entity?.state.trim()) return undefined;
+  const value = energyInKwh(entity);
+  return value !== undefined && Number.isFinite(value) && value >= 0 ? value : undefined;
+}

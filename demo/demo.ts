@@ -36,6 +36,7 @@ const states: Record<string, HassEntity> = {
   "sensor.home_power": sensor("sensor.home_power", 2370, "W", "power"),
   "sensor.battery_power": sensor("sensor.battery_power", 2150, "W", "power"),
   "sensor.grid_power": sensor("sensor.grid_power", 840, "W", "power"),
+  "sensor.solar_forecast_today": sensor("sensor.solar_forecast_today", 28.6, "kWh", "energy"),
   "sensor.solar_energy_today": sensor(
     "sensor.solar_energy_today",
     21.4,
@@ -100,6 +101,7 @@ card.setConfig({
   battery_power: "sensor.battery_power",
   grid_power: "sensor.grid_power",
   solar_energy_today: "sensor.solar_energy_today",
+  solar_forecast_today: "sensor.solar_forecast_today",
   home_energy_today: "sensor.home_energy_today",
   battery_energy_today: "sensor.battery_energy_today",
   export_energy_today: "sensor.grid_export_energy_today",

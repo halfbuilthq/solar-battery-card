@@ -246,6 +246,16 @@ export const cardStyles = css`
   .power-stat span,
   .power-stat strong,
   .energy-stat span,
+  .energy-stat > div {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .solar-forecast {
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+
   .energy-stat strong {
     display: block;
   }
@@ -539,6 +549,16 @@ export const cardStyles = css`
   .energy-stat span {
     color: var(--secondary-text-color, #687286);
     font-size: 12px;
+  }
+
+  .energy-stat > div {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .solar-forecast {
+    margin-top: 4px;
+    line-height: 1.4;
   }
 
   .energy-stat strong {

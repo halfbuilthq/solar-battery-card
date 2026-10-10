@@ -26,6 +26,7 @@ import {
   estimateFullTime,
   formatPower,
   formatEnergy,
+  forecastInKwh,
   numericState,
   powerInKw
 } from "./values";
@@ -573,6 +574,10 @@ export class SolarBatteryCard extends LitElement {
                   <div>
                     <span>${item.label}</span>
                     <strong>${formatEnergy(item.value, config.energy_unit, locale)}</strong>
+                    ${item.tone === "solar" && config.solar_forecast_today
+                      ? html`<span class="solar-forecast">${localize("energy.forecast_today", locale)}
+                          ${formatEnergy(forecastInKwh(entity(hass, config.solar_forecast_today)), config.energy_unit, locale)}</span>`
+                      : nothing}
                   </div>
                 </div>
               `

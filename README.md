@@ -161,6 +161,20 @@ energy. These options change only the display; sensors and calculations keep
 their original meaning. W/Wh display whole numbers; kW uses two decimal places
 and kWh uses one. Capacity settings always use kWh.
 
+### Today’s solar forecast
+
+Optionally set `solar_forecast_today: sensor.your_forecast_today` to show a
+“Forecast today” line below Generated. Choose the forecast for the **entire
+current day**, not remaining-today energy, tomorrow, or instantaneous power.
+Forecast.Solar and other integrations can supply this numeric sensor in Wh,
+kWh or MWh; the card displays it using `energy_unit`.
+
+Omitting the field hides the line. An unavailable entity, invalid value or
+unsupported/missing unit shows an em dash; zero is displayed normally. The
+forecast works even without an actual-generation sensor. Home Assistant’s
+source integration manages updates and the day rollover. The card does not
+call forecast services or use daily forecast totals to calculate battery ETA.
+
 ### Behaviour settings
 
 - **Usable battery capacity** is the usable—not necessarily nameplate—battery
