@@ -24,7 +24,8 @@ import {
   energyInKwh,
   entity,
   estimateFullTime,
-  formatValue,
+  formatPower,
+  formatEnergy,
   numericState,
   powerInKw
 } from "./values";
@@ -359,7 +360,7 @@ export class SolarBatteryCard extends LitElement {
                     <div class="tooltip-item ${item.key}">
                       <span><i></i>${item.label}</span>
                       <strong>
-                        ${formatValue(item.value, "kW", {
+                        ${formatPower(item.value, this._config?.power_unit, {
                           signed: item.signed,
                           locale
                         })}
@@ -508,7 +509,7 @@ export class SolarBatteryCard extends LitElement {
                     : localize("battery.idle", locale)}
               </span>
               <strong>
-                ${formatValue(chargingPower, "kW", {
+                ${formatPower(chargingPower, config.power_unit, {
                   signed: true,
                   locale
                 })}
@@ -527,7 +528,7 @@ export class SolarBatteryCard extends LitElement {
                 <div class="power-stat ${item.tone}">
                   <span>${item.label}</span>
                   <strong>
-                    ${formatValue(item.value, "kW", {
+                    ${formatPower(item.value, this._config?.power_unit, {
                       signed: item.signed,
                       locale
                     })}
@@ -571,7 +572,7 @@ export class SolarBatteryCard extends LitElement {
                   <i aria-hidden="true"></i>
                   <div>
                     <span>${item.label}</span>
-                    <strong>${formatValue(item.value, "kWh", { digits: 1, locale })}</strong>
+                    <strong>${formatEnergy(item.value, config.energy_unit, locale)}</strong>
                   </div>
                 </div>
               `

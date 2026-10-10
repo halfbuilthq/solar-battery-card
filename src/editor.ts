@@ -1,5 +1,5 @@
 import { LitElement, css, html, nothing } from "lit";
-import { getConfigForm } from "./config";
+import { getConfigForm, normalizeConfig } from "./config";
 import type { HomeAssistant, SolarBatteryCardConfig } from "./types";
 
 type ConfigElementCardConstructor = Function & {
@@ -24,11 +24,13 @@ export async function ensureHaFormLoaded(): Promise<void> {
 export class SolarBatteryCardEditor extends LitElement {
   static properties = {
     hass: { attribute: false },
-    _config: { state: true }
+    _config: { state: true },
+    _error: { state: true }
   };
 
   hass?: HomeAssistant;
   private _config?: SolarBatteryCardConfig;
+  private _error?: string;
 
   static styles = css`
     :host {
@@ -39,7 +41,8 @@ export class SolarBatteryCardEditor extends LitElement {
   setConfig(config: SolarBatteryCardConfig): void {
     const form = this.getLocalizedForm();
     form.assertConfig(config);
-    this._config = config;
+    this._config = normalizeConfig(config);
+    this._error = undefined;
   }
 
   getLocalizedForm() {
@@ -52,6 +55,7 @@ export class SolarBatteryCardEditor extends LitElement {
 
     const form = this.getLocalizedForm();
     return html`
+      ${this._error ? html`<p role="alert">${this._error}</p>` : nothing}
       <ha-form
         .hass=${this.hass}
         .data=${this._config}
@@ -65,8 +69,15 @@ export class SolarBatteryCardEditor extends LitElement {
 
   private _valueChanged(event: CustomEvent): void {
     event.stopPropagation();
-    const config = event.detail.value as SolarBatteryCardConfig;
+    const config = normalizeConfig(event.detail.value as SolarBatteryCardConfig);
     this._config = config;
+    try {
+      this.getLocalizedForm().assertConfig(config);
+      this._error = undefined;
+    } catch (error) {
+      this._error = (error as Error).message;
+      return;
+    }
     this.dispatchEvent(
       new CustomEvent("config-changed", {
         bubbles: true,
