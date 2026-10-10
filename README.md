@@ -175,6 +175,70 @@ forecast works even without an actual-generation sensor. Home Assistant’s
 source integration manages updates and the day rollover. The card does not
 call forecast services or use daily forecast totals to calculate battery ETA.
 
+### Forecast line on the power chart
+
+Enable **Show forecast line on power chart** in the Solar forecast section of
+the visual editor, or add these fields to your existing configuration:
+
+```yaml
+show_forecast_line: true
+solar_forecast_today: sensor.your_forecast_today
+solar_forecast_mode: daily
+```
+
+The existing chart becomes **Power & forecast · today**. It shows one timeline
+from midnight to midnight in Home Assistant’s timezone, including future hours.
+Solar, home and battery power use the **left W/kW axis**. A **blue dotted forecast
+line** uses the **right Wh/kWh axis**. The scales are independent: a crossing
+between the lines does not mean power equals energy. Recorded power stops at
+now; the forecast can continue through the end of the day. Inspect the chart
+with a pointer, touch, or the arrow/Home/End keys; Escape clears inspection.
+
+- **Daily** (default): a horizontal target for the entire day's forecast energy.
+- **Hourly**: a cumulative energy curve built from timestamped interval data.
+  Half-hourly and other fixed intervals are also supported.
+
+The overlay defaults to off, preserving the existing rolling 24-hour chart.
+`show_power_chart: false` hides the whole chart, including the forecast line.
+The Generated/Forecast today summary remains available independently. The
+forecast does not change battery estimates.
+
+For interval data, map your integration's attribute and record fields:
+
+```yaml
+show_forecast_line: true
+solar_forecast_today: sensor.your_interval_forecast
+solar_forecast_mode: hourly
+solar_forecast_attribute: forecast
+solar_forecast_time_field: start
+solar_forecast_value_field: energy
+solar_forecast_input_unit: kWh
+solar_forecast_interval_minutes: 60
+solar_forecast_time_is_end: false
+```
+
+This example expects a sensor attribute containing records such as
+`{ "start": "2026-10-11T10:00:00+11:00", "energy": 2.5 }`.
+Attribute, timestamp and value names support dotted paths (for example,
+`data.periods` or `prediction.energy`). Timestamps must include `Z` or an
+explicit UTC offset. Enable `solar_forecast_time_is_end` for timestamps that
+mark interval ends. Set the interval to `30` for half-hourly records.
+
+Input units `Wh`, `kWh`, and `MWh` describe **energy per interval**; `W` and `kW`
+describe **average power over the interval**, converted to energy using its
+length. Running totals and instantaneous point-power samples are not supported.
+Input units are independent of display units. The mapping defaults above are
+also the defaults when the corresponding fields are omitted.
+
+Supply the **complete current day**, including explicit zero-generation
+intervals overnight. Missing intervals produce an incomplete-data message;
+invalid values or duplicate/overlapping intervals hide the curve. The card does
+not invent missing energy. Records are sorted, intervals crossing midnight are
+prorated, and 23/25-hour daylight-saving days follow Home Assistant's timezone.
+Providers that expose only a daily total should use daily mode; this option
+does not depend on a particular forecast integration. The card reads sensor
+attributes and does not fetch forecasts from external providers.
+
 ### Total capacity and reserve
 
 Existing `battery_capacity` configurations keep the previous charging estimate.
@@ -237,7 +301,8 @@ npm run dev
 
 The development server serves a representative Home Assistant state fixture at
 `http://127.0.0.1:5173/demo/`. Desktop preview controls exercise display units,
-English/German text, battery states and missing solar forecasts.
+English/German text, battery states, daily/hourly/half-hourly forecast lines,
+and zero, missing or incomplete forecast data.
 
 Run the complete verification:
 

@@ -48,6 +48,7 @@ describe("solar battery card editor", () => {
     expect(sectionTitles(editor)).toEqual([
       "Live power",
       "Daily energy",
+      "Solar forecast",
       "Behaviour"
     ]);
   });
@@ -63,6 +64,7 @@ describe("solar battery card editor", () => {
     expect(sectionTitles(editor)).toEqual([
       "Aktuelle Leistung",
       "Tagesenergie",
+      "Solarprognose",
       "Verhalten"
     ]);
   });

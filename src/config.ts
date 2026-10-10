@@ -7,7 +7,15 @@ export const DEFAULT_CONFIG: Partial<SolarBatteryCardConfig> = {
   show_power_chart: true,
   power_unit: "kW",
   energy_unit: "kWh",
-  battery_lower_soc: 0
+  battery_lower_soc: 0,
+  show_forecast_line: false,
+  solar_forecast_mode: "daily",
+  solar_forecast_attribute: "forecast",
+  solar_forecast_time_field: "start",
+  solar_forecast_value_field: "energy",
+  solar_forecast_input_unit: "kWh",
+  solar_forecast_interval_minutes: 60,
+  solar_forecast_time_is_end: false
 };
 
 const ENTITY_FIELDS = [
@@ -29,6 +37,14 @@ const LABELLED_FIELDS = [
   "grid_power",
   "solar_energy_today",
   "solar_forecast_today",
+  "show_forecast_line",
+  "solar_forecast_mode",
+  "solar_forecast_attribute",
+  "solar_forecast_time_field",
+  "solar_forecast_value_field",
+  "solar_forecast_input_unit",
+  "solar_forecast_interval_minutes",
+  "solar_forecast_time_is_end",
   "home_energy_today",
   "battery_energy_today",
   "export_energy_today",
@@ -42,6 +58,14 @@ const LABELLED_FIELDS = [
 
 const HELPED_FIELDS = [
   "solar_forecast_today",
+  "show_forecast_line",
+  "solar_forecast_mode",
+  "solar_forecast_attribute",
+  "solar_forecast_time_field",
+  "solar_forecast_value_field",
+  "solar_forecast_input_unit",
+  "solar_forecast_interval_minutes",
+  "solar_forecast_time_is_end",
   "battery_capacity",
   "battery_total_capacity",
   "battery_lower_soc",
@@ -106,10 +130,33 @@ export function getConfigForm(locale?: string) {
             column_min_width: "220px",
             schema: [
               { name: "solar_energy_today", selector: { entity: { domain: "sensor" } } },
-              { name: "solar_forecast_today", selector: { entity: { domain: "sensor" } } },
               { name: "home_energy_today", selector: { entity: { domain: "sensor" } } },
               { name: "battery_energy_today", selector: { entity: { domain: "sensor" } } },
               { name: "export_energy_today", selector: { entity: { domain: "sensor" } } }
+            ]
+          }
+        ]
+      },
+      {
+        type: "expandable", name: "", flatten: true,
+        title: localize("editor.section.solar_forecast", locale),
+        schema: [
+          { name: "solar_forecast_today", selector: { entity: { domain: "sensor" } } },
+          { name: "show_forecast_line", selector: { boolean: {} } },
+          { name: "solar_forecast_mode", selector: { select: { options: [
+            { value: "daily", label: localize("forecast.mode.daily", locale) },
+            { value: "hourly", label: localize("forecast.mode.hourly", locale) }
+          ] } } },
+          {
+            type: "expandable", name: "", flatten: true,
+            title: localize("editor.section.hourly_forecast", locale),
+            schema: [
+              { name: "solar_forecast_attribute", selector: { text: {} } },
+              { name: "solar_forecast_time_field", selector: { text: {} } },
+              { name: "solar_forecast_value_field", selector: { text: {} } },
+              { name: "solar_forecast_input_unit", selector: { select: { options: ["Wh", "kWh", "MWh", "W", "kW"] } } },
+              { name: "solar_forecast_interval_minutes", selector: { number: { min: 1, max: 1440, step: 1, mode: "box", unit_of_measurement: "min" } } },
+              { name: "solar_forecast_time_is_end", selector: { boolean: {} } }
             ]
           }
         ]
@@ -160,6 +207,26 @@ export function validateConfig(
       (typeof config.solar_forecast_today !== "string" || !/^sensor\.[a-z0-9_]+$/.test(config.solar_forecast_today))) {
     throw new Error(localize("editor.error.forecast_entity", locale));
   }
+  if (!["daily", "hourly"].includes(config.solar_forecast_mode!)) {
+    throw new Error(localize("editor.error.forecast_mode", locale));
+  }
+  for (const field of ["show_forecast_line", "solar_forecast_time_is_end"] as const) {
+    if (typeof config[field] !== "boolean") throw new Error(localize("editor.error.boolean", locale, { field: fieldLabel(field, locale) }));
+  }
+  if (config.solar_forecast_mode === "hourly") {
+    for (const field of ["solar_forecast_attribute", "solar_forecast_time_field", "solar_forecast_value_field"] as const) {
+      if (typeof config[field] !== "string" || !/^[a-zA-Z0-9_]+(?:\.[a-zA-Z0-9_]+)*$/.test(config[field]!)) {
+        throw new Error(localize("editor.error.forecast_path", locale, { field: fieldLabel(field, locale) }));
+      }
+    }
+    if (!["Wh", "kWh", "MWh", "W", "kW"].includes(config.solar_forecast_input_unit!)) {
+      throw new Error(localize("editor.error.unit", locale, { field: fieldLabel("solar_forecast_input_unit", locale) }));
+    }
+    const minutes = config.solar_forecast_interval_minutes;
+    if (typeof minutes !== "number" || !Number.isInteger(minutes) || minutes < 1 || minutes > 1440) {
+      throw new Error(localize("editor.error.forecast_interval", locale));
+    }
+  }
   const capacity = config.battery_total_capacity;
   const reserve = config.battery_lower_soc ?? 0;
   if (capacity !== undefined && (typeof capacity !== "number" || !Number.isFinite(capacity) || capacity <= 0)) {
@@ -193,7 +260,7 @@ export function cardTitle(
 
 export function normalizeConfig(config: SolarBatteryCardConfig): SolarBatteryCardConfig {
   const cleaned = { ...config };
-  for (const field of ["power_unit", "energy_unit", "solar_forecast_today", "battery_total_capacity", "battery_lower_soc"] as const) {
+  for (const field of ["power_unit", "energy_unit", "solar_forecast_today", "battery_total_capacity", "battery_lower_soc", "show_forecast_line", "solar_forecast_mode", "solar_forecast_attribute", "solar_forecast_time_field", "solar_forecast_value_field", "solar_forecast_input_unit", "solar_forecast_interval_minutes", "solar_forecast_time_is_end"] as const) {
     const value: unknown = cleaned[field];
     if (value === undefined || value === null || value === "") delete cleaned[field];
   }
