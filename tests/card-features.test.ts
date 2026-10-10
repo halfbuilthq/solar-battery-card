@@ -1,6 +1,9 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { config, makeHass, TestCard, textOf } from "./fixtures";
 import type { HistoryPoint } from "../src/types";
+
+beforeEach(() => { vi.useFakeTimers(); vi.setSystemTime(new Date("2026-10-11T12:00:00Z")); });
+afterEach(() => vi.useRealTimers());
 
 describe("card display units", () => {
   it("converts all live and daily values without changing the charging forecast", () => {
@@ -35,5 +38,51 @@ describe("card display units", () => {
     expect(after).toContain("2,000 W");
     expect(after).toContain("-500 W");
     expect(after.match(/M [^ ]+ [^ ]+ L [^ ]+ [^ ]+/g)).toEqual(before.match(/M [^ ]+ [^ ]+ L [^ ]+ [^ ]+/g));
+  });
+});
+
+describe("battery model integration", () => {
+  it("opts into total capacity, gives it precedence, and restores the legacy path", () => {
+    const card = new TestCard();
+    card.hass = makeHass();
+    card.setConfig({ ...config, battery_capacity: 10 });
+    const legacy = textOf(card.renderForTest());
+    card.setConfig({ ...config, battery_capacity: 10, battery_total_capacity: 5.12, battery_lower_soc: 10 });
+    const advanced = textOf(card.renderForTest());
+    expect(advanced).toContain("Full by");
+    expect(advanced).not.toBe(legacy);
+    card.setConfig({ ...config, battery_total_capacity: 5.12, battery_lower_soc: 10 });
+    expect(textOf(card.renderForTest())).toBe(advanced);
+    card.setConfig({ ...config, battery_capacity: 10 });
+    expect(textOf(card.renderForTest())).toBe(legacy);
+  });
+  it("respects battery sign settings and keeps forecasts independent of display/solar forecast", () => {
+    const card = new TestCard();
+    card.hass = makeHass();
+    const advanced = { ...config, battery_total_capacity: 5.12, battery_lower_soc: 10, battery_positive_is_charging: false };
+    card.setConfig(advanced);
+    const before = textOf(card.renderForTest());
+    expect(before).toContain("Reserve reached by");
+    card.setConfig({ ...advanced, power_unit: "W", energy_unit: "Wh", solar_forecast_today: "sensor.forecast" });
+    const after = textOf(card.renderForTest());
+    const expectedForecast = before.match(/Reserve reached by [0-9]+:[0-9]+ [AP]M/)?.[0];
+    expect(expectedForecast).toBeDefined();
+    expect(after).toContain(expectedForecast);
+    expect(after).toContain("-1,000 W");
+    card.hass.states["sensor.battery"].state = "-1";
+    expect(textOf(card.renderForTest())).toContain("Full by");
+    card.hass.states["sensor.soc"].state = "5";
+    card.hass.states["sensor.battery"].state = "1";
+    expect(textOf(card.renderForTest())).toContain("At/below reserve");
+  });
+  it("never substitutes zero SOC into the advanced estimator for an unavailable reading", () => {
+    const card = new TestCard();
+    card.hass = makeHass();
+    card.setConfig({ ...config, battery_total_capacity: 5.12 });
+    card.hass.states["sensor.soc"].state = "unavailable";
+    expect(textOf(card.renderForTest())).not.toContain("Full by");
+    card.hass.states["sensor.soc"].state = "50";
+    card.hass.states["sensor.battery"].state = "unavailable";
+    expect(textOf(card.renderForTest())).not.toContain("Full by");
   });
 });

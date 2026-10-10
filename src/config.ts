@@ -6,7 +6,8 @@ export const DEFAULT_CONFIG: Partial<SolarBatteryCardConfig> = {
   grid_positive_is_export: true,
   show_power_chart: true,
   power_unit: "kW",
-  energy_unit: "kWh"
+  energy_unit: "kWh",
+  battery_lower_soc: 0
 };
 
 const ENTITY_FIELDS = [
@@ -32,6 +33,8 @@ const LABELLED_FIELDS = [
   "battery_energy_today",
   "export_energy_today",
   "battery_capacity",
+  "battery_total_capacity",
+  "battery_lower_soc",
   "battery_positive_is_charging",
   "grid_positive_is_export",
   "show_power_chart"
@@ -40,6 +43,8 @@ const LABELLED_FIELDS = [
 const HELPED_FIELDS = [
   "solar_forecast_today",
   "battery_capacity",
+  "battery_total_capacity",
+  "battery_lower_soc",
   "battery_positive_is_charging",
   "grid_positive_is_export"
 ] as const;
@@ -121,6 +126,8 @@ export function getConfigForm(locale?: string) {
             name: "battery_capacity",
             selector: { number: { min: 0, max: 500, step: 0.1, unit_of_measurement: "kWh" } }
           },
+          { name: "battery_total_capacity", selector: { number: { min: 0.01, step: 0.01, mode: "box", unit_of_measurement: "kWh" } } },
+          { name: "battery_lower_soc", selector: { number: { min: 0, max: 99.99, step: 0.01, mode: "box", unit_of_measurement: "%" } } },
           { name: "battery_positive_is_charging", selector: { boolean: {} } },
           { name: "grid_positive_is_export", selector: { boolean: {} } },
           { name: "show_power_chart", selector: { boolean: {} } }
@@ -153,6 +160,17 @@ export function validateConfig(
       (typeof config.solar_forecast_today !== "string" || !/^sensor\.[a-z0-9_]+$/.test(config.solar_forecast_today))) {
     throw new Error(localize("editor.error.forecast_entity", locale));
   }
+  const capacity = config.battery_total_capacity;
+  const reserve = config.battery_lower_soc ?? 0;
+  if (capacity !== undefined && (typeof capacity !== "number" || !Number.isFinite(capacity) || capacity <= 0)) {
+    throw new Error(localize("editor.error.total_capacity", locale));
+  }
+  if (typeof reserve !== "number" || !Number.isFinite(reserve) || reserve < 0 || reserve >= 100) {
+    throw new Error(localize("editor.error.lower_soc", locale));
+  }
+  if (reserve !== 0 && capacity === undefined) {
+    throw new Error(localize("editor.error.reserve_requires_capacity", locale));
+  }
   for (const field of ENTITY_FIELDS) {
     if (!config[field] || typeof config[field] !== "string") {
       throw new Error(
@@ -175,7 +193,7 @@ export function cardTitle(
 
 export function normalizeConfig(config: SolarBatteryCardConfig): SolarBatteryCardConfig {
   const cleaned = { ...config };
-  for (const field of ["power_unit", "energy_unit", "solar_forecast_today"] as const) {
+  for (const field of ["power_unit", "energy_unit", "solar_forecast_today", "battery_total_capacity", "battery_lower_soc"] as const) {
     const value: unknown = cleaned[field];
     if (value === undefined || value === null || value === "") delete cleaned[field];
   }

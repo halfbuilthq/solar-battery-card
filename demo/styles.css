@@ -85,3 +85,7 @@ solar-battery-card {
   }
 }
 
+
+.demo-controls { display: grid; gap: 12px; margin-top: 24px; }
+.demo-controls label { display: grid; gap: 4px; font-size: 14px; }
+.demo-controls select { padding: 8px; border: 1px solid #b7c3cf; border-radius: 6px; font: inherit; background: white; }

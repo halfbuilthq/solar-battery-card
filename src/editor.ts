@@ -36,6 +36,9 @@ export class SolarBatteryCardEditor extends LitElement {
     :host {
       display: block;
     }
+    [role="alert"] {
+      color: var(--error-color, #db4437);
+    }
   `;
 
   setConfig(config: SolarBatteryCardConfig): void {

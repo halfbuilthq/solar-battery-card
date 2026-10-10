@@ -9,6 +9,15 @@ const EN = {
 
   "battery.aria_status": "Battery status",
   "battery.full_by": "Full by {time}",
+  "battery.reserve_by": "Reserve reached by {time}",
+  "battery.at_reserve": "At/below reserve",
+  "editor.field.battery_total_capacity": "Total battery capacity",
+  "editor.field.battery_lower_soc": "Lower SOC limit",
+  "editor.helper.battery_total_capacity": "Optional kWh for the sensor’s full 0–100% SOC range. Overrides usable battery capacity. Requires absolute SOC, not reserve-rescaled SOC.",
+  "editor.helper.battery_lower_soc": "Discharge reserve in percent (default 0). A nonzero reserve requires total battery capacity. Does not reduce charging headroom.",
+  "editor.error.total_capacity": "Total battery capacity must be a finite number greater than zero.",
+  "editor.error.lower_soc": "Lower SOC limit must be a finite percentage from 0 to below 100.",
+  "editor.error.reserve_requires_capacity": "Set total battery capacity before using a nonzero lower SOC limit.",
   "battery.charging_now": "Charging now",
   "battery.aria_graphic": "Battery {percent} percent charged",
   "battery.charging": "Charging battery",
@@ -65,7 +74,7 @@ const EN = {
   "editor.field.grid_positive_is_export": "Positive grid power means export",
   "editor.field.show_power_chart": "Show 24-hour power chart",
   "editor.helper.battery_capacity":
-    "Optional. Used to estimate when the battery will be full.",
+    "Optional legacy capacity in kWh. Used to estimate full time only when total battery capacity is not set.",
   "editor.helper.battery_positive_is_charging":
     "Turn this off if your integration reports charging as a negative value.",
   "editor.helper.grid_positive_is_export":
@@ -86,6 +95,15 @@ const DE: Record<TranslationKey, string> = {
 
   "battery.aria_status": "Batteriestatus",
   "battery.full_by": "Voll um {time}",
+  "battery.reserve_by": "Reserve erreicht um {time}",
+  "battery.at_reserve": "Reserve erreicht/unterschritten",
+  "editor.field.battery_total_capacity": "Gesamte Batteriekapazität",
+  "editor.field.battery_lower_soc": "Untere SOC-Grenze",
+  "editor.helper.battery_total_capacity": "Optionale kWh für den gesamten SOC-Bereich von 0–100 %. Hat Vorrang vor der nutzbaren Kapazität. Benötigt absoluten, nicht auf die Reserve umgerechneten SOC.",
+  "editor.helper.battery_lower_soc": "Entladereserve in Prozent (Standard 0). Eine Reserve größer als null benötigt die Gesamtkapazität. Verringert nicht die zum Vollladen benötigte Energie.",
+  "editor.error.total_capacity": "Die Gesamtkapazität muss eine endliche Zahl größer als null sein.",
+  "editor.error.lower_soc": "Die untere SOC-Grenze muss ein endlicher Prozentwert von 0 bis unter 100 sein.",
+  "editor.error.reserve_requires_capacity": "Für eine untere SOC-Grenze größer als null zuerst die Gesamtkapazität angeben.",
   "battery.charging_now": "L\u00e4dt gerade",
   "battery.aria_graphic": "Batterie zu {percent} Prozent geladen",
   "battery.charging": "Batterie wird geladen",
@@ -145,7 +163,7 @@ const DE: Record<TranslationKey, string> = {
   "editor.field.grid_positive_is_export": "Positive Netzleistung bedeutet Einspeisung",
   "editor.field.show_power_chart": "24-Stunden-Diagramm anzeigen",
   "editor.helper.battery_capacity":
-    "Optional. Dient der Sch\u00e4tzung, wann die Batterie voll ist.",
+    "Optionale bisherige Kapazität in kWh. Wird nur ohne Gesamtkapazität zur Ladezeitschätzung verwendet.",
   "editor.helper.battery_positive_is_charging":
     "Deaktivieren, wenn deine Integration das Laden als negativen Wert meldet.",
   "editor.helper.grid_positive_is_export":

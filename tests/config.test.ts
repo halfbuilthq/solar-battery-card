@@ -63,3 +63,30 @@ describe("display configuration", () => {
     expect(() => validateConfig({ ...validConfig, energy_unit: "W" } as unknown as SolarBatteryCardConfig)).toThrow("Energy display unit");
   });
 });
+
+describe("battery configuration", () => {
+  it("preserves legacy capacity without inferring total capacity", () => {
+    const normalized = normalizeConfig({ ...validConfig, battery_capacity: 4.608 });
+    expect(normalized.battery_capacity).toBe(4.608);
+    expect(normalized.battery_total_capacity).toBeUndefined();
+    expect(normalized.battery_lower_soc).toBe(0);
+    expect(() => validateConfig({ ...validConfig, battery_capacity: 0 })).not.toThrow();
+  });
+  it("accepts both fields and supports clearing optional inputs", () => {
+    expect(() => validateConfig({ ...validConfig, battery_capacity: 4.608, battery_total_capacity: 5.12, battery_lower_soc: 10 })).not.toThrow();
+    const cleared = normalizeConfig({ ...validConfig, battery_total_capacity: null, battery_lower_soc: "" } as unknown as SolarBatteryCardConfig);
+    expect(cleared.battery_total_capacity).toBeUndefined();
+    expect(cleared.battery_lower_soc).toBe(0);
+    expect(() => validateConfig(cleared)).not.toThrow();
+  });
+  it.each([0, -1, Infinity, NaN, "5.12"])("rejects total capacity %s", value => {
+    expect(() => validateConfig({ ...validConfig, battery_total_capacity: value } as SolarBatteryCardConfig)).toThrow("Total battery capacity");
+  });
+  it.each([-1, 100, Infinity, NaN, "10"])("rejects reserve %s", value => {
+    expect(() => validateConfig({ ...validConfig, battery_total_capacity: 5.12, battery_lower_soc: value } as SolarBatteryCardConfig)).toThrow("Lower SOC limit");
+  });
+  it("requires total capacity for a nonzero reserve, including with a legacy capacity", () => {
+    expect(() => validateConfig({ ...validConfig, battery_capacity: 5.12, battery_lower_soc: 10 })).toThrow("Set total battery capacity");
+    expect(() => validateConfig({ ...validConfig, battery_lower_soc: 0 })).not.toThrow();
+  });
+});

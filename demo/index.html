@@ -12,6 +12,12 @@
         <span class="eyebrow">Home Assistant custom card</span>
         <h1>Solar & Battery Card</h1>
         <p>Production component preview with representative Home Assistant entities.</p>
+        <div class="demo-controls">
+          <label>Units <select id="units"><option value="kilo">kW / kWh</option><option value="base">W / Wh</option></select></label>
+          <label>Language <select id="language"><option value="en-AU">English</option><option value="de-DE">Deutsch</option></select></label>
+          <label>Battery <select id="battery"><option value="charging">Charging</option><option value="discharging">Discharging</option><option value="reserve">At reserve</option><option value="tomorrow">Slow charge (next day)</option><option value="legacy">Legacy capacity</option><option value="unavailable">Unavailable SOC</option></select></label>
+          <label>Solar forecast <select id="forecast"><option value="valid">Available</option><option value="zero">Zero</option><option value="unavailable">Unavailable</option><option value="hidden">Hidden</option></select></label>
+        </div>
       </section>
       <solar-battery-card></solar-battery-card>
     </main>
