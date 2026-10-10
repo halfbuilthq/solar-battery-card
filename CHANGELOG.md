@@ -7,6 +7,8 @@ Semantic Versioning.
 
 ### Added
 
+- Opt-in blue forecast line in the existing power chart, with daily targets or mapped hourly/half-hourly cumulative forecasts, separate power/energy axes, and Home Assistant-local day boundaries.
+
 - Opt-in total battery capacity and lower SOC reserve, with time-to-full and time-to-reserve estimates and dates across midnight. Legacy capacity behavior remains supported.
 
 - Optional full-day solar forecast below generated energy, using the selected energy unit.

@@ -37,6 +37,14 @@ export interface SolarBatteryCardConfig {
   grid_power: string;
   solar_energy_today?: string;
   solar_forecast_today?: string;
+  show_forecast_line?: boolean;
+  solar_forecast_mode?: "daily" | "hourly";
+  solar_forecast_attribute?: string;
+  solar_forecast_time_field?: string;
+  solar_forecast_value_field?: string;
+  solar_forecast_input_unit?: "Wh" | "kWh" | "MWh" | "W" | "kW";
+  solar_forecast_interval_minutes?: number;
+  solar_forecast_time_is_end?: boolean;
   home_energy_today?: string;
   battery_energy_today?: string;
   export_energy_today?: string;

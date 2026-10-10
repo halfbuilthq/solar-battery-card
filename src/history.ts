@@ -78,10 +78,10 @@ function valueAt(
 export async function fetchPowerHistory(
   hass: HomeAssistant,
   entities: PowerEntities,
-  now = new Date()
+  now = new Date(),
+  start = new Date(now.getTime() - HISTORY_HOURS * 60 * 60 * 1000)
 ): Promise<HistoryPoint[]> {
   const end = now;
-  const start = new Date(end.getTime() - HISTORY_HOURS * 60 * 60 * 1000);
   const entityIds = [entities.solar, entities.home, entities.battery];
   const path =
     `history/period/${encodeURIComponent(start.toISOString())}` +
@@ -93,6 +93,8 @@ export async function fetchPowerHistory(
   const solar = seriesByEntity(response, entities.solar);
   const home = seriesByEntity(response, entities.home);
   const battery = seriesByEntity(response, entities.battery);
+
+  if (!solar.length && !home.length && !battery.length) return [];
 
   return Array.from({ length: BUCKET_COUNT }, (_, index) => {
     const timestamp =

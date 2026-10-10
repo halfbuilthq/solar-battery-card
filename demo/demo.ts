@@ -1,4 +1,5 @@
 import "../src/solar-battery-card";
+import { localDay } from "../src/forecast";
 import type { HassEntity, HomeAssistant, SolarBatteryCardConfig } from "../src/types";
 import type { SolarBatteryCard } from "../src/solar-battery-card";
 import "./styles.css";
@@ -78,6 +79,18 @@ const hass: HomeAssistant = {
   },
   async callApi<T>(_method: "GET" | "POST" | "PUT" | "DELETE", _path: string) {
     const now = Date.now();
+    const start = Date.parse(decodeURIComponent(_path.split("?")[0].replace("history/period/", "")));
+    const day = localDay(new Date(now));
+    if (start === day.start) {
+      const progress = (t: number) => Math.max(0, Math.min(1, (t - day.start - 6 * 3_600_000) / Math.max(1, now - day.start - 6 * 3_600_000)));
+      return ["sensor.solar_power", "sensor.home_power", "sensor.battery_power"].map(id =>
+        Array.from({ length: 25 }, (_, i) => {
+          const timestamp = start + (now - start) * i / 24;
+          const current = Number(states[id].state);
+          const value = id === "sensor.home_power" ? current * (.65 + .35 * i / 24) : current * progress(timestamp);
+          return { ...states[id], state: String(value), last_changed: new Date(timestamp).toISOString() };
+        })) as T;
+    }
     const response = Object.entries(profiles).map(([entityId, values]) =>
       values.map((value, index) => ({
         ...states[entityId],
@@ -109,7 +122,8 @@ const baseConfig: SolarBatteryCardConfig = {
   battery_lower_soc: 10,
   battery_positive_is_charging: true,
   grid_positive_is_export: true,
-  show_power_chart: true
+  show_power_chart: true,
+  show_forecast_line: true
 };
 card.hass = hass;
 
@@ -122,6 +136,16 @@ function updatePreview(): void {
   const baseUnits = selectValue("units") === "base";
   const battery = selectValue("battery");
   const forecast = selectValue("forecast");
+  const mode = selectValue("forecast-mode");
+  const intervalMinutes = mode === "half-hourly" ? 30 : 60;
+  const day = localDay(new Date());
+  const periods = Array.from({ length: Math.ceil((day.end - day.start) / (intervalMinutes * 60_000)) }, (_, i) => {
+    const start = day.start + i * intervalMinutes * 60_000;
+    const hour = new Date(start).getHours() + new Date(start).getMinutes() / 60;
+    return { start: new Date(start).toISOString(), energy: Math.max(0, Math.sin((hour - 6) / 12 * Math.PI)) };
+  });
+  const sum = periods.reduce((total, row) => total + row.energy, 0);
+  const intervalData = periods.map(row => ({ ...row, energy: forecast === "zero" ? 0 : row.energy / sum * 28.6 }));
   card.setConfig({
     ...baseConfig,
     power_unit: baseUnits ? "W" : "kW",
@@ -129,7 +153,10 @@ function updatePreview(): void {
     battery_total_capacity: battery === "legacy" ? undefined : 27,
     battery_lower_soc: battery === "legacy" ? 0 : 10,
     battery_capacity: battery === "legacy" ? 27 : undefined,
-    solar_forecast_today: forecast === "hidden" ? undefined : "sensor.solar_forecast_today"
+    solar_forecast_today: forecast === "hidden" ? undefined : "sensor.solar_forecast_today",
+    show_forecast_line: forecast !== "hidden",
+    solar_forecast_mode: mode === "daily" ? "daily" : "hourly",
+    solar_forecast_interval_minutes: intervalMinutes
   });
   card.hass = {
     ...hass,
@@ -143,7 +170,10 @@ function updatePreview(): void {
       "sensor.battery_power": sensor("sensor.battery_power", battery === "discharging" || battery === "reserve" ? -2150 : battery === "tomorrow" ? 100 : 2150, "W", "power"),
       "sensor.solar_forecast_today": {
         ...states["sensor.solar_forecast_today"],
-        state: forecast === "unavailable" ? "unavailable" : forecast === "zero" ? "0" : "28.6"
+        state: forecast === "unavailable" ? "unavailable" : forecast === "zero" ? "0" : "28.6",
+        attributes: { ...states["sensor.solar_forecast_today"].attributes,
+          forecast: forecast === "unavailable" ? [] : forecast === "incomplete" ? intervalData.slice(3) : intervalData }
+
       }
     }
   };

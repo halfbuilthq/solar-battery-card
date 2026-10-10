@@ -1,3 +1,5 @@
+import "./forecast-chart";
+import { localDay, solarForecast } from "./forecast";
 import { mdiBatteryCharging } from "@mdi/js";
 import { LitElement, html, nothing, svg, type PropertyValues } from "lit";
 import { estimateBattery, formatForecastTime } from "./battery";
@@ -27,7 +29,6 @@ import {
   estimateFullTime,
   formatPower,
   formatEnergy,
-  forecastInKwh,
   numericState,
   powerInKw
 } from "./values";
@@ -110,6 +111,22 @@ export class SolarBatteryCard extends LitElement {
   private _chartPointer?: ChartPointer;
   private _lastHistoryKey = "";
   private _lastHistoryFetch = 0;
+  private _historyRequest = 0;
+  private _historyTimer?: ReturnType<typeof setInterval>;
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    this._lastHistoryFetch = 0;
+    this._historyTimer = setInterval(() => void this._loadHistoryIfNeeded(), 60_000);
+    void this._loadHistoryIfNeeded();
+  }
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    clearInterval(this._historyTimer);
+    this._historyRequest++;
+    this._historyLoading = false;
+  }
 
   static async getConfigElement() {
     await ensureHaFormLoaded();
@@ -145,33 +162,45 @@ export class SolarBatteryCard extends LitElement {
   private async _loadHistoryIfNeeded(): Promise<void> {
     const config = this._config;
     const hass = this.hass;
-    if (!config || !hass || config.show_power_chart === false) return;
+    if (!config || !hass) return;
+    if (config.show_power_chart === false) {
+      this._historyRequest++;
+      this._historyLoading = false;
+      this._lastHistoryFetch = 0;
+      return;
+    }
 
-    const key = [config.solar_power, config.home_power, config.battery_power].join("|");
     const now = Date.now();
+    const start = config.show_forecast_line ? localDay(new Date(now), hass.config?.time_zone).start : undefined;
+    const key = [config.solar_power, config.home_power, config.battery_power, start ?? "rolling"].join("|");
     if (
-      this._historyLoading ||
-      (key === this._lastHistoryKey && now - this._lastHistoryFetch < HISTORY_REFRESH_MS)
+      key === this._lastHistoryKey &&
+      (this._historyLoading || now - this._lastHistoryFetch < HISTORY_REFRESH_MS)
     ) {
       return;
     }
 
+    if (key !== this._lastHistoryKey) this._history = [];
+    const request = ++this._historyRequest;
     this._historyLoading = true;
     this._historyFailed = false;
     this._lastHistoryKey = key;
     this._lastHistoryFetch = now;
 
     try {
-      this._history = await fetchPowerHistory(hass, {
+      const history = await fetchPowerHistory(hass, {
         solar: config.solar_power,
         home: config.home_power,
         battery: config.battery_power
-      });
+      }, new Date(now), start === undefined ? undefined : new Date(start));
+      if (request === this._historyRequest) this._history = history;
     } catch {
-      this._history = [];
-      this._historyFailed = true;
+      if (request === this._historyRequest) {
+        this._history = [];
+        this._historyFailed = true;
+      }
     } finally {
-      this._historyLoading = false;
+      if (request === this._historyRequest) this._historyLoading = false;
     }
   }
 
@@ -556,7 +585,11 @@ export class SolarBatteryCard extends LitElement {
 
           ${config.show_power_chart === false
             ? nothing
-            : html`
+            : config.show_forecast_line ? html`
+                <section class="chart-section">
+                  <solar-forecast-chart .hass=${hass} .config=${config} .history=${this._history} .historyFailed=${this._historyFailed}></solar-forecast-chart>
+                </section>
+              ` : html`
                 <section class="chart-section">
                   <div class="section-heading">
                     <h2>${localize("chart.heading", locale)}</h2>
@@ -591,7 +624,7 @@ export class SolarBatteryCard extends LitElement {
                     <strong>${formatEnergy(item.value, config.energy_unit, locale)}</strong>
                     ${item.tone === "solar" && config.solar_forecast_today
                       ? html`<span class="solar-forecast">${localize("energy.forecast_today", locale)}
-                          ${formatEnergy(forecastInKwh(entity(hass, config.solar_forecast_today)), config.energy_unit, locale)}</span>`
+                          ${formatEnergy(solarForecast(entity(hass, config.solar_forecast_today), config, localDay(now, hass?.config?.time_zone)).totalKwh, config.energy_unit, locale)}</span>`
                       : nothing}
                   </div>
                 </div>
