@@ -32,6 +32,7 @@ export function makeHass(): HomeAssistant {
       "sensor.exported": sensor(1, "kWh")
     },
     locale: { language: "en-US" },
+    config: { time_zone: "UTC" },
     callApi: async <T>() => [] as T
   };
 }

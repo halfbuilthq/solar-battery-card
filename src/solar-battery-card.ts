@@ -1,5 +1,6 @@
 import { mdiBatteryCharging } from "@mdi/js";
 import { LitElement, html, nothing, svg, type PropertyValues } from "lit";
+import { estimateBattery, formatForecastTime } from "./battery";
 import { cardStyles } from "./styles";
 import { localize } from "./localize";
 import {
@@ -382,14 +383,16 @@ export class SolarBatteryCard extends LitElement {
 
     const hass = this.hass;
     const locale = hass?.locale?.language ?? hass?.language;
+    const rawSoc = numericState(entity(hass, config.battery_soc));
     const stateOfCharge = clamp(
-      numericState(entity(hass, config.battery_soc)) ?? 0,
+      rawSoc ?? 0,
       0,
       100
     );
     const solarPower = Math.max(0, powerInKw(entity(hass, config.solar_power)) ?? 0);
     const homePower = Math.max(0, powerInKw(entity(hass, config.home_power)) ?? 0);
-    const batteryRaw = powerInKw(entity(hass, config.battery_power)) ?? 0;
+    const rawBatteryPower = powerInKw(entity(hass, config.battery_power));
+    const batteryRaw = rawBatteryPower ?? 0;
     const gridRaw = powerInKw(entity(hass, config.grid_power)) ?? 0;
     const batteryDirection =
       config.battery_positive_is_charging === false ? -1 : 1;
@@ -404,15 +407,33 @@ export class SolarBatteryCard extends LitElement {
         : status === "discharging"
           ? localize("status.discharging", locale)
           : localize("status.idle", locale);
-    const fullTime = estimateFullTime(
+    const now = new Date();
+    const batteryForecast = config.battery_total_capacity === undefined ? undefined : estimateBattery(
+      rawSoc,
+      rawBatteryPower === undefined ? undefined : batteryDirection * rawBatteryPower,
+      config.battery_total_capacity,
+      config.battery_lower_soc,
+      now
+    );
+    const fullTime = config.battery_total_capacity !== undefined ? undefined : estimateFullTime(
       stateOfCharge,
       Math.max(0, chargingPower),
-      config.battery_capacity
+      config.battery_capacity,
+      now
     );
     const timeFormatter = new Intl.DateTimeFormat(locale, {
       hour: "numeric",
       minute: "2-digit"
     });
+    const forecastLabel = batteryForecast?.kind === "at_reserve"
+      ? localize("battery.at_reserve", locale)
+      : batteryForecast
+        ? localize(batteryForecast.kind === "full" ? "battery.full_by" : "battery.reserve_by", locale, {
+            time: formatForecastTime(batteryForecast.time, locale, now, hass?.config?.time_zone)
+          })
+        : fullTime
+          ? localize("battery.full_by", locale, { time: timeFormatter.format(fullTime) })
+          : status === "charging" ? localize("battery.charging_now", locale) : statusLabel;
     const chartPoints: HistoryPoint[] =
       this._history.length > 1
         ? this._history.map((point) => ({
@@ -480,13 +501,7 @@ export class SolarBatteryCard extends LitElement {
             <div>
               <div class="percentage">${Math.round(stateOfCharge)}<span>%</span></div>
               <strong class="forecast">
-                ${fullTime
-                  ? localize("battery.full_by", locale, {
-                      time: timeFormatter.format(fullTime)
-                    })
-                  : status === "charging"
-                    ? localize("battery.charging_now", locale)
-                    : statusLabel}
+                ${forecastLabel}
               </strong>
             </div>
             <div

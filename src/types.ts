@@ -13,6 +13,7 @@ export interface HassEntity {
 
 export interface HomeAssistant {
   states: Record<string, HassEntity>;
+  config?: { time_zone?: string };
   callApi<T>(
     method: "GET" | "POST" | "PUT" | "DELETE",
     path: string,
@@ -42,6 +43,8 @@ export interface SolarBatteryCardConfig {
   power_unit?: "W" | "kW";
   energy_unit?: "Wh" | "kWh";
   battery_capacity?: number;
+  battery_total_capacity?: number;
+  battery_lower_soc?: number;
   battery_positive_is_charging?: boolean;
   grid_positive_is_export?: boolean;
   show_power_chart?: boolean;

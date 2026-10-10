@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { getConfigForm } from "../src/config";
 import { SolarBatteryCardEditor } from "../src/editor";
 import { SolarBatteryCard } from "../src/solar-battery-card";
 import type { HomeAssistant, SolarBatteryCardConfig } from "../src/types";
@@ -117,5 +118,33 @@ describe("solar battery card editor", () => {
     expect(loadForm).toHaveBeenCalledOnce();
     expect(createElement).toHaveBeenCalledWith("solar-battery-card-editor");
     expect(editor).toMatchObject({ localName: "solar-battery-card-editor" });
+  });
+});
+
+describe("editor configuration changes", () => {
+  it("retains both capacity fields, emits valid changes and permits clearing controls", () => {
+    const editor = new SolarBatteryCardEditor();
+    editor.hass = hass("en-US");
+    const initial = { ...validConfig, battery_capacity: 4.608, battery_total_capacity: 5.12, battery_lower_soc: 10 };
+    editor.setConfig(initial);
+    const dispatch = vi.spyOn(editor, "dispatchEvent").mockReturnValue(true);
+    const change = (value: unknown) => (editor as unknown as { _valueChanged(event: CustomEvent): void })._valueChanged(new CustomEvent("value-changed", { detail: { value } }));
+    change({ ...initial, power_unit: "W" });
+    expect((dispatch.mock.calls[0][0] as CustomEvent).detail.config).toMatchObject({ ...initial, power_unit: "W" });
+    change({ ...initial, battery_total_capacity: null });
+    expect(dispatch).toHaveBeenCalledTimes(1);
+    expect((editor as unknown as { _error: string })._error).toContain("Set total battery capacity");
+    change({ ...initial, battery_total_capacity: null, battery_lower_soc: null });
+    const saved = (dispatch.mock.calls[1][0] as CustomEvent).detail.config;
+    expect(saved.battery_capacity).toBe(4.608);
+    expect(saved.battery_total_capacity).toBeUndefined();
+    expect(saved.battery_lower_soc).toBe(0);
+  });
+  it("localizes new settings and validation", () => {
+    const form = getConfigForm("de-DE");
+    expect(form.computeLabel({ name: "battery_total_capacity" })).toBe("Gesamte Batteriekapazität");
+    expect(form.computeLabel({ name: "solar_forecast_today" })).toBe("Solarprognose heute");
+    expect(form.computeHelper({ name: "battery_total_capacity" })).toContain("0–100");
+    expect(() => form.assertConfig({ ...validConfig, battery_lower_soc: 100 })).toThrow("SOC-Grenze");
   });
 });

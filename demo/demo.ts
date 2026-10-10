@@ -1,5 +1,5 @@
 import "../src/solar-battery-card";
-import type { HassEntity, HomeAssistant } from "../src/types";
+import type { HassEntity, HomeAssistant, SolarBatteryCardConfig } from "../src/types";
 import type { SolarBatteryCard } from "../src/solar-battery-card";
 import "./styles.css";
 
@@ -92,7 +92,7 @@ const hass: HomeAssistant = {
 };
 
 const card = document.querySelector("solar-battery-card") as SolarBatteryCard;
-card.setConfig({
+const baseConfig: SolarBatteryCardConfig = {
   type: "custom:solar-battery-card",
   title: "Solar & storage",
   battery_soc: "sensor.battery_state_of_charge",
@@ -105,10 +105,51 @@ card.setConfig({
   home_energy_today: "sensor.home_energy_today",
   battery_energy_today: "sensor.battery_energy_today",
   export_energy_today: "sensor.grid_export_energy_today",
-  battery_capacity: 27,
+  battery_total_capacity: 27,
+  battery_lower_soc: 10,
   battery_positive_is_charging: true,
   grid_positive_is_export: true,
   show_power_chart: true
-});
+};
 card.hass = hass;
 
+
+function selectValue(id: string): string {
+  return (document.getElementById(id) as HTMLSelectElement).value;
+}
+
+function updatePreview(): void {
+  const baseUnits = selectValue("units") === "base";
+  const battery = selectValue("battery");
+  const forecast = selectValue("forecast");
+  card.setConfig({
+    ...baseConfig,
+    power_unit: baseUnits ? "W" : "kW",
+    energy_unit: baseUnits ? "Wh" : "kWh",
+    battery_total_capacity: battery === "legacy" ? undefined : 27,
+    battery_lower_soc: battery === "legacy" ? 0 : 10,
+    battery_capacity: battery === "legacy" ? 27 : undefined,
+    solar_forecast_today: forecast === "hidden" ? undefined : "sensor.solar_forecast_today"
+  });
+  card.hass = {
+    ...hass,
+    locale: { ...hass.locale, language: selectValue("language") },
+    states: {
+      ...states,
+      "sensor.battery_state_of_charge": {
+        ...states["sensor.battery_state_of_charge"],
+        state: battery === "unavailable" ? "unavailable" : battery === "reserve" ? "10" : "78"
+      },
+      "sensor.battery_power": sensor("sensor.battery_power", battery === "discharging" || battery === "reserve" ? -2150 : battery === "tomorrow" ? 100 : 2150, "W", "power"),
+      "sensor.solar_forecast_today": {
+        ...states["sensor.solar_forecast_today"],
+        state: forecast === "unavailable" ? "unavailable" : forecast === "zero" ? "0" : "28.6"
+      }
+    }
+  };
+}
+
+for (const control of document.querySelectorAll(".demo-controls select")) {
+  control.addEventListener("change", updatePreview);
+}
+updatePreview();

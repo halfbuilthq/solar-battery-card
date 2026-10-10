@@ -175,6 +175,37 @@ forecast works even without an actual-generation sensor. Home Assistant’s
 source integration manages updates and the day rollover. The card does not
 call forecast services or use daily forecast totals to calculate battery ETA.
 
+### Total capacity and reserve
+
+Existing `battery_capacity` configurations keep the previous charging estimate.
+To opt into charging and discharging estimates based on absolute SOC, use:
+
+```yaml
+battery_total_capacity: 5.12
+battery_lower_soc: 10
+```
+
+Total capacity is the kWh represented by the sensor’s complete 0–100% SOC
+range. The lower limit is the discharge reserve, from 0 to below 100 percent
+(default 0). A nonzero reserve requires total capacity. Use an **absolute SOC**
+sensor; if your integration rescales SOC around its reserve, supply a suitable
+template sensor instead. These settings estimate energy; they do not control
+the battery or change the actual SOC graphic.
+
+At 50% SOC, a 5.12-kWh battery with a 10% reserve needs 2.56 kWh to fill and
+has 2.048 kWh available above reserve. At a constant 1 kW, those are 2.56 hours
+to full or 2.048 hours to reserve. Reserve does not reduce charging headroom.
+The card shows “Full by”, “Reserve reached by”, or “At/below reserve”. Estimates
+require valid SOC/power readings and charging/discharging above 50 W. Dates
+are included when a new-model estimate crosses midnight, using Home Assistant’s
+timezone when available. Estimates assume constant power and omit efficiency,
+charge tapering, changing loads and future solar production.
+
+If both capacities are supplied, `battery_total_capacity` takes precedence;
+the legacy `battery_capacity` value is retained. Clear total capacity and reset
+the reserve to zero to return to the legacy calculation. Total capacity must
+be a finite positive number and supports 0.01-kWh input precision.
+
 ### Behaviour settings
 
 - **Usable battery capacity** is the usable—not necessarily nameplate—battery
@@ -204,7 +235,9 @@ npm install
 npm run dev
 ```
 
-The development server opens a representative Home Assistant state fixture.
+The development server serves a representative Home Assistant state fixture at
+`http://127.0.0.1:5173/demo/`. Desktop preview controls exercise display units,
+English/German text, battery states and missing solar forecasts.
 
 Run the complete verification:
 
