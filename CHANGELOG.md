@@ -7,6 +7,8 @@ Semantic Versioning.
 
 ### Added
 
+- Optional full-day solar forecast below generated energy, using the selected energy unit.
+
 - Configurable W/kW power and Wh/kWh energy display units, preserving existing defaults.
 
 ## [0.2.0] - 2026-09-05

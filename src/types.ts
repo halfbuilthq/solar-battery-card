@@ -35,6 +35,7 @@ export interface SolarBatteryCardConfig {
   battery_power: string;
   grid_power: string;
   solar_energy_today?: string;
+  solar_forecast_today?: string;
   home_energy_today?: string;
   battery_energy_today?: string;
   export_energy_today?: string;

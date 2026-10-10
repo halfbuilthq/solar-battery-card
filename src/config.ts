@@ -27,6 +27,7 @@ const LABELLED_FIELDS = [
   "battery_power",
   "grid_power",
   "solar_energy_today",
+  "solar_forecast_today",
   "home_energy_today",
   "battery_energy_today",
   "export_energy_today",
@@ -37,6 +38,7 @@ const LABELLED_FIELDS = [
 ] as const;
 
 const HELPED_FIELDS = [
+  "solar_forecast_today",
   "battery_capacity",
   "battery_positive_is_charging",
   "grid_positive_is_export"
@@ -99,6 +101,7 @@ export function getConfigForm(locale?: string) {
             column_min_width: "220px",
             schema: [
               { name: "solar_energy_today", selector: { entity: { domain: "sensor" } } },
+              { name: "solar_forecast_today", selector: { entity: { domain: "sensor" } } },
               { name: "home_energy_today", selector: { entity: { domain: "sensor" } } },
               { name: "battery_energy_today", selector: { entity: { domain: "sensor" } } },
               { name: "export_energy_today", selector: { entity: { domain: "sensor" } } }
@@ -146,6 +149,10 @@ export function validateConfig(
       throw new Error(localize("editor.error.unit", locale, { field: fieldLabel(field, locale) }));
     }
   }
+  if (config.solar_forecast_today !== undefined &&
+      (typeof config.solar_forecast_today !== "string" || !/^sensor\.[a-z0-9_]+$/.test(config.solar_forecast_today))) {
+    throw new Error(localize("editor.error.forecast_entity", locale));
+  }
   for (const field of ENTITY_FIELDS) {
     if (!config[field] || typeof config[field] !== "string") {
       throw new Error(
@@ -168,7 +175,7 @@ export function cardTitle(
 
 export function normalizeConfig(config: SolarBatteryCardConfig): SolarBatteryCardConfig {
   const cleaned = { ...config };
-  for (const field of ["power_unit", "energy_unit"] as const) {
+  for (const field of ["power_unit", "energy_unit", "solar_forecast_today"] as const) {
     const value: unknown = cleaned[field];
     if (value === undefined || value === null || value === "") delete cleaned[field];
   }

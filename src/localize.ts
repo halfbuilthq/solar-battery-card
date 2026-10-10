@@ -31,6 +31,10 @@ const EN = {
 
   "energy.aria": "Energy today",
   "energy.generated": "Generated",
+  "energy.forecast_today": "Forecast today",
+  "editor.field.solar_forecast_today": "Solar forecast today",
+  "editor.helper.solar_forecast_today": "Optional full-day forecast energy in Wh, kWh or MWh. Choose total today, not remaining today or forecast power.",
+  "editor.error.forecast_entity": "Solar forecast today must be a sensor entity ID.",
   "energy.consumed": "Consumed",
   "energy.stored": "Stored",
   "energy.exported": "Exported",
@@ -105,6 +109,10 @@ const DE: Record<TranslationKey, string> = {
 
   "energy.aria": "Energie heute",
   "energy.generated": "Erzeugt",
+  "energy.forecast_today": "Prognose heute",
+  "editor.field.solar_forecast_today": "Solarprognose heute",
+  "editor.helper.solar_forecast_today": "Optionale Energieprognose für den gesamten Tag in Wh, kWh oder MWh. Nicht die verbleibende Energie oder eine Leistungsprognose auswählen.",
+  "editor.error.forecast_entity": "Solarprognose heute muss die Entitäts-ID eines Sensors sein.",
   "energy.consumed": "Verbraucht",
   "energy.stored": "Gespeichert",
   "energy.exported": "Eingespeist",
