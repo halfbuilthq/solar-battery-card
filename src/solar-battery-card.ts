@@ -422,12 +422,20 @@ export class SolarBatteryCard extends LitElement {
     const homePower = Math.max(0, powerInKw(entity(hass, config.home_power)) ?? 0);
     const rawBatteryPower = powerInKw(entity(hass, config.battery_power));
     const batteryRaw = rawBatteryPower ?? 0;
-    const gridRaw = powerInKw(entity(hass, config.grid_power)) ?? 0;
+    const gridRaw = powerInKw(entity(hass, config.grid_power));
     const batteryDirection =
       config.battery_positive_is_charging === false ? -1 : 1;
     const chargingPower = batteryDirection * batteryRaw;
-    const exportPower =
-      (config.grid_positive_is_export === false ? -1 : 1) * gridRaw;
+    const gridNet = gridRaw === undefined
+      ? undefined
+      : (config.grid_positive_is_export === false ? -1 : 1) * gridRaw;
+    const exportPower = Math.max(0, gridNet ?? 0);
+    const importPower = Math.max(0, -(gridNet ?? 0));
+    const gridLabel = localize(
+      exportPower > 0 ? "power.export" : importPower > 0 ? "power.import" : "power.grid",
+      locale
+    );
+    const gridPower = gridNet === undefined ? undefined : exportPower + importPower;
     const status =
       chargingPower > 0.05 ? "charging" : chargingPower < -0.05 ? "discharging" : "idle";
     const statusLabel =
@@ -567,7 +575,7 @@ export class SolarBatteryCard extends LitElement {
               { label: localize("power.solar", locale), value: solarPower, tone: "solar", signed: false },
               { label: localize("power.home", locale), value: homePower, tone: "home", signed: false },
               { label: localize("power.battery", locale), value: chargingPower, tone: "battery", signed: true },
-              { label: localize("power.export", locale), value: exportPower, tone: "export", signed: false }
+              { label: gridLabel, value: gridPower, tone: "export", signed: false }
             ].map(
               (item) => html`
                 <div class="power-stat ${item.tone}">

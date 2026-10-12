@@ -15,7 +15,7 @@ describe("card display units", () => {
     expect(original).toContain("12.4 kWh");
     card.setConfig({ ...config, battery_capacity: 10, power_unit: "W", energy_unit: "Wh" });
     const changed = textOf(card.renderForTest());
-    for (const value of ["1,234 W", "2,000 W", "+1,000 W", "-500 W", "12,400 Wh", "3,000 Wh", "2,000 Wh", "1,000 Wh"]) {
+    for (const value of ["1,234 W", "2,000 W", "+1,000 W", "Import 500 W", "12,400 Wh", "3,000 Wh", "2,000 Wh", "1,000 Wh"]) {
       expect(changed).toContain(value);
     }
     expect(changed.match(/Full by [^ ]+ [AP]M/)?.[0]).toBe(original.match(/Full by [^ ]+ [AP]M/)?.[0]);

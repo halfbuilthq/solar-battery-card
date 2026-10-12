@@ -62,6 +62,8 @@ const EN = {
   "power.solar": "Solar",
   "power.home": "Home",
   "power.battery": "Battery",
+  "power.grid": "Grid",
+  "power.import": "Import",
   "power.export": "Export",
 
   "chart.heading": "Power \u00b7 24 hours",
@@ -182,6 +184,8 @@ const DE: Record<TranslationKey, string> = {
   "power.solar": "Solar",
   "power.home": "Haus",
   "power.battery": "Batterie",
+  "power.grid": "Netz",
+  "power.import": "Netzbezug",
   "power.export": "Einspeisung",
 
   "chart.heading": "Leistung \u00b7 24 Stunden",

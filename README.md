@@ -323,6 +323,15 @@ The production bundle is emitted to `dist/solar-battery-card.js`.
 
 ## Sign conventions
 
+The live grid tile switches between **Import** (**Netzbezug**) and **Export**
+(**Einspeisung**) with a non-negative power value. At zero it shows **Grid**
+(**Netz**); missing or unavailable readings show an em dash. The daily exported
+energy total remains the amount exported so far today, even while importing.
+
+For a sensor that reports positive power while importing and negative power
+while exporting, such as the Shelly Pro 3EM setup, use
+`grid_positive_is_export: false`.
+
 The card defaults to positive battery power meaning charging and positive grid
 power meaning export. Both conventions can be reversed in the visual editor.
 The selected battery convention is applied consistently to the live status and

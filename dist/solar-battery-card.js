@@ -1,15 +1,15 @@
-const oe = globalThis, xe = oe.ShadowRoot && (oe.ShadyCSS === void 0 || oe.ShadyCSS.nativeShadow) && "adoptedStyleSheets" in Document.prototype && "replace" in CSSStyleSheet.prototype, $e = /* @__PURE__ */ Symbol(), Pe = /* @__PURE__ */ new WeakMap();
-let Ve = class {
+const se = globalThis, Ae = se.ShadowRoot && (se.ShadyCSS === void 0 || se.ShadyCSS.nativeShadow) && "adoptedStyleSheets" in Document.prototype && "replace" in CSSStyleSheet.prototype, Ee = /* @__PURE__ */ Symbol(), Te = /* @__PURE__ */ new WeakMap();
+let Ge = class {
   constructor(e, t, r) {
-    if (this._$cssResult$ = !0, r !== $e) throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");
+    if (this._$cssResult$ = !0, r !== Ee) throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");
     this.cssText = e, this.t = t;
   }
   get styleSheet() {
     let e = this.o;
     const t = this.t;
-    if (xe && e === void 0) {
+    if (Ae && e === void 0) {
       const r = t !== void 0 && t.length === 1;
-      r && (e = Pe.get(t)), e === void 0 && ((this.o = e = new CSSStyleSheet()).replaceSync(this.cssText), r && Pe.set(t, e));
+      r && (e = Te.get(t)), e === void 0 && ((this.o = e = new CSSStyleSheet()).replaceSync(this.cssText), r && Te.set(t, e));
     }
     return e;
   }
@@ -17,28 +17,28 @@ let Ve = class {
     return this.cssText;
   }
 };
-const ot = (o) => new Ve(typeof o == "string" ? o : o + "", void 0, $e), ke = (o, ...e) => {
+const it = (o) => new Ge(typeof o == "string" ? o : o + "", void 0, Ee), Se = (o, ...e) => {
   const t = o.length === 1 ? o[0] : e.reduce((r, i, a) => r + ((s) => {
     if (s._$cssResult$ === !0) return s.cssText;
     if (typeof s == "number") return s;
     throw Error("Value passed to 'css' function must be a 'css' function result: " + s + ". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.");
   })(i) + o[a + 1], o[0]);
-  return new Ve(t, o, $e);
-}, it = (o, e) => {
-  if (xe) o.adoptedStyleSheets = e.map((t) => t instanceof CSSStyleSheet ? t : t.styleSheet);
+  return new Ge(t, o, Ee);
+}, at = (o, e) => {
+  if (Ae) o.adoptedStyleSheets = e.map((t) => t instanceof CSSStyleSheet ? t : t.styleSheet);
   else for (const t of e) {
-    const r = document.createElement("style"), i = oe.litNonce;
+    const r = document.createElement("style"), i = se.litNonce;
     i !== void 0 && r.setAttribute("nonce", i), r.textContent = t.cssText, o.appendChild(r);
   }
-}, He = xe ? (o) => o : (o) => o instanceof CSSStyleSheet ? ((e) => {
+}, Me = Ae ? (o) => o : (o) => o instanceof CSSStyleSheet ? ((e) => {
   let t = "";
   for (const r of e.cssRules) t += r.cssText;
-  return ot(t);
+  return it(t);
 })(o) : o;
-const { is: at, defineProperty: st, getOwnPropertyDescriptor: nt, getOwnPropertyNames: lt, getOwnPropertySymbols: ct, getPrototypeOf: dt } = Object, ce = globalThis, Te = ce.trustedTypes, ht = Te ? Te.emptyScript : "", pt = ce.reactiveElementPolyfillSupport, Z = (o, e) => o, me = { toAttribute(o, e) {
+const { is: st, defineProperty: nt, getOwnPropertyDescriptor: lt, getOwnPropertyNames: ct, getOwnPropertySymbols: dt, getPrototypeOf: ht } = Object, pe = globalThis, Ie = pe.trustedTypes, pt = Ie ? Ie.emptyScript : "", ut = pe.reactiveElementPolyfillSupport, X = (o, e) => o, be = { toAttribute(o, e) {
   switch (e) {
     case Boolean:
-      o = o ? ht : null;
+      o = o ? pt : null;
       break;
     case Object:
     case Array:
@@ -63,44 +63,44 @@ const { is: at, defineProperty: st, getOwnPropertyDescriptor: nt, getOwnProperty
       }
   }
   return t;
-} }, je = (o, e) => !at(o, e), Me = { attribute: !0, type: String, converter: me, reflect: !1, useDefault: !1, hasChanged: je };
-Symbol.metadata ??= /* @__PURE__ */ Symbol("metadata"), ce.litPropertyMetadata ??= /* @__PURE__ */ new WeakMap();
-let O = class extends HTMLElement {
+} }, Ze = (o, e) => !st(o, e), Le = { attribute: !0, type: String, converter: be, reflect: !1, useDefault: !1, hasChanged: Ze };
+Symbol.metadata ??= /* @__PURE__ */ Symbol("metadata"), pe.litPropertyMetadata ??= /* @__PURE__ */ new WeakMap();
+let R = class extends HTMLElement {
   static addInitializer(e) {
     this._$Ei(), (this.l ??= []).push(e);
   }
   static get observedAttributes() {
     return this.finalize(), this._$Eh && [...this._$Eh.keys()];
   }
-  static createProperty(e, t = Me) {
+  static createProperty(e, t = Le) {
     if (t.state && (t.attribute = !1), this._$Ei(), this.prototype.hasOwnProperty(e) && ((t = Object.create(t)).wrapped = !0), this.elementProperties.set(e, t), !t.noAccessor) {
       const r = /* @__PURE__ */ Symbol(), i = this.getPropertyDescriptor(e, r, t);
-      i !== void 0 && st(this.prototype, e, i);
+      i !== void 0 && nt(this.prototype, e, i);
     }
   }
   static getPropertyDescriptor(e, t, r) {
-    const { get: i, set: a } = nt(this.prototype, e) ?? { get() {
+    const { get: i, set: a } = lt(this.prototype, e) ?? { get() {
       return this[t];
     }, set(s) {
       this[t] = s;
     } };
     return { get: i, set(s) {
-      const h = i?.call(this);
-      a?.call(this, s), this.requestUpdate(e, h, r);
+      const d = i?.call(this);
+      a?.call(this, s), this.requestUpdate(e, d, r);
     }, configurable: !0, enumerable: !0 };
   }
   static getPropertyOptions(e) {
-    return this.elementProperties.get(e) ?? Me;
+    return this.elementProperties.get(e) ?? Le;
   }
   static _$Ei() {
-    if (this.hasOwnProperty(Z("elementProperties"))) return;
-    const e = dt(this);
+    if (this.hasOwnProperty(X("elementProperties"))) return;
+    const e = ht(this);
     e.finalize(), e.l !== void 0 && (this.l = [...e.l]), this.elementProperties = new Map(e.elementProperties);
   }
   static finalize() {
-    if (this.hasOwnProperty(Z("finalized"))) return;
-    if (this.finalized = !0, this._$Ei(), this.hasOwnProperty(Z("properties"))) {
-      const t = this.properties, r = [...lt(t), ...ct(t)];
+    if (this.hasOwnProperty(X("finalized"))) return;
+    if (this.finalized = !0, this._$Ei(), this.hasOwnProperty(X("properties"))) {
+      const t = this.properties, r = [...ct(t), ...dt(t)];
       for (const i of r) this.createProperty(i, t[i]);
     }
     const e = this[Symbol.metadata];
@@ -119,8 +119,8 @@ let O = class extends HTMLElement {
     const t = [];
     if (Array.isArray(e)) {
       const r = new Set(e.flat(1 / 0).reverse());
-      for (const i of r) t.unshift(He(i));
-    } else e !== void 0 && t.push(He(e));
+      for (const i of r) t.unshift(Me(i));
+    } else e !== void 0 && t.push(Me(e));
     return t;
   }
   static _$Eu(e, t) {
@@ -146,7 +146,7 @@ let O = class extends HTMLElement {
   }
   createRenderRoot() {
     const e = this.shadowRoot ?? this.attachShadow(this.constructor.shadowRootOptions);
-    return it(e, this.constructor.elementStyles), e;
+    return at(e, this.constructor.elementStyles), e;
   }
   connectedCallback() {
     this.renderRoot ??= this.createRenderRoot(), this.enableUpdating(!0), this._$EO?.forEach((e) => e.hostConnected?.());
@@ -162,23 +162,23 @@ let O = class extends HTMLElement {
   _$ET(e, t) {
     const r = this.constructor.elementProperties.get(e), i = this.constructor._$Eu(e, r);
     if (i !== void 0 && r.reflect === !0) {
-      const a = (r.converter?.toAttribute !== void 0 ? r.converter : me).toAttribute(t, r.type);
+      const a = (r.converter?.toAttribute !== void 0 ? r.converter : be).toAttribute(t, r.type);
       this._$Em = e, a == null ? this.removeAttribute(i) : this.setAttribute(i, a), this._$Em = null;
     }
   }
   _$AK(e, t) {
     const r = this.constructor, i = r._$Eh.get(e);
     if (i !== void 0 && this._$Em !== i) {
-      const a = r.getPropertyOptions(i), s = typeof a.converter == "function" ? { fromAttribute: a.converter } : a.converter?.fromAttribute !== void 0 ? a.converter : me;
+      const a = r.getPropertyOptions(i), s = typeof a.converter == "function" ? { fromAttribute: a.converter } : a.converter?.fromAttribute !== void 0 ? a.converter : be;
       this._$Em = i;
-      const h = s.fromAttribute(t, a.type);
-      this[i] = h ?? this._$Ej?.get(i) ?? h, this._$Em = null;
+      const d = s.fromAttribute(t, a.type);
+      this[i] = d ?? this._$Ej?.get(i) ?? d, this._$Em = null;
     }
   }
   requestUpdate(e, t, r, i = !1, a) {
     if (e !== void 0) {
       const s = this.constructor;
-      if (i === !1 && (a = this[e]), r ??= s.getPropertyOptions(e), !((r.hasChanged ?? je)(a, t) || r.useDefault && r.reflect && a === this._$Ej?.get(e) && !this.hasAttribute(s._$Eu(e, r)))) return;
+      if (i === !1 && (a = this[e]), r ??= s.getPropertyOptions(e), !((r.hasChanged ?? Ze)(a, t) || r.useDefault && r.reflect && a === this._$Ej?.get(e) && !this.hasAttribute(s._$Eu(e, r)))) return;
       this.C(e, t, r);
     }
     this.isUpdatePending === !1 && (this._$ES = this._$EP());
@@ -208,8 +208,8 @@ let O = class extends HTMLElement {
       }
       const r = this.constructor.elementProperties;
       if (r.size > 0) for (const [i, a] of r) {
-        const { wrapped: s } = a, h = this[i];
-        s !== !0 || this._$AL.has(i) || h === void 0 || this.C(i, void 0, a, h);
+        const { wrapped: s } = a, d = this[i];
+        s !== !0 || this._$AL.has(i) || d === void 0 || this.C(i, void 0, a, d);
       }
     }
     let e = !1;
@@ -246,70 +246,70 @@ let O = class extends HTMLElement {
   firstUpdated(e) {
   }
 };
-O.elementStyles = [], O.shadowRootOptions = { mode: "open" }, O[Z("elementProperties")] = /* @__PURE__ */ new Map(), O[Z("finalized")] = /* @__PURE__ */ new Map(), pt?.({ ReactiveElement: O }), (ce.reactiveElementVersions ??= []).push("2.1.2");
-const Ae = globalThis, Ie = (o) => o, ie = Ae.trustedTypes, De = ie ? ie.createPolicy("lit-html", { createHTML: (o) => o }) : void 0, Ge = "$lit$", P = `lit$${Math.random().toFixed(9).slice(2)}$`, Ze = "?" + P, ut = `<${Ze}>`, F = document, Y = () => F.createComment(""), X = (o) => o === null || typeof o != "object" && typeof o != "function", Ee = Array.isArray, ft = (o) => Ee(o) || typeof o?.[Symbol.iterator] == "function", pe = `[ 	
-\f\r]`, B = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, Le = /-->/g, Ne = />/g, T = RegExp(`>|${pe}(?:([^\\s"'>=/]+)(${pe}*=${pe}*(?:[^ 	
-\f\r"'\`<>=]|("|')|))|$)`, "g"), Fe = /'/g, Oe = /"/g, Ke = /^(?:script|style|textarea|title)$/i, Ye = (o) => (e, ...t) => ({ _$litType$: o, strings: e, values: t }), x = Ye(1), C = Ye(2), R = /* @__PURE__ */ Symbol.for("lit-noChange"), m = /* @__PURE__ */ Symbol.for("lit-nothing"), We = /* @__PURE__ */ new WeakMap(), L = F.createTreeWalker(F, 129);
-function Xe(o, e) {
-  if (!Ee(o) || !o.hasOwnProperty("raw")) throw Error("invalid template strings array");
-  return De !== void 0 ? De.createHTML(e) : e;
+R.elementStyles = [], R.shadowRootOptions = { mode: "open" }, R[X("elementProperties")] = /* @__PURE__ */ new Map(), R[X("finalized")] = /* @__PURE__ */ new Map(), ut?.({ ReactiveElement: R }), (pe.reactiveElementVersions ??= []).push("2.1.2");
+const Ce = globalThis, De = (o) => o, ne = Ce.trustedTypes, Ne = ne ? ne.createPolicy("lit-html", { createHTML: (o) => o }) : void 0, Ke = "$lit$", H = `lit$${Math.random().toFixed(9).slice(2)}$`, Ye = "?" + H, ft = `<${Ye}>`, W = document, Q = () => W.createComment(""), ee = (o) => o === null || typeof o != "object" && typeof o != "function", ze = Array.isArray, _t = (o) => ze(o) || typeof o?.[Symbol.iterator] == "function", _e = `[ 	
+\f\r]`, j = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, Fe = /-->/g, Oe = />/g, I = RegExp(`>|${_e}(?:([^\\s"'>=/]+)(${_e}*=${_e}*(?:[^ 	
+\f\r"'\`<>=]|("|')|))|$)`, "g"), We = /'/g, Re = /"/g, Xe = /^(?:script|style|textarea|title)$/i, Je = (o) => (e, ...t) => ({ _$litType$: o, strings: e, values: t }), x = Je(1), z = Je(2), B = /* @__PURE__ */ Symbol.for("lit-noChange"), m = /* @__PURE__ */ Symbol.for("lit-nothing"), Ue = /* @__PURE__ */ new WeakMap(), F = W.createTreeWalker(W, 129);
+function Qe(o, e) {
+  if (!ze(o) || !o.hasOwnProperty("raw")) throw Error("invalid template strings array");
+  return Ne !== void 0 ? Ne.createHTML(e) : e;
 }
-const _t = (o, e) => {
+const gt = (o, e) => {
   const t = o.length - 1, r = [];
-  let i, a = e === 2 ? "<svg>" : e === 3 ? "<math>" : "", s = B;
-  for (let h = 0; h < t; h++) {
-    const l = o[h];
-    let p, u, d = -1, _ = 0;
-    for (; _ < l.length && (s.lastIndex = _, u = s.exec(l), u !== null); ) _ = s.lastIndex, s === B ? u[1] === "!--" ? s = Le : u[1] !== void 0 ? s = Ne : u[2] !== void 0 ? (Ke.test(u[2]) && (i = RegExp("</" + u[2], "g")), s = T) : u[3] !== void 0 && (s = T) : s === T ? u[0] === ">" ? (s = i ?? B, d = -1) : u[1] === void 0 ? d = -2 : (d = s.lastIndex - u[2].length, p = u[1], s = u[3] === void 0 ? T : u[3] === '"' ? Oe : Fe) : s === Oe || s === Fe ? s = T : s === Le || s === Ne ? s = B : (s = T, i = void 0);
-    const g = s === T && o[h + 1].startsWith("/>") ? " " : "";
-    a += s === B ? l + ut : d >= 0 ? (r.push(p), l.slice(0, d) + Ge + l.slice(d) + P + g) : l + P + (d === -2 ? h : g);
+  let i, a = e === 2 ? "<svg>" : e === 3 ? "<math>" : "", s = j;
+  for (let d = 0; d < t; d++) {
+    const l = o[d];
+    let p, u, c = -1, f = 0;
+    for (; f < l.length && (s.lastIndex = f, u = s.exec(l), u !== null); ) f = s.lastIndex, s === j ? u[1] === "!--" ? s = Fe : u[1] !== void 0 ? s = Oe : u[2] !== void 0 ? (Xe.test(u[2]) && (i = RegExp("</" + u[2], "g")), s = I) : u[3] !== void 0 && (s = I) : s === I ? u[0] === ">" ? (s = i ?? j, c = -1) : u[1] === void 0 ? c = -2 : (c = s.lastIndex - u[2].length, p = u[1], s = u[3] === void 0 ? I : u[3] === '"' ? Re : We) : s === Re || s === We ? s = I : s === Fe || s === Oe ? s = j : (s = I, i = void 0);
+    const g = s === I && o[d + 1].startsWith("/>") ? " " : "";
+    a += s === j ? l + ft : c >= 0 ? (r.push(p), l.slice(0, c) + Ke + l.slice(c) + H + g) : l + H + (c === -2 ? d : g);
   }
-  return [Xe(o, a + (o[t] || "<?>") + (e === 2 ? "</svg>" : e === 3 ? "</math>" : "")), r];
+  return [Qe(o, a + (o[t] || "<?>") + (e === 2 ? "</svg>" : e === 3 ? "</math>" : "")), r];
 };
-class J {
+class te {
   constructor({ strings: e, _$litType$: t }, r) {
     let i;
     this.parts = [];
     let a = 0, s = 0;
-    const h = e.length - 1, l = this.parts, [p, u] = _t(e, t);
-    if (this.el = J.createElement(p, r), L.currentNode = this.el.content, t === 2 || t === 3) {
-      const d = this.el.content.firstChild;
-      d.replaceWith(...d.childNodes);
+    const d = e.length - 1, l = this.parts, [p, u] = gt(e, t);
+    if (this.el = te.createElement(p, r), F.currentNode = this.el.content, t === 2 || t === 3) {
+      const c = this.el.content.firstChild;
+      c.replaceWith(...c.childNodes);
     }
-    for (; (i = L.nextNode()) !== null && l.length < h; ) {
+    for (; (i = F.nextNode()) !== null && l.length < d; ) {
       if (i.nodeType === 1) {
-        if (i.hasAttributes()) for (const d of i.getAttributeNames()) if (d.endsWith(Ge)) {
-          const _ = u[s++], g = i.getAttribute(d).split(P), y = /([.?@])?(.*)/.exec(_);
-          l.push({ type: 1, index: a, name: y[2], strings: g, ctor: y[1] === "." ? mt : y[1] === "?" ? yt : y[1] === "@" ? vt : de }), i.removeAttribute(d);
-        } else d.startsWith(P) && (l.push({ type: 6, index: a }), i.removeAttribute(d));
-        if (Ke.test(i.tagName)) {
-          const d = i.textContent.split(P), _ = d.length - 1;
-          if (_ > 0) {
-            i.textContent = ie ? ie.emptyScript : "";
-            for (let g = 0; g < _; g++) i.append(d[g], Y()), L.nextNode(), l.push({ type: 2, index: ++a });
-            i.append(d[_], Y());
+        if (i.hasAttributes()) for (const c of i.getAttributeNames()) if (c.endsWith(Ke)) {
+          const f = u[s++], g = i.getAttribute(c).split(H), b = /([.?@])?(.*)/.exec(f);
+          l.push({ type: 1, index: a, name: b[2], strings: g, ctor: b[1] === "." ? yt : b[1] === "?" ? vt : b[1] === "@" ? bt : ue }), i.removeAttribute(c);
+        } else c.startsWith(H) && (l.push({ type: 6, index: a }), i.removeAttribute(c));
+        if (Xe.test(i.tagName)) {
+          const c = i.textContent.split(H), f = c.length - 1;
+          if (f > 0) {
+            i.textContent = ne ? ne.emptyScript : "";
+            for (let g = 0; g < f; g++) i.append(c[g], Q()), F.nextNode(), l.push({ type: 2, index: ++a });
+            i.append(c[f], Q());
           }
         }
-      } else if (i.nodeType === 8) if (i.data === Ze) l.push({ type: 2, index: a });
+      } else if (i.nodeType === 8) if (i.data === Ye) l.push({ type: 2, index: a });
       else {
-        let d = -1;
-        for (; (d = i.data.indexOf(P, d + 1)) !== -1; ) l.push({ type: 7, index: a }), d += P.length - 1;
+        let c = -1;
+        for (; (c = i.data.indexOf(H, c + 1)) !== -1; ) l.push({ type: 7, index: a }), c += H.length - 1;
       }
       a++;
     }
   }
   static createElement(e, t) {
-    const r = F.createElement("template");
+    const r = W.createElement("template");
     return r.innerHTML = e, r;
   }
 }
-function U(o, e, t = o, r) {
-  if (e === R) return e;
+function q(o, e, t = o, r) {
+  if (e === B) return e;
   let i = r !== void 0 ? t._$Co?.[r] : t._$Cl;
-  const a = X(e) ? void 0 : e._$litDirective$;
-  return i?.constructor !== a && (i?._$AO?.(!1), a === void 0 ? i = void 0 : (i = new a(o), i._$AT(o, t, r)), r !== void 0 ? (t._$Co ??= [])[r] = i : t._$Cl = i), i !== void 0 && (e = U(o, i._$AS(o, e.values), i, r)), e;
+  const a = ee(e) ? void 0 : e._$litDirective$;
+  return i?.constructor !== a && (i?._$AO?.(!1), a === void 0 ? i = void 0 : (i = new a(o), i._$AT(o, t, r)), r !== void 0 ? (t._$Co ??= [])[r] = i : t._$Cl = i), i !== void 0 && (e = q(o, i._$AS(o, e.values), i, r)), e;
 }
-class gt {
+class mt {
   constructor(e, t) {
     this._$AV = [], this._$AN = void 0, this._$AD = e, this._$AM = t;
   }
@@ -320,24 +320,24 @@ class gt {
     return this._$AM._$AU;
   }
   u(e) {
-    const { el: { content: t }, parts: r } = this._$AD, i = (e?.creationScope ?? F).importNode(t, !0);
-    L.currentNode = i;
-    let a = L.nextNode(), s = 0, h = 0, l = r[0];
+    const { el: { content: t }, parts: r } = this._$AD, i = (e?.creationScope ?? W).importNode(t, !0);
+    F.currentNode = i;
+    let a = F.nextNode(), s = 0, d = 0, l = r[0];
     for (; l !== void 0; ) {
       if (s === l.index) {
         let p;
-        l.type === 2 ? p = new ee(a, a.nextSibling, this, e) : l.type === 1 ? p = new l.ctor(a, l.name, l.strings, this, e) : l.type === 6 && (p = new bt(a, this, e)), this._$AV.push(p), l = r[++h];
+        l.type === 2 ? p = new oe(a, a.nextSibling, this, e) : l.type === 1 ? p = new l.ctor(a, l.name, l.strings, this, e) : l.type === 6 && (p = new wt(a, this, e)), this._$AV.push(p), l = r[++d];
       }
-      s !== l?.index && (a = L.nextNode(), s++);
+      s !== l?.index && (a = F.nextNode(), s++);
     }
-    return L.currentNode = F, i;
+    return F.currentNode = W, i;
   }
   p(e) {
     let t = 0;
     for (const r of this._$AV) r !== void 0 && (r.strings !== void 0 ? (r._$AI(e, r, t), t += r.strings.length - 2) : r._$AI(e[t])), t++;
   }
 }
-class ee {
+class oe {
   get _$AU() {
     return this._$AM?._$AU ?? this._$Cv;
   }
@@ -356,7 +356,7 @@ class ee {
     return this._$AB;
   }
   _$AI(e, t = this) {
-    e = U(this, e, t), X(e) ? e === m || e == null || e === "" ? (this._$AH !== m && this._$AR(), this._$AH = m) : e !== this._$AH && e !== R && this._(e) : e._$litType$ !== void 0 ? this.$(e) : e.nodeType !== void 0 ? this.T(e) : ft(e) ? this.k(e) : this._(e);
+    e = q(this, e, t), ee(e) ? e === m || e == null || e === "" ? (this._$AH !== m && this._$AR(), this._$AH = m) : e !== this._$AH && e !== B && this._(e) : e._$litType$ !== void 0 ? this.$(e) : e.nodeType !== void 0 ? this.T(e) : _t(e) ? this.k(e) : this._(e);
   }
   O(e) {
     return this._$AA.parentNode.insertBefore(e, this._$AB);
@@ -365,38 +365,38 @@ class ee {
     this._$AH !== e && (this._$AR(), this._$AH = this.O(e));
   }
   _(e) {
-    this._$AH !== m && X(this._$AH) ? this._$AA.nextSibling.data = e : this.T(F.createTextNode(e)), this._$AH = e;
+    this._$AH !== m && ee(this._$AH) ? this._$AA.nextSibling.data = e : this.T(W.createTextNode(e)), this._$AH = e;
   }
   $(e) {
-    const { values: t, _$litType$: r } = e, i = typeof r == "number" ? this._$AC(e) : (r.el === void 0 && (r.el = J.createElement(Xe(r.h, r.h[0]), this.options)), r);
+    const { values: t, _$litType$: r } = e, i = typeof r == "number" ? this._$AC(e) : (r.el === void 0 && (r.el = te.createElement(Qe(r.h, r.h[0]), this.options)), r);
     if (this._$AH?._$AD === i) this._$AH.p(t);
     else {
-      const a = new gt(i, this), s = a.u(this.options);
+      const a = new mt(i, this), s = a.u(this.options);
       a.p(t), this.T(s), this._$AH = a;
     }
   }
   _$AC(e) {
-    let t = We.get(e.strings);
-    return t === void 0 && We.set(e.strings, t = new J(e)), t;
+    let t = Ue.get(e.strings);
+    return t === void 0 && Ue.set(e.strings, t = new te(e)), t;
   }
   k(e) {
-    Ee(this._$AH) || (this._$AH = [], this._$AR());
+    ze(this._$AH) || (this._$AH = [], this._$AR());
     const t = this._$AH;
     let r, i = 0;
-    for (const a of e) i === t.length ? t.push(r = new ee(this.O(Y()), this.O(Y()), this, this.options)) : r = t[i], r._$AI(a), i++;
+    for (const a of e) i === t.length ? t.push(r = new oe(this.O(Q()), this.O(Q()), this, this.options)) : r = t[i], r._$AI(a), i++;
     i < t.length && (this._$AR(r && r._$AB.nextSibling, i), t.length = i);
   }
   _$AR(e = this._$AA.nextSibling, t) {
     for (this._$AP?.(!1, !0, t); e !== this._$AB; ) {
-      const r = Ie(e).nextSibling;
-      Ie(e).remove(), e = r;
+      const r = De(e).nextSibling;
+      De(e).remove(), e = r;
     }
   }
   setConnected(e) {
     this._$AM === void 0 && (this._$Cv = e, this._$AP?.(e));
   }
 }
-class de {
+class ue {
   get tagName() {
     return this.element.tagName;
   }
@@ -409,11 +409,11 @@ class de {
   _$AI(e, t = this, r, i) {
     const a = this.strings;
     let s = !1;
-    if (a === void 0) e = U(this, e, t, 0), s = !X(e) || e !== this._$AH && e !== R, s && (this._$AH = e);
+    if (a === void 0) e = q(this, e, t, 0), s = !ee(e) || e !== this._$AH && e !== B, s && (this._$AH = e);
     else {
-      const h = e;
+      const d = e;
       let l, p;
-      for (e = a[0], l = 0; l < a.length - 1; l++) p = U(this, h[r + l], t, l), p === R && (p = this._$AH[l]), s ||= !X(p) || p !== this._$AH[l], p === m ? e = m : e !== m && (e += (p ?? "") + a[l + 1]), this._$AH[l] = p;
+      for (e = a[0], l = 0; l < a.length - 1; l++) p = q(this, d[r + l], t, l), p === B && (p = this._$AH[l]), s ||= !ee(p) || p !== this._$AH[l], p === m ? e = m : e !== m && (e += (p ?? "") + a[l + 1]), this._$AH[l] = p;
     }
     s && !i && this.j(e);
   }
@@ -421,7 +421,7 @@ class de {
     e === m ? this.element.removeAttribute(this.name) : this.element.setAttribute(this.name, e ?? "");
   }
 }
-class mt extends de {
+class yt extends ue {
   constructor() {
     super(...arguments), this.type = 3;
   }
@@ -429,7 +429,7 @@ class mt extends de {
     this.element[this.name] = e === m ? void 0 : e;
   }
 }
-class yt extends de {
+class vt extends ue {
   constructor() {
     super(...arguments), this.type = 4;
   }
@@ -437,12 +437,12 @@ class yt extends de {
     this.element.toggleAttribute(this.name, !!e && e !== m);
   }
 }
-class vt extends de {
+class bt extends ue {
   constructor(e, t, r, i, a) {
     super(e, t, r, i, a), this.type = 5;
   }
   _$AI(e, t = this) {
-    if ((e = U(this, e, t, 0) ?? m) === R) return;
+    if ((e = q(this, e, t, 0) ?? m) === B) return;
     const r = this._$AH, i = e === m && r !== m || e.capture !== r.capture || e.once !== r.once || e.passive !== r.passive, a = e !== m && (r === m || i);
     i && this.element.removeEventListener(this.name, this, r), a && this.element.addEventListener(this.name, this, e), this._$AH = e;
   }
@@ -450,7 +450,7 @@ class vt extends de {
     typeof this._$AH == "function" ? this._$AH.call(this.options?.host ?? this.element, e) : this._$AH.handleEvent(e);
   }
 }
-class bt {
+class wt {
   constructor(e, t, r) {
     this.element = e, this.type = 6, this._$AN = void 0, this._$AM = t, this.options = r;
   }
@@ -458,22 +458,22 @@ class bt {
     return this._$AM._$AU;
   }
   _$AI(e) {
-    U(this, e);
+    q(this, e);
   }
 }
-const wt = Ae.litHtmlPolyfillSupport;
-wt?.(J, ee), (Ae.litHtmlVersions ??= []).push("3.3.3");
-const xt = (o, e, t) => {
+const xt = Ce.litHtmlPolyfillSupport;
+xt?.(te, oe), (Ce.litHtmlVersions ??= []).push("3.3.3");
+const $t = (o, e, t) => {
   const r = t?.renderBefore ?? e;
   let i = r._$litPart$;
   if (i === void 0) {
     const a = t?.renderBefore ?? null;
-    r._$litPart$ = i = new ee(e.insertBefore(Y(), a), a, void 0, t ?? {});
+    r._$litPart$ = i = new oe(e.insertBefore(Q(), a), a, void 0, t ?? {});
   }
   return i._$AI(o), i;
 };
-const Se = globalThis;
-class N extends O {
+const Pe = globalThis;
+class O extends R {
   constructor() {
     super(...arguments), this.renderOptions = { host: this }, this._$Do = void 0;
   }
@@ -483,7 +483,7 @@ class N extends O {
   }
   update(e) {
     const t = this.render();
-    this.hasUpdated || (this.renderOptions.isConnected = this.isConnected), super.update(e), this._$Do = xt(t, this.renderRoot, this.renderOptions);
+    this.hasUpdated || (this.renderOptions.isConnected = this.isConnected), super.update(e), this._$Do = $t(t, this.renderRoot, this.renderOptions);
   }
   connectedCallback() {
     super.connectedCallback(), this._$Do?.setConnected(!0);
@@ -492,32 +492,32 @@ class N extends O {
     super.disconnectedCallback(), this._$Do?.setConnected(!1);
   }
   render() {
-    return R;
+    return B;
   }
 }
-N._$litElement$ = !0, N.finalized = !0, Se.litElementHydrateSupport?.({ LitElement: N });
-const $t = Se.litElementPolyfillSupport;
-$t?.({ LitElement: N });
-(Se.litElementVersions ??= []).push("4.2.2");
-const kt = /* @__PURE__ */ new Set(["unknown", "unavailable", "none", ""]);
-function Ce(o) {
-  if (!o || kt.has(o.state.toLowerCase())) return;
+O._$litElement$ = !0, O.finalized = !0, Pe.litElementHydrateSupport?.({ LitElement: O });
+const kt = Pe.litElementPolyfillSupport;
+kt?.({ LitElement: O });
+(Pe.litElementVersions ??= []).push("4.2.2");
+const At = /* @__PURE__ */ new Set(["unknown", "unavailable", "none", ""]);
+function He(o) {
+  if (!o || At.has(o.state.toLowerCase())) return;
   const e = Number(o.state);
   return Number.isFinite(e) ? e : void 0;
 }
-function H(o) {
-  const e = Ce(o);
+function T(o) {
+  const e = He(o);
   if (e === void 0) return;
   const t = o?.attributes.unit_of_measurement?.toLowerCase().replace(/\s/g, "");
   return t === "w" ? e / 1e3 : t === "mw" ? e / 1e6 : e;
 }
-function G(o) {
-  const e = Ce(o);
+function Y(o) {
+  const e = He(o);
   if (e === void 0) return;
   const t = o?.attributes.unit_of_measurement?.toLowerCase().replace(/\s/g, "");
   return t === "wh" ? e / 1e3 : t === "mwh" ? e * 1e3 : e;
 }
-function Je(o, e, t = {}) {
+function et(o, e, t = {}) {
   if (o === void 0) return "—";
   const r = t.digits ?? 2;
   return `${new Intl.NumberFormat(t.locale, {
@@ -526,105 +526,105 @@ function Je(o, e, t = {}) {
     signDisplay: t.signed ? "exceptZero" : "auto"
   }).format(o)} ${e}`;
 }
-function $(o, e) {
+function k(o, e) {
   return e && o ? o.states[e] : void 0;
 }
-function At(o, e, t, r = /* @__PURE__ */ new Date()) {
+function Et(o, e, t, r = /* @__PURE__ */ new Date()) {
   if (o === void 0 || !t || t <= 0 || e <= 0 || o >= 100)
     return;
   const i = (100 - o) / 100 * t;
   return new Date(r.getTime() + i / e * 60 * 60 * 1e3);
 }
-function K(o, e = "kW", t = {}) {
-  return Je(o === void 0 ? void 0 : o * (e === "W" ? 1e3 : 1), e, {
+function J(o, e = "kW", t = {}) {
+  return et(o === void 0 ? void 0 : o * (e === "W" ? 1e3 : 1), e, {
     ...t,
     digits: e === "W" ? 0 : 2
   });
 }
-function ae(o, e = "kWh", t) {
-  return Je(o === void 0 ? void 0 : o * (e === "Wh" ? 1e3 : 1), e, {
+function le(o, e = "kWh", t) {
+  return et(o === void 0 ? void 0 : o * (e === "Wh" ? 1e3 : 1), e, {
     locale: t,
     digits: e === "Wh" ? 0 : 1
   });
 }
-function Et(o) {
+function St(o) {
   const e = o?.attributes.unit_of_measurement?.toLowerCase().replace(/\s/g, "");
   if (!e || !["wh", "kwh", "mwh"].includes(e) || !o?.state.trim()) return;
-  const t = G(o);
+  const t = Y(o);
   return t !== void 0 && Number.isFinite(t) && t >= 0 ? t : void 0;
 }
-const q = /* @__PURE__ */ new Map();
-function ye(o, e) {
+const G = /* @__PURE__ */ new Map();
+function we(o, e) {
   const t = new Intl.DateTimeFormat("en-CA", {
     timeZone: e,
     year: "numeric",
     month: "2-digit",
     day: "2-digit"
   }), r = (u) => {
-    const d = t.formatToParts(u);
-    return ["year", "month", "day"].map((_) => d.find((g) => g.type === _).value).join("-");
-  }, i = o.getTime(), a = r(i), s = `${t.resolvedOptions().timeZone}:${a}`, h = q.get(s);
-  if (h) return h;
-  const l = (u, d, _) => {
-    for (; d - u > 1; ) {
-      const g = Math.floor((u + d) / 2), y = r(g);
-      y < a || _ && y === a ? u = g : d = g;
+    const c = t.formatToParts(u);
+    return ["year", "month", "day"].map((f) => c.find((g) => g.type === f).value).join("-");
+  }, i = o.getTime(), a = r(i), s = `${t.resolvedOptions().timeZone}:${a}`, d = G.get(s);
+  if (d) return d;
+  const l = (u, c, f) => {
+    for (; c - u > 1; ) {
+      const g = Math.floor((u + c) / 2), b = r(g);
+      b < a || f && b === a ? u = g : c = g;
     }
-    return d;
+    return c;
   }, p = {
     start: l(i - 36 * 36e5, i, !1),
     end: l(i, i + 36 * 36e5, !0)
   };
-  return q.size >= 8 && q.delete(q.keys().next().value), q.set(s, p), p;
+  return G.size >= 8 && G.delete(G.keys().next().value), G.set(s, p), p;
 }
-function ue(o, e) {
+function ge(o, e) {
   return e.split(".").reduce((t, r) => t && typeof t == "object" && Object.prototype.hasOwnProperty.call(t, r) ? t[r] : void 0, o);
 }
-function St(o) {
+function Ct(o) {
   if (typeof o != "string" || !/T.*(?:Z|[+-]\d{2}:\d{2})$/i.test(o)) return;
   const e = Date.parse(o);
   return Number.isFinite(e) ? e : void 0;
 }
-function Qe(o, e, t) {
-  const r = (d) => ({ status: d, points: [] });
+function tt(o, e, t) {
+  const r = (c) => ({ status: c, points: [] });
   if (!o) return r("missing");
   if (e.solar_forecast_mode !== "hourly") {
-    const d = Et(o);
-    return d === void 0 ? r("missing") : {
+    const c = St(o);
+    return c === void 0 ? r("missing") : {
       status: "ok",
-      totalKwh: d,
-      points: [{ timestamp: t.start, kwh: d }, { timestamp: t.end, kwh: d }]
+      totalKwh: c,
+      points: [{ timestamp: t.start, kwh: c }, { timestamp: t.end, kwh: c }]
     };
   }
-  const i = ue(o.attributes, e.solar_forecast_attribute ?? "forecast");
+  const i = ge(o.attributes, e.solar_forecast_attribute ?? "forecast");
   if (!Array.isArray(i) || i.length === 0) return r("missing");
   const a = (e.solar_forecast_interval_minutes ?? 60) * 6e4, s = e.solar_forecast_input_unit ?? "kWh";
   if (!Number.isFinite(a) || a <= 0 || !["Wh", "kWh", "MWh", "W", "kW"].includes(s)) return r("invalid");
-  const h = [];
-  for (const d of i) {
-    const _ = St(ue(d, e.solar_forecast_time_field ?? "start"));
-    if (_ === void 0) return r("invalid");
-    const g = e.solar_forecast_time_is_end ? _ - a : _, y = g + a;
-    if (y <= t.start || g >= t.end) continue;
-    const k = ue(d, e.solar_forecast_value_field ?? "energy");
-    if (typeof k != "number" && typeof k != "string" || String(k).trim() === "") return r("invalid");
-    const v = Number(k);
-    if (!Number.isFinite(v) || v < 0) return r("invalid");
-    const f = s === "Wh" ? v / 1e3 : s === "MWh" ? v * 1e3 : s === "W" ? v / 1e3 * a / 36e5 : s === "kW" ? v * a / 36e5 : v, b = Math.max(g, t.start), S = Math.min(y, t.end);
-    h.push({ start: b, end: S, kwh: f * (S - b) / a });
+  const d = [];
+  for (const c of i) {
+    const f = Ct(ge(c, e.solar_forecast_time_field ?? "start"));
+    if (f === void 0) return r("invalid");
+    const g = e.solar_forecast_time_is_end ? f - a : f, b = g + a;
+    if (b <= t.start || g >= t.end) continue;
+    const A = ge(c, e.solar_forecast_value_field ?? "energy");
+    if (typeof A != "number" && typeof A != "string" || String(A).trim() === "") return r("invalid");
+    const w = Number(A);
+    if (!Number.isFinite(w) || w < 0) return r("invalid");
+    const _ = s === "Wh" ? w / 1e3 : s === "MWh" ? w * 1e3 : s === "W" ? w / 1e3 * a / 36e5 : s === "kW" ? w * a / 36e5 : w, y = Math.max(g, t.start), C = Math.min(b, t.end);
+    d.push({ start: y, end: C, kwh: _ * (C - y) / a });
   }
-  h.sort((d, _) => d.start - _.start);
+  d.sort((c, f) => c.start - f.start);
   let l = t.start, p = 0;
   const u = [{ timestamp: l, kwh: 0 }];
-  for (const d of h) {
-    if (d.start < l) return r("invalid");
-    if (d.start > l) return r("incomplete");
-    if (p += d.kwh, !Number.isFinite(p)) return r("invalid");
-    l = d.end, u.push({ timestamp: l, kwh: p });
+  for (const c of d) {
+    if (c.start < l) return r("invalid");
+    if (c.start > l) return r("incomplete");
+    if (p += c.kwh, !Number.isFinite(p)) return r("invalid");
+    l = c.end, u.push({ timestamp: l, kwh: p });
   }
   return l !== t.end ? r("incomplete") : { status: "ok", points: u, totalKwh: p };
 }
-function Re(o, e) {
+function Be(o, e) {
   for (const t of o)
     for (let r = 0; r < t.length; r++) {
       const i = t[r];
@@ -634,7 +634,7 @@ function Re(o, e) {
         return a.kwh + (i.kwh - a.kwh) * (e - a.timestamp) / (i.timestamp - a.timestamp);
     }
 }
-const et = {
+const rt = {
   "editor.section.solar_forecast": "Solar forecast",
   "editor.section.hourly_forecast": "Hourly input mapping",
   "forecast.mode.daily": "Daily total",
@@ -694,6 +694,8 @@ const et = {
   "power.solar": "Solar",
   "power.home": "Home",
   "power.battery": "Battery",
+  "power.grid": "Grid",
+  "power.import": "Import",
   "power.export": "Export",
   "chart.heading": "Power · 24 hours",
   "chart.aria": "Inspect solar, home and battery power history",
@@ -739,7 +741,7 @@ const et = {
   "editor.helper.battery_positive_is_charging": "Turn this off if your integration reports charging as a negative value.",
   "editor.helper.grid_positive_is_export": "Turn this off if your integration reports grid export as a negative value.",
   "editor.error.required": "{field} is required."
-}, Ct = {
+}, zt = {
   "editor.section.solar_forecast": "Solarprognose",
   "editor.section.hourly_forecast": "Zuordnung der Intervalldaten",
   "forecast.mode.daily": "Tagessumme",
@@ -799,6 +801,8 @@ const et = {
   "power.solar": "Solar",
   "power.home": "Haus",
   "power.battery": "Batterie",
+  "power.grid": "Netz",
+  "power.import": "Netzbezug",
   "power.export": "Einspeisung",
   "chart.heading": "Leistung · 24 Stunden",
   "chart.aria": "Verlauf von Solar-, Haus- und Batterieleistung untersuchen",
@@ -844,23 +848,23 @@ const et = {
   "editor.helper.battery_positive_is_charging": "Deaktivieren, wenn deine Integration das Laden als negativen Wert meldet.",
   "editor.helper.grid_positive_is_export": "Deaktivieren, wenn deine Integration die Einspeisung als negativen Wert meldet.",
   "editor.error.required": "{field} ist erforderlich."
-}, zt = {
-  en: et,
-  de: Ct
+}, Pt = {
+  en: rt,
+  de: zt
 };
-function Pt(o) {
+function Ht(o) {
   if (!o) return "en";
   const [e] = o.toLowerCase().split(/[-_]/);
   return e || "en";
 }
 function n(o, e, t) {
-  const r = Pt(e), i = zt[r]?.[o] ?? et[o];
+  const r = Ht(e), i = Pt[r]?.[o] ?? rt[o];
   return t ? Object.entries(t).reduce(
-    (a, [s, h]) => a.split(`{${s}}`).join(String(h)),
+    (a, [s, d]) => a.split(`{${s}}`).join(String(d)),
     i
   ) : i;
 }
-const M = 64, V = 416, I = 28, E = 162, se = class se extends N {
+const L = 64, Z = 416, D = 28, S = 162, ce = class ce extends O {
   constructor() {
     super(...arguments), this.history = [], this.historyFailed = !1;
   }
@@ -874,7 +878,7 @@ const M = 64, V = 416, I = 28, E = 162, se = class se extends N {
     const i = e.currentTarget.getBoundingClientRect();
     if (!i.width) return;
     const a = (e.clientX - i.left) / i.width * 480;
-    this._selected = t + Math.min(1, Math.max(0, (a - M) / (V - M))) * (r - t);
+    this._selected = t + Math.min(1, Math.max(0, (a - L) / (Z - L))) * (r - t);
   }
   navigate(e, t, r, i) {
     if (e.key === "Escape") {
@@ -885,61 +889,61 @@ const M = 64, V = 416, I = 28, E = 162, se = class se extends N {
   }
   render() {
     if (!this.hass || !this.config) return m;
-    const e = this.config, t = this.hass.locale?.language ?? this.hass.language, r = this.hass.config?.time_zone, i = Date.now(), a = ye(new Date(i), r), s = Qe($(this.hass, e.solar_forecast_today), e, a), h = ["solar", "home", "battery"], l = e.battery_positive_is_charging === !1 ? -1 : 1, p = {
-      solar: H($(this.hass, e.solar_power)),
-      home: H($(this.hass, e.home_power)),
-      battery: H($(this.hass, e.battery_power))
+    const e = this.config, t = this.hass.locale?.language ?? this.hass.language, r = this.hass.config?.time_zone, i = Date.now(), a = we(new Date(i), r), s = tt(k(this.hass, e.solar_forecast_today), e, a), d = ["solar", "home", "battery"], l = e.battery_positive_is_charging === !1 ? -1 : 1, p = {
+      solar: T(k(this.hass, e.solar_power)),
+      home: T(k(this.hass, e.home_power)),
+      battery: T(k(this.hass, e.battery_power))
     };
     p.solar !== void 0 && (p.solar = Math.max(0, p.solar)), p.home !== void 0 && (p.home = Math.max(0, p.home)), p.battery !== void 0 && (p.battery *= l);
-    const u = this.history.filter((c) => c.timestamp >= a.start && c.timestamp <= i && c.timestamp < a.end).sort((c, w) => c.timestamp - w.timestamp), d = h.map((c) => ({ key: c, points: [
-      ...u.filter((w) => Number.isFinite(w[c])).map((w) => ({ timestamp: w.timestamp, kwh: w[c] * (c === "battery" ? l : 1) })),
-      ...p[c] === void 0 ? [] : [{ timestamp: i, kwh: p[c] }]
-    ] })), _ = d.flatMap((c) => c.points.map((w) => w.kwh)), g = Math.min(0, ..._), y = Math.max(0.1, ..._), k = Math.max(1, s.totalKwh ?? 0), v = (c) => M + (c - a.start) / (a.end - a.start) * (V - M), f = (c) => E - (c - g) / (y - g) * (E - I), b = (c) => E - c / k * (E - I), S = (c, w) => c.map((ze, rt) => `${rt ? "L" : "M"} ${v(ze.timestamp)} ${w(ze.kwh)}`).join(" "), A = this._selected !== void 0 && this._selected >= a.start && this._selected <= a.end ? this._selected : void 0, te = n(e.solar_forecast_mode === "hourly" ? "forecast.expected" : "forecast.target", t), he = new Intl.DateTimeFormat(t, { timeZone: r, hour: "2-digit", minute: "2-digit", hourCycle: "h23" }), re = (c) => c === a.end ? "24:00" : he.format(c);
+    const u = this.history.filter((h) => h.timestamp >= a.start && h.timestamp <= i && h.timestamp < a.end).sort((h, v) => h.timestamp - v.timestamp), c = d.map((h) => ({ key: h, points: [
+      ...u.filter((v) => Number.isFinite(v[h])).map((v) => ({ timestamp: v.timestamp, kwh: v[h] * (h === "battery" ? l : 1) })),
+      ...p[h] === void 0 ? [] : [{ timestamp: i, kwh: p[h] }]
+    ] })), f = c.flatMap((h) => h.points.map((v) => v.kwh)), g = Math.min(0, ...f), b = Math.max(0.1, ...f), A = Math.max(1, s.totalKwh ?? 0), w = (h) => L + (h - a.start) / (a.end - a.start) * (Z - L), _ = (h) => S - (h - g) / (b - g) * (S - D), y = (h) => S - h / A * (S - D), C = (h, v) => h.map((ae, fe) => `${fe ? "L" : "M"} ${w(ae.timestamp)} ${v(ae.kwh)}`).join(" "), $ = this._selected !== void 0 && this._selected >= a.start && this._selected <= a.end ? this._selected : void 0, M = n(e.solar_forecast_mode === "hourly" ? "forecast.expected" : "forecast.target", t), ie = new Intl.DateTimeFormat(t, { timeZone: r, hour: "2-digit", minute: "2-digit", hourCycle: "h23" }), V = (h) => h === a.end ? "24:00" : ie.format(h);
     return x`
       <section aria-label=${n("forecast.heading", t)}>
         <h2>${n("forecast.heading", t)}</h2>
         <div class="plot" role="group" tabindex="0" aria-label=${n("forecast.inspect", t)}
-          @keydown=${(c) => this.navigate(c, a.start, a.end, i)}
+          @keydown=${(h) => this.navigate(h, a.start, a.end, i)}
           @blur=${() => {
       this._selected = void 0;
     }}>
           <svg viewBox="0 0 480 195" preserveAspectRatio="none" role="img" aria-label=${n("forecast.aria", t)}
-            @pointerdown=${(c) => this.inspect(c, a.start, a.end)}
-            @pointermove=${(c) => this.inspect(c, a.start, a.end)}
-            @pointerleave=${(c) => {
-      c.pointerType === "mouse" && (this._selected = void 0);
+            @pointerdown=${(h) => this.inspect(h, a.start, a.end)}
+            @pointermove=${(h) => this.inspect(h, a.start, a.end)}
+            @pointerleave=${(h) => {
+      h.pointerType === "mouse" && (this._selected = void 0);
     }}
             @pointercancel=${() => {
       this._selected = void 0;
     }}>
-            <text x=${M} y="12">${e.power_unit ?? "kW"}</text>
-            <text class="energy-axis" x=${V} y="12" text-anchor="end">${e.energy_unit ?? "kWh"}</text>
-            ${[0, 0.5, 1].map((c) => C`
-              <line class="grid" x1=${M} x2=${V} y1=${E - c * (E - I)} y2=${E - c * (E - I)}></line>
-              <text x=${M - 6} y=${E - c * (E - I) + 4} text-anchor="end">${K(g + (y - g) * c, e.power_unit, { locale: t }).replace(/\s*(kW|W)$/, "")}</text>
-              <text class="energy-axis" x=${V + 6} y=${b(k * c) + 4}>${ae(k * c, e.energy_unit, t).replace(/\s*(kWh|Wh)$/, "")}</text>
+            <text x=${L} y="12">${e.power_unit ?? "kW"}</text>
+            <text class="energy-axis" x=${Z} y="12" text-anchor="end">${e.energy_unit ?? "kWh"}</text>
+            ${[0, 0.5, 1].map((h) => z`
+              <line class="grid" x1=${L} x2=${Z} y1=${S - h * (S - D)} y2=${S - h * (S - D)}></line>
+              <text x=${L - 6} y=${S - h * (S - D) + 4} text-anchor="end">${J(g + (b - g) * h, e.power_unit, { locale: t }).replace(/\s*(kW|W)$/, "")}</text>
+              <text class="energy-axis" x=${Z + 6} y=${y(A * h) + 4}>${le(A * h, e.energy_unit, t).replace(/\s*(kWh|Wh)$/, "")}</text>
             `)}
-            ${[0, 0.25, 0.5, 0.75, 1].map((c) => {
-      const w = a.start + c * (a.end - a.start);
-      return C`<text x=${v(w)} y="187" text-anchor=${c === 0 ? "start" : c === 1 ? "end" : "middle"}>${re(w)}</text>`;
+            ${[0, 0.25, 0.5, 0.75, 1].map((h) => {
+      const v = a.start + h * (a.end - a.start);
+      return z`<text x=${w(v)} y="187" text-anchor=${h === 0 ? "start" : h === 1 ? "end" : "middle"}>${V(v)}</text>`;
     })}
-            <line class="now" x1=${v(i)} x2=${v(i)} y1=${I} y2=${E}></line>
-            ${d.map(({ key: c, points: w }) => C`
-              <path class="line ${c}" d=${S(w, f)}></path>
-              ${w.length ? C`<circle class=${c} fill="currentColor" cx=${v(w.at(-1).timestamp)} cy=${f(w.at(-1).kwh)} r="3"></circle>` : m}
+            <line class="now" x1=${w(i)} x2=${w(i)} y1=${D} y2=${S}></line>
+            ${c.map(({ key: h, points: v }) => z`
+              <path class="line ${h}" d=${C(v, _)}></path>
+              ${v.length ? z`<circle class=${h} fill="currentColor" cx=${w(v.at(-1).timestamp)} cy=${_(v.at(-1).kwh)} r="3"></circle>` : m}
             `)}
-            ${s.points.length ? C`<path class="line prediction" d=${S(s.points, b)}></path>` : m}
-            ${A === void 0 ? m : C`<line class="selected" x1=${v(A)} x2=${v(A)} y1=${I} y2=${E}></line>`}
+            ${s.points.length ? z`<path class="line prediction" d=${C(s.points, y)}></path>` : m}
+            ${$ === void 0 ? m : z`<line class="selected" x1=${w($)} x2=${w($)} y1=${D} y2=${S}></line>`}
           </svg>
         </div>
         <div class="legend">
-          ${h.map((c) => x`<span class=${c}><i></i>${n(`power.${c}`, t)}</span>`)}
-          <span class="prediction"><i></i>${te}</span>
+          ${d.map((h) => x`<span class=${h}><i></i>${n(`power.${h}`, t)}</span>`)}
+          <span class="prediction"><i></i>${M}</span>
         </div>
         <div class="inspection" aria-live="polite">
-          <span>${A === void 0 ? n("chart.axis_now", t) : re(A)}</span>
-          ${d.map(({ key: c, points: w }) => x`<span>${n(`power.${c}`, t)}: ${K(A === void 0 ? p[c] : Re([w], A), e.power_unit, { locale: t, signed: c === "battery" })}</span>`)}
-          <span>${A === void 0 && e.solar_forecast_mode === "hourly" ? n("energy.forecast_today", t) : te}: ${ae(A === void 0 ? s.totalKwh : Re([s.points], A), e.energy_unit, t)}</span>
+          <span>${$ === void 0 ? n("chart.axis_now", t) : V($)}</span>
+          ${c.map(({ key: h, points: v }) => x`<span>${n(`power.${h}`, t)}: ${J($ === void 0 ? p[h] : Be([v], $), e.power_unit, { locale: t, signed: h === "battery" })}</span>`)}
+          <span>${$ === void 0 && e.solar_forecast_mode === "hourly" ? n("energy.forecast_today", t) : M}: ${le($ === void 0 ? s.totalKwh : Be([s.points], $), e.energy_unit, t)}</span>
         </div>
         ${s.status === "ok" ? m : x`<p class="note">${n(
       s.status === "incomplete" ? "forecast.incomplete" : s.status === "invalid" ? "forecast.invalid" : "forecast.missing",
@@ -950,13 +954,13 @@ const M = 64, V = 416, I = 28, E = 162, se = class se extends N {
     `;
   }
 };
-se.properties = {
+ce.properties = {
   hass: { attribute: !1 },
   config: { attribute: !1 },
   history: { attribute: !1 },
   historyFailed: { type: Boolean },
   _selected: { state: !0 }
-}, se.styles = ke`
+}, ce.styles = Se`
     :host { display: block; color: var(--primary-text-color, #101521); --forecast-color: #168bba; }
     h2 { font-size: 14px; margin: 0 0 8px; }
     .plot { outline-offset: 3px; border-radius: 4px; }
@@ -982,10 +986,10 @@ se.properties = {
     .inspection { margin-top: 6px; overflow-wrap: anywhere; }
     .note { margin: 6px 0 0; font-size: 12px; line-height: 1.5; color: var(--secondary-text-color, #687286); }
   `;
-let ve = se;
-typeof customElements < "u" && !customElements.get("solar-forecast-chart") && customElements.define("solar-forecast-chart", ve);
-var Ht = "M16.67,4H15V2H9V4H7.33A1.33,1.33 0 0,0 6,5.33V20.66C6,21.4 6.6,22 7.33,22H16.66C17.4,22 18,21.4 18,20.67V5.33C18,4.6 17.4,4 16.67,4M11,20V14.5H9L13,7V12.5H15";
-function Tt(o, e, t) {
+let xe = ce;
+typeof customElements < "u" && !customElements.get("solar-forecast-chart") && customElements.define("solar-forecast-chart", xe);
+var Tt = "M16.67,4H15V2H9V4H7.33A1.33,1.33 0 0,0 6,5.33V20.66C6,21.4 6.6,22 7.33,22H16.66C17.4,22 18,21.4 18,20.67V5.33C18,4.6 17.4,4 16.67,4M11,20V14.5H9L13,7V12.5H15";
+function Mt(o, e, t) {
   if (!(o === void 0 || !Number.isFinite(o) || o < 0 || o > 100 || !Number.isFinite(e) || e <= 0 || !Number.isFinite(t) || t < 0 || t >= 100))
     return {
       usableKwh: e * ((100 - t) / 100),
@@ -993,19 +997,19 @@ function Tt(o, e, t) {
       aboveReserveKwh: e * (Math.max(o - t, 0) / 100)
     };
 }
-function Mt(o, e, t, r = 0, i = /* @__PURE__ */ new Date()) {
-  const a = Tt(o, t, r);
+function It(o, e, t, r = 0, i = /* @__PURE__ */ new Date()) {
+  const a = Mt(o, t, r);
   if (!a || e === void 0 || !Number.isFinite(e) || !Number.isFinite(i.getTime()))
     return;
   if (e <= 0.05 && a.aboveReserveKwh === 0) return { kind: "at_reserve" };
   const s = e > 0.05 ? "full" : e < -0.05 ? "reserve" : void 0;
   if (!s) return;
-  const h = s === "full" ? a.toFullKwh : a.aboveReserveKwh;
-  if (h <= 0) return;
-  const l = new Date(i.getTime() + h / Math.abs(e) * 36e5);
+  const d = s === "full" ? a.toFullKwh : a.aboveReserveKwh;
+  if (d <= 0) return;
+  const l = new Date(i.getTime() + d / Math.abs(e) * 36e5);
   return Number.isFinite(l.getTime()) ? { kind: s, time: l } : void 0;
 }
-function It(o, e, t = /* @__PURE__ */ new Date(), r) {
+function Lt(o, e, t = /* @__PURE__ */ new Date(), r) {
   const i = new Intl.DateTimeFormat("en-CA", { timeZone: r, year: "numeric", month: "2-digit", day: "2-digit" }), a = i.format(o) !== i.format(t);
   return new Intl.DateTimeFormat(e, {
     timeZone: r,
@@ -1014,7 +1018,7 @@ function It(o, e, t = /* @__PURE__ */ new Date(), r) {
     ...a ? { year: "numeric", month: "short", day: "numeric" } : {}
   }).format(o);
 }
-const Dt = ke`
+const Dt = Se`
   :host {
     display: block;
     color: var(--primary-text-color, #111522);
@@ -1690,7 +1694,7 @@ const Dt = ke`
       border-top: 1px solid var(--divider-color, #e2e5e9);
     }
   }
-`, Lt = {
+`, Nt = {
   battery_positive_is_charging: !0,
   grid_positive_is_export: !0,
   show_power_chart: !0,
@@ -1705,13 +1709,13 @@ const Dt = ke`
   solar_forecast_input_unit: "kWh",
   solar_forecast_interval_minutes: 60,
   solar_forecast_time_is_end: !1
-}, Nt = [
+}, Ft = [
   "battery_soc",
   "solar_power",
   "home_power",
   "battery_power",
   "grid_power"
-], Ft = [
+], Ot = [
   "title",
   "power_unit",
   "energy_unit",
@@ -1739,7 +1743,7 @@ const Dt = ke`
   "battery_positive_is_charging",
   "grid_positive_is_export",
   "show_power_chart"
-], Ot = [
+], Wt = [
   "solar_forecast_today",
   "show_forecast_line",
   "solar_forecast_mode",
@@ -1755,19 +1759,19 @@ const Dt = ke`
   "battery_positive_is_charging",
   "grid_positive_is_export"
 ];
-function Wt(o) {
-  return Ft.includes(o);
-}
 function Rt(o) {
   return Ot.includes(o);
 }
-function W(o, e) {
+function Ut(o) {
+  return Wt.includes(o);
+}
+function U(o, e) {
   return n(`editor.field.${o}`, e);
 }
-function Ut(o, e) {
+function Bt(o, e) {
   return n(`editor.helper.${o}`, e);
 }
-function Bt(o) {
+function qt(o) {
   return {
     schema: [
       { name: "title", selector: { text: {} } },
@@ -1860,28 +1864,28 @@ function Bt(o) {
         ]
       }
     ],
-    computeLabel: (e) => e.name && Wt(e.name) ? W(e.name, o) : void 0,
-    computeHelper: (e) => e.name && Rt(e.name) ? Ut(e.name, o) : void 0,
-    assertConfig: (e) => tt(e, o)
+    computeLabel: (e) => e.name && Rt(e.name) ? U(e.name, o) : void 0,
+    computeHelper: (e) => e.name && Ut(e.name) ? Bt(e.name, o) : void 0,
+    assertConfig: (e) => ot(e, o)
   };
 }
-function tt(o, e) {
-  o = Q(o);
+function ot(o, e) {
+  o = re(o);
   for (const [i, a] of [["power_unit", ["W", "kW"]], ["energy_unit", ["Wh", "kWh"]]])
     if (!a.includes(o[i]))
-      throw new Error(n("editor.error.unit", e, { field: W(i, e) }));
+      throw new Error(n("editor.error.unit", e, { field: U(i, e) }));
   if (o.solar_forecast_today !== void 0 && (typeof o.solar_forecast_today != "string" || !/^sensor\.[a-z0-9_]+$/.test(o.solar_forecast_today)))
     throw new Error(n("editor.error.forecast_entity", e));
   if (!["daily", "hourly"].includes(o.solar_forecast_mode))
     throw new Error(n("editor.error.forecast_mode", e));
   for (const i of ["show_forecast_line", "solar_forecast_time_is_end"])
-    if (typeof o[i] != "boolean") throw new Error(n("editor.error.boolean", e, { field: W(i, e) }));
+    if (typeof o[i] != "boolean") throw new Error(n("editor.error.boolean", e, { field: U(i, e) }));
   if (o.solar_forecast_mode === "hourly") {
     for (const a of ["solar_forecast_attribute", "solar_forecast_time_field", "solar_forecast_value_field"])
       if (typeof o[a] != "string" || !/^[a-zA-Z0-9_]+(?:\.[a-zA-Z0-9_]+)*$/.test(o[a]))
-        throw new Error(n("editor.error.forecast_path", e, { field: W(a, e) }));
+        throw new Error(n("editor.error.forecast_path", e, { field: U(a, e) }));
     if (!["Wh", "kWh", "MWh", "W", "kW"].includes(o.solar_forecast_input_unit))
-      throw new Error(n("editor.error.unit", e, { field: W("solar_forecast_input_unit", e) }));
+      throw new Error(n("editor.error.unit", e, { field: U("solar_forecast_input_unit", e) }));
     const i = o.solar_forecast_interval_minutes;
     if (typeof i != "number" || !Number.isInteger(i) || i < 1 || i > 1440)
       throw new Error(n("editor.error.forecast_interval", e));
@@ -1893,58 +1897,58 @@ function tt(o, e) {
     throw new Error(n("editor.error.lower_soc", e));
   if (r !== 0 && t === void 0)
     throw new Error(n("editor.error.reserve_requires_capacity", e));
-  for (const i of Nt)
+  for (const i of Ft)
     if (!o[i] || typeof o[i] != "string")
       throw new Error(
         n("editor.error.required", e, {
-          field: W(i, e)
+          field: U(i, e)
         })
       );
 }
-function qt(o, e) {
+function Vt(o, e) {
   return o.title !== void 0 ? o.title : n("card.default_title", e);
 }
-function Q(o) {
+function re(o) {
   const e = { ...o };
   for (const t of ["power_unit", "energy_unit", "solar_forecast_today", "battery_total_capacity", "battery_lower_soc", "show_forecast_line", "solar_forecast_mode", "solar_forecast_attribute", "solar_forecast_time_field", "solar_forecast_value_field", "solar_forecast_input_unit", "solar_forecast_interval_minutes", "solar_forecast_time_is_end"]) {
     const r = e[t];
     (r == null || r === "") && delete e[t];
   }
   return {
-    ...Lt,
+    ...Nt,
     ...e,
     type: o.type || "custom:solar-battery-card"
   };
 }
-function j(o, e, t) {
+function K(o, e, t) {
   return o ? Object.values(o.states).find((i) => {
     if (i.attributes.device_class !== e) return !1;
     const a = `${i.entity_id} ${i.attributes.friendly_name ?? ""}`.toLowerCase();
     return t.some((s) => a.includes(s));
   })?.entity_id ?? "" : "";
 }
-function Vt(o) {
-  return Q({
+function jt(o) {
+  return re({
     type: "custom:solar-battery-card",
-    battery_soc: j(o, "battery", ["battery", "storage"]) || "sensor.battery_state_of_charge",
-    solar_power: j(o, "power", ["solar", "pv"]) || "sensor.solar_power",
-    home_power: j(o, "power", ["home", "house", "load"]) || "sensor.home_power",
-    battery_power: j(o, "power", ["battery", "storage"]) || "sensor.battery_power",
-    grid_power: j(o, "power", ["grid"]) || "sensor.grid_power"
+    battery_soc: K(o, "battery", ["battery", "storage"]) || "sensor.battery_state_of_charge",
+    solar_power: K(o, "power", ["solar", "pv"]) || "sensor.solar_power",
+    home_power: K(o, "power", ["home", "house", "load"]) || "sensor.home_power",
+    battery_power: K(o, "power", ["battery", "storage"]) || "sensor.battery_power",
+    grid_power: K(o, "power", ["grid"]) || "sensor.grid_power"
   });
 }
-async function jt() {
+async function Gt() {
   if (customElements.get("ha-form")) return;
   if (await (await (await window.loadCardHelpers?.())?.createCardElement({ type: "button" }))?.constructor?.getConfigElement?.(), !customElements.get("ha-form"))
     throw new Error("Home Assistant's form editor is unavailable.");
 }
-const ne = class ne extends N {
+const de = class de extends O {
   setConfig(e) {
-    this.getLocalizedForm().assertConfig(e), this._config = Q(e), this._error = void 0;
+    this.getLocalizedForm().assertConfig(e), this._config = re(e), this._error = void 0;
   }
   getLocalizedForm() {
     const e = this.hass?.locale?.language ?? this.hass?.language;
-    return Bt(e);
+    return qt(e);
   }
   render() {
     if (!this.hass || !this._config) return m;
@@ -1963,7 +1967,7 @@ const ne = class ne extends N {
   }
   _valueChanged(e) {
     e.stopPropagation();
-    const t = Q(e.detail.value);
+    const t = re(e.detail.value);
     this._config = t;
     try {
       this.getLocalizedForm().assertConfig(t), this._error = void 0;
@@ -1980,11 +1984,11 @@ const ne = class ne extends N {
     );
   }
 };
-ne.properties = {
+de.properties = {
   hass: { attribute: !1 },
   _config: { state: !0 },
   _error: { state: !0 }
-}, ne.styles = ke`
+}, de.styles = Se`
     :host {
       display: block;
     }
@@ -1992,32 +1996,32 @@ ne.properties = {
       color: var(--error-color, #db4437);
     }
   `;
-let be = ne;
-function Gt(o, e, t, r) {
+let $e = de;
+function Zt(o, e, t, r) {
   if (r <= 1 || t <= 0) return 0;
   const i = Math.min(1, Math.max(0, (o - e) / t));
   return Math.round(i * (r - 1));
 }
-function Zt(o, e) {
+function Kt(o, e) {
   return e <= 1 ? 0 : Math.min(e - 1, Math.max(0, o)) / (e - 1) * 100;
 }
-function Kt(o, e, t, r, i = 166, a = 88, s = 14) {
-  const h = Math.min(t, Math.max(0, o)), l = Math.min(
+function Yt(o, e, t, r, i = 166, a = 88, s = 14) {
+  const d = Math.min(t, Math.max(0, o)), l = Math.min(
     Math.max(4, r - a - 4),
     Math.max(4, e - a / 2)
   );
   return {
-    x: h,
+    x: d,
     top: l,
-    placement: h + s + i > t ? "place-left" : "place-right"
+    placement: d + s + i > t ? "place-left" : "place-right"
   };
 }
-const Yt = 24, Ue = 24;
-function fe(o, e) {
+const Xt = 24, qe = 24;
+function me(o, e) {
   return o.find((t) => t.some((r) => r.entity_id === e)) ?? [];
 }
-function Be(o, e) {
-  return o ? H({
+function Ve(o, e) {
+  return o ? T({
     ...o,
     attributes: {
       ...e?.attributes,
@@ -2025,65 +2029,65 @@ function Be(o, e) {
     }
   }) ?? 0 : 0;
 }
-function _e(o, e, t) {
+function ye(o, e, t) {
   if (o.length === 0) return 0;
   let r = o[0], i = o.at(-1) ?? o[0];
   for (const u of o) {
-    const d = Date.parse(u.last_changed ?? u.last_updated ?? "");
-    if (Number.isFinite(d) && (d <= e && (r = u), d >= e)) {
+    const c = Date.parse(u.last_changed ?? u.last_updated ?? "");
+    if (Number.isFinite(c) && (c <= e && (r = u), c >= e)) {
       i = u;
       break;
     }
   }
-  const a = Date.parse(r.last_changed ?? r.last_updated ?? ""), s = Date.parse(i.last_changed ?? i.last_updated ?? ""), h = Be(r, t), l = Be(i, t);
+  const a = Date.parse(r.last_changed ?? r.last_updated ?? ""), s = Date.parse(i.last_changed ?? i.last_updated ?? ""), d = Ve(r, t), l = Ve(i, t);
   if (!Number.isFinite(a) || !Number.isFinite(s) || a === s)
-    return h;
+    return d;
   const p = Math.min(
     1,
     Math.max(0, (e - a) / (s - a))
   );
-  return h + (l - h) * p;
+  return d + (l - d) * p;
 }
-async function Xt(o, e, t = /* @__PURE__ */ new Date(), r = new Date(t.getTime() - Yt * 60 * 60 * 1e3)) {
-  const i = t, a = [e.solar, e.home, e.battery], s = `history/period/${encodeURIComponent(r.toISOString())}?end_time=${encodeURIComponent(i.toISOString())}&filter_entity_id=${encodeURIComponent(a.join(","))}&minimal_response&no_attributes&significant_changes_only=0`, h = await o.callApi("GET", s), l = fe(h, e.solar), p = fe(h, e.home), u = fe(h, e.battery);
-  return !l.length && !p.length && !u.length ? [] : Array.from({ length: Ue }, (d, _) => {
-    const g = r.getTime() + _ / (Ue - 1) * (i.getTime() - r.getTime());
+async function Jt(o, e, t = /* @__PURE__ */ new Date(), r = new Date(t.getTime() - Xt * 60 * 60 * 1e3)) {
+  const i = t, a = [e.solar, e.home, e.battery], s = `history/period/${encodeURIComponent(r.toISOString())}?end_time=${encodeURIComponent(i.toISOString())}&filter_entity_id=${encodeURIComponent(a.join(","))}&minimal_response&no_attributes&significant_changes_only=0`, d = await o.callApi("GET", s), l = me(d, e.solar), p = me(d, e.home), u = me(d, e.battery);
+  return !l.length && !p.length && !u.length ? [] : Array.from({ length: qe }, (c, f) => {
+    const g = r.getTime() + f / (qe - 1) * (i.getTime() - r.getTime());
     return {
       timestamp: g,
-      solar: Math.max(0, _e(l, g, o.states[e.solar])),
-      home: Math.max(0, _e(p, g, o.states[e.home])),
-      battery: _e(u, g, o.states[e.battery])
+      solar: Math.max(0, ye(l, g, o.states[e.solar])),
+      home: Math.max(0, ye(p, g, o.states[e.home])),
+      battery: ye(u, g, o.states[e.battery])
     };
   });
 }
-const z = 480, D = 126, Jt = 300 * 1e3;
-function ge(o, e, t) {
+const P = 480, N = 126, Qt = 300 * 1e3;
+function ve(o, e, t) {
   return Math.min(t, Math.max(e, o));
 }
-function qe(o, e, t, r) {
+function je(o, e, t, r) {
   if (o.length === 0) return [];
   const i = Math.max(0.1, r - t);
   return o.map((a, s) => [
-    s / Math.max(1, o.length - 1) * z,
-    4 + (r - a[e]) / i * (D - 8)
+    s / Math.max(1, o.length - 1) * P,
+    4 + (r - a[e]) / i * (N - 8)
   ]);
 }
-function Qt(o) {
-  return o.length === 0 ? "" : o.length === 1 ? `M 0 ${o[0][1]} L ${z} ${o[0][1]}` : o.slice(1).reduce((e, [t, r], i) => {
-    const [a, s] = o[i], h = (a + t) / 2;
-    return `${e} C ${h} ${s}, ${h} ${r}, ${t} ${r}`;
+function er(o) {
+  return o.length === 0 ? "" : o.length === 1 ? `M 0 ${o[0][1]} L ${P} ${o[0][1]}` : o.slice(1).reduce((e, [t, r], i) => {
+    const [a, s] = o[i], d = (a + t) / 2;
+    return `${e} C ${d} ${s}, ${d} ${r}, ${t} ${r}`;
   }, `M ${o[0][0]} ${o[0][1]}`);
 }
-function er(o, e, t, r = Date.now()) {
+function tr(o, e, t, r = Date.now()) {
   const i = [0, 0.02, 0.08, 0.28, 0.58, 0.86, 1, 0.93, 0.7, 0.32, 0.08], a = [0.58, 0.59, 0.6, 0.68, 0.76, 0.78, 0.92, 0.88, 1, 0.98, 1.04], s = [0.25, 0.25, 0.27, 0.38, 0.58, 0.78, 1, 0.96, 0.7, 0.36, 0.2];
-  return i.map((h, l) => ({
+  return i.map((d, l) => ({
     timestamp: r - (i.length - 1 - l) * 2.4 * 60 * 60 * 1e3,
-    solar: h * Math.max(o, 0.1),
+    solar: d * Math.max(o, 0.1),
     home: a[l] * Math.max(e, 0.1),
     battery: s[l] * t
   }));
 }
-const le = class le extends N {
+const he = class he extends O {
   constructor() {
     super(...arguments), this._history = [], this._historyLoading = !1, this._historyFailed = !1, this._lastHistoryKey = "", this._lastHistoryFetch = 0, this._historyRequest = 0;
   }
@@ -2096,13 +2100,13 @@ const le = class le extends N {
     super.disconnectedCallback(), clearInterval(this._historyTimer), this._historyRequest++, this._historyLoading = !1;
   }
   static async getConfigElement() {
-    return await jt(), document.createElement("solar-battery-card-editor");
+    return await Gt(), document.createElement("solar-battery-card-editor");
   }
   static getStubConfig(e) {
-    return Vt(e);
+    return jt(e);
   }
   setConfig(e) {
-    tt(e), this._config = Q({ ...e });
+    ot(e), this._config = re({ ...e });
   }
   getCardSize() {
     return this._config?.show_power_chart === !1 ? 8 : 12;
@@ -2125,19 +2129,19 @@ const le = class le extends N {
       this._historyRequest++, this._historyLoading = !1, this._lastHistoryFetch = 0;
       return;
     }
-    const r = Date.now(), i = e.show_forecast_line ? ye(new Date(r), t.config?.time_zone).start : void 0, a = [e.solar_power, e.home_power, e.battery_power, i ?? "rolling"].join("|");
-    if (a === this._lastHistoryKey && (this._historyLoading || r - this._lastHistoryFetch < Jt))
+    const r = Date.now(), i = e.show_forecast_line ? we(new Date(r), t.config?.time_zone).start : void 0, a = [e.solar_power, e.home_power, e.battery_power, i ?? "rolling"].join("|");
+    if (a === this._lastHistoryKey && (this._historyLoading || r - this._lastHistoryFetch < Qt))
       return;
     a !== this._lastHistoryKey && (this._history = []);
     const s = ++this._historyRequest;
     this._historyLoading = !0, this._historyFailed = !1, this._lastHistoryKey = a, this._lastHistoryFetch = r;
     try {
-      const h = await Xt(t, {
+      const d = await Jt(t, {
         solar: e.solar_power,
         home: e.home_power,
         battery: e.battery_power
       }, new Date(r), i === void 0 ? void 0 : new Date(i));
-      s === this._historyRequest && (this._history = h);
+      s === this._historyRequest && (this._history = d);
     } catch {
       s === this._historyRequest && (this._history = [], this._historyFailed = !0);
     } finally {
@@ -2146,13 +2150,13 @@ const le = class le extends N {
   }
   _inspectChart(e, t) {
     const r = e.currentTarget.getBoundingClientRect();
-    this._chartPointer = Kt(
+    this._chartPointer = Yt(
       e.clientX - r.left,
       e.clientY - r.top,
       r.width,
       r.height
     );
-    const i = Gt(
+    const i = Zt(
       e.clientX,
       r.left,
       r.width,
@@ -2174,27 +2178,27 @@ const le = class le extends N {
     if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) return;
     e.preventDefault();
     const r = this._activeChartIndex ?? t - 1;
-    this._activeChartIndex = e.key === "Home" ? 0 : e.key === "End" ? t - 1 : ge(r + (e.key === "ArrowLeft" ? -1 : 1), 0, t - 1);
+    this._activeChartIndex = e.key === "Home" ? 0 : e.key === "End" ? t - 1 : ve(r + (e.key === "ArrowLeft" ? -1 : 1), 0, t - 1);
   }
   _renderChart(e, t) {
-    const r = e.flatMap((f) => [
-      f.solar,
-      f.home,
-      f.battery
+    const r = e.flatMap((_) => [
+      _.solar,
+      _.home,
+      _.battery
     ]), i = Math.min(0, ...r), a = Math.max(
       0.1,
       ...r
-    ), s = Math.max(0.1, a - i), h = 4 + a / s * (D - 8), l = ["solar", "home", "battery"].map((f) => {
-      const b = qe(e, f, i, a);
+    ), s = Math.max(0.1, a - i), d = 4 + a / s * (N - 8), l = ["solar", "home", "battery"].map((_) => {
+      const y = je(e, _, i, a);
       return {
-        key: f,
-        path: Qt(b),
-        end: b.at(-1) ?? [z, D]
+        key: _,
+        path: er(y),
+        end: y.at(-1) ?? [P, N]
       };
-    }), p = this._activeChartIndex === void 0 ? void 0 : ge(this._activeChartIndex, 0, e.length - 1), u = p === void 0 ? void 0 : e[p], d = p === void 0 ? void 0 : p / Math.max(1, e.length - 1) * z, _ = p === void 0 ? void 0 : Zt(p, e.length), g = p === void 0 ? [] : ["solar", "home", "battery"].map((f) => ({
-      key: f,
-      coordinate: qe(e, f, i, a)[p]
-    })), y = this._chartPointer?.placement ?? (_ !== void 0 && _ > 64 ? "place-left" : "place-right"), k = this._chartPointer ? `left: ${this._chartPointer.x}px; top: ${this._chartPointer.top}px` : `left: ${_ ?? 0}%`, v = u ? new Intl.DateTimeFormat(t, {
+    }), p = this._activeChartIndex === void 0 ? void 0 : ve(this._activeChartIndex, 0, e.length - 1), u = p === void 0 ? void 0 : e[p], c = p === void 0 ? void 0 : p / Math.max(1, e.length - 1) * P, f = p === void 0 ? void 0 : Kt(p, e.length), g = p === void 0 ? [] : ["solar", "home", "battery"].map((_) => ({
+      key: _,
+      coordinate: je(e, _, i, a)[p]
+    })), b = this._chartPointer?.placement ?? (f !== void 0 && f > 64 ? "place-left" : "place-right"), A = this._chartPointer ? `left: ${this._chartPointer.x}px; top: ${this._chartPointer.top}px` : `left: ${f ?? 0}%`, w = u ? new Intl.DateTimeFormat(t, {
       hour: "numeric",
       minute: "2-digit"
     }).format(u.timestamp) : "";
@@ -2204,67 +2208,67 @@ const le = class le extends N {
         role="group"
         tabindex="0"
         aria-label=${n("chart.aria", t)}
-        @pointerdown=${(f) => this._inspectChart(f, e.length)}
-        @pointermove=${(f) => this._inspectChart(f, e.length)}
+        @pointerdown=${(_) => this._inspectChart(_, e.length)}
+        @pointermove=${(_) => this._inspectChart(_, e.length)}
         @pointerleave=${this._leaveChart}
         @pointercancel=${this._clearChartInspection}
-        @keydown=${(f) => this._navigateChart(f, e.length)}
+        @keydown=${(_) => this._navigateChart(_, e.length)}
         @blur=${this._clearChartInspection}
       >
         <svg
-          viewBox="0 0 ${z} ${D}"
+          viewBox="0 0 ${P} ${N}"
           role="img"
           aria-label=${n("chart.svg_aria", t)}
           preserveAspectRatio="none"
         >
-          ${[0, 1, 2, 3].map((f) => {
-      const b = f / 3 * D;
-      return C`<line class="grid-line" x1="0" y1=${b} x2=${z} y2=${b}></line>`;
+          ${[0, 1, 2, 3].map((_) => {
+      const y = _ / 3 * N;
+      return z`<line class="grid-line" x1="0" y1=${y} x2=${P} y2=${y}></line>`;
     })}
-          ${[0, 1, 2, 3, 4].map((f) => {
-      const b = f / 4 * z;
-      return C`<line class="grid-line" x1=${b} y1="0" x2=${b} y2=${D}></line>`;
+          ${[0, 1, 2, 3, 4].map((_) => {
+      const y = _ / 4 * P;
+      return z`<line class="grid-line" x1=${y} y1="0" x2=${y} y2=${N}></line>`;
     })}
           <line
             class="zero-line"
             x1="0"
-            y1=${h}
-            x2=${z}
-            y2=${h}
+            y1=${d}
+            x2=${P}
+            y2=${d}
           ></line>
           ${l.map(
-      ({ key: f, path: b, end: S }) => C`
-              <path class="chart-line ${f}" d=${b}></path>
-              <circle class="end-dot ${f}" cx=${S[0]} cy=${S[1]} r="4.5"></circle>
+      ({ key: _, path: y, end: C }) => z`
+              <path class="chart-line ${_}" d=${y}></path>
+              <circle class="end-dot ${_}" cx=${C[0]} cy=${C[1]} r="4.5"></circle>
             `
     )}
-          ${d === void 0 ? m : C`
+          ${c === void 0 ? m : z`
                 <line
                   class="inspection-line"
-                  x1=${d}
+                  x1=${c}
                   y1="0"
-                  x2=${d}
-                  y2=${D}
+                  x2=${c}
+                  y2=${N}
                 ></line>
                 ${g.map(
-      ({ key: f, coordinate: b }) => C`
+      ({ key: _, coordinate: y }) => z`
                     <circle
-                      class="inspection-dot ${f}"
-                      cx=${b[0]}
-                      cy=${b[1]}
+                      class="inspection-dot ${_}"
+                      cx=${y[0]}
+                      cy=${y[1]}
                       r="5"
                     ></circle>
                   `
     )}
               `}
         </svg>
-        ${u && _ !== void 0 ? x`
+        ${u && f !== void 0 ? x`
               <div
-                class="chart-tooltip ${y}"
-                style=${k}
+                class="chart-tooltip ${b}"
+                style=${A}
                 aria-live="polite"
               >
-                <time>${v}</time>
+                <time>${w}</time>
                 ${[
       { key: "solar", label: n("power.solar", t), value: u.solar, signed: !1 },
       { key: "home", label: n("power.home", t), value: u.home, signed: !1 },
@@ -2275,12 +2279,12 @@ const le = class le extends N {
         signed: !0
       }
     ].map(
-      (f) => x`
-                    <div class="tooltip-item ${f.key}">
-                      <span><i></i>${f.label}</span>
+      (_) => x`
+                    <div class="tooltip-item ${_.key}">
+                      <span><i></i>${_.label}</span>
                       <strong>
-                        ${K(f.value, this._config?.power_unit, {
-        signed: f.signed,
+                        ${J(_.value, this._config?.power_unit, {
+        signed: _.signed,
         locale: t
       })}
                       </strong>
@@ -2295,61 +2299,64 @@ const le = class le extends N {
   render() {
     const e = this._config;
     if (!e) return m;
-    const t = this.hass, r = t?.locale?.language ?? t?.language, i = Ce($(t, e.battery_soc)), a = ge(
+    const t = this.hass, r = t?.locale?.language ?? t?.language, i = He(k(t, e.battery_soc)), a = ve(
       i ?? 0,
       0,
       100
-    ), s = Math.max(0, H($(t, e.solar_power)) ?? 0), h = Math.max(0, H($(t, e.home_power)) ?? 0), l = H($(t, e.battery_power)), p = l ?? 0, u = H($(t, e.grid_power)) ?? 0, d = e.battery_positive_is_charging === !1 ? -1 : 1, _ = d * p, g = (e.grid_positive_is_export === !1 ? -1 : 1) * u, y = _ > 0.05 ? "charging" : _ < -0.05 ? "discharging" : "idle", k = n(y === "charging" ? "status.charging" : y === "discharging" ? "status.discharging" : "status.idle", r), v = /* @__PURE__ */ new Date(), f = e.battery_total_capacity === void 0 ? void 0 : Mt(
+    ), s = Math.max(0, T(k(t, e.solar_power)) ?? 0), d = Math.max(0, T(k(t, e.home_power)) ?? 0), l = T(k(t, e.battery_power)), p = l ?? 0, u = T(k(t, e.grid_power)), c = e.battery_positive_is_charging === !1 ? -1 : 1, f = c * p, g = u === void 0 ? void 0 : (e.grid_positive_is_export === !1 ? -1 : 1) * u, b = Math.max(0, g ?? 0), A = Math.max(0, -(g ?? 0)), w = n(
+      b > 0 ? "power.export" : A > 0 ? "power.import" : "power.grid",
+      r
+    ), _ = g === void 0 ? void 0 : b + A, y = f > 0.05 ? "charging" : f < -0.05 ? "discharging" : "idle", C = n(y === "charging" ? "status.charging" : y === "discharging" ? "status.discharging" : "status.idle", r), $ = /* @__PURE__ */ new Date(), M = e.battery_total_capacity === void 0 ? void 0 : It(
       i,
-      l === void 0 ? void 0 : d * l,
+      l === void 0 ? void 0 : c * l,
       e.battery_total_capacity,
       e.battery_lower_soc,
-      v
-    ), b = e.battery_total_capacity !== void 0 ? void 0 : At(
+      $
+    ), ie = e.battery_total_capacity !== void 0 ? void 0 : Et(
       a,
-      Math.max(0, _),
+      Math.max(0, f),
       e.battery_capacity,
-      v
-    ), S = new Intl.DateTimeFormat(r, {
+      $
+    ), V = new Intl.DateTimeFormat(r, {
       hour: "numeric",
       minute: "2-digit"
-    }), A = f?.kind === "at_reserve" ? n("battery.at_reserve", r) : f ? n(f.kind === "full" ? "battery.full_by" : "battery.reserve_by", r, {
-      time: It(f.time, r, v, t?.config?.time_zone)
-    }) : b ? n("battery.full_by", r, { time: S.format(b) }) : y === "charging" ? n("battery.charging_now", r) : k, te = this._history.length > 1 ? this._history.map((c) => ({
-      ...c,
-      battery: d * c.battery
-    })) : er(s, h, _), he = [
+    }), h = M?.kind === "at_reserve" ? n("battery.at_reserve", r) : M ? n(M.kind === "full" ? "battery.full_by" : "battery.reserve_by", r, {
+      time: Lt(M.time, r, $, t?.config?.time_zone)
+    }) : ie ? n("battery.full_by", r, { time: V.format(ie) }) : y === "charging" ? n("battery.charging_now", r) : C, v = this._history.length > 1 ? this._history.map((E) => ({
+      ...E,
+      battery: c * E.battery
+    })) : tr(s, d, f), ae = [
       {
         label: n("energy.generated", r),
-        value: G($(t, e.solar_energy_today)),
+        value: Y(k(t, e.solar_energy_today)),
         tone: "solar"
       },
       {
         label: n("energy.consumed", r),
-        value: G($(t, e.home_energy_today)),
+        value: Y(k(t, e.home_energy_today)),
         tone: "home"
       },
       {
         label: n("energy.stored", r),
-        value: G($(t, e.battery_energy_today)),
+        value: Y(k(t, e.battery_energy_today)),
         tone: "battery"
       },
       {
         label: n("energy.exported", r),
-        value: G($(t, e.export_energy_today)),
+        value: Y(k(t, e.export_energy_today)),
         tone: "export"
       }
-    ], re = s >= h && _ > 0.05 && g > 0.05 ? n("footer.solar_home_battery_export", r) : s >= h && _ > 0.05 ? n("footer.solar_home_battery", r) : s >= h ? n("footer.solar_home", r) : n("footer.drawing", r);
+    ], fe = s >= d && f > 0.05 && b > 0.05 ? n("footer.solar_home_battery_export", r) : s >= d && f > 0.05 ? n("footer.solar_home_battery", r) : s >= d ? n("footer.solar_home", r) : n("footer.drawing", r);
     return x`
       <ha-card>
         <div class="card">
           <header class="header">
             <div class="title-group">
               <div class="icon-tile" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d=${Ht}></path></svg>
+                <svg viewBox="0 0 24 24"><path d=${Tt}></path></svg>
               </div>
               <div>
-                <h1>${qt(e, r)}</h1>
+                <h1>${Vt(e, r)}</h1>
                 <p class="subtitle">
                   ${n("card.subtitle", r)}
                   <span aria-hidden="true">·</span>
@@ -2359,7 +2366,7 @@ const le = class le extends N {
             </div>
             <div class="status ${y}">
               <span class="dot"></span>
-              ${k}
+              ${C}
             </div>
           </header>
 
@@ -2367,7 +2374,7 @@ const le = class le extends N {
             <div>
               <div class="percentage">${Math.round(a)}<span>%</span></div>
               <strong class="forecast">
-                ${A}
+                ${h}
               </strong>
             </div>
             <div
@@ -2387,7 +2394,7 @@ const le = class le extends N {
                 ${n(y === "charging" ? "battery.charging" : y === "discharging" ? "battery.supplying" : "battery.idle", r)}
               </span>
               <strong>
-                ${K(_, e.power_unit, {
+                ${J(f, e.power_unit, {
       signed: !0,
       locale: r
     })}
@@ -2398,16 +2405,16 @@ const le = class le extends N {
           <section class="power-stats" aria-label=${n("power.aria", r)}>
             ${[
       { label: n("power.solar", r), value: s, tone: "solar", signed: !1 },
-      { label: n("power.home", r), value: h, tone: "home", signed: !1 },
-      { label: n("power.battery", r), value: _, tone: "battery", signed: !0 },
-      { label: n("power.export", r), value: g, tone: "export", signed: !1 }
+      { label: n("power.home", r), value: d, tone: "home", signed: !1 },
+      { label: n("power.battery", r), value: f, tone: "battery", signed: !0 },
+      { label: w, value: _, tone: "export", signed: !1 }
     ].map(
-      (c) => x`
-                <div class="power-stat ${c.tone}">
-                  <span>${c.label}</span>
+      (E) => x`
+                <div class="power-stat ${E.tone}">
+                  <span>${E.label}</span>
                   <strong>
-                    ${K(c.value, this._config?.power_unit, {
-        signed: c.signed,
+                    ${J(E.value, this._config?.power_unit, {
+        signed: E.signed,
         locale: r
       })}
                   </strong>
@@ -2424,9 +2431,9 @@ const le = class le extends N {
                 <section class="chart-section">
                   <div class="section-heading">
                     <h2>${n("chart.heading", r)}</h2>
-                    <time>${S.format(/* @__PURE__ */ new Date())}</time>
+                    <time>${V.format(/* @__PURE__ */ new Date())}</time>
                   </div>
-                  ${this._renderChart(te, r)}
+                  ${this._renderChart(v, r)}
                   <div class="chart-axis" aria-hidden="true">
                     <span>${n("chart.axis_start", r)}</span>
                     <span>18h</span>
@@ -2444,15 +2451,15 @@ const le = class le extends N {
               `}
 
           <section class="energy-stats" aria-label=${n("energy.aria", r)}>
-            ${he.map(
-      (c) => x`
-                <div class="energy-stat ${c.tone}">
+            ${ae.map(
+      (E) => x`
+                <div class="energy-stat ${E.tone}">
                   <i aria-hidden="true"></i>
                   <div>
-                    <span>${c.label}</span>
-                    <strong>${ae(c.value, e.energy_unit, r)}</strong>
-                    ${c.tone === "solar" && e.solar_forecast_today ? x`<span class="solar-forecast">${n("energy.forecast_today", r)}
-                          ${ae(Qe($(t, e.solar_forecast_today), e, ye(v, t?.config?.time_zone)).totalKwh, e.energy_unit, r)}</span>` : m}
+                    <span>${E.label}</span>
+                    <strong>${le(E.value, e.energy_unit, r)}</strong>
+                    ${E.tone === "solar" && e.solar_forecast_today ? x`<span class="solar-forecast">${n("energy.forecast_today", r)}
+                          ${le(tt(k(t, e.solar_forecast_today), e, we($, t?.config?.time_zone)).totalKwh, e.energy_unit, r)}</span>` : m}
                   </div>
                 </div>
               `
@@ -2461,14 +2468,14 @@ const le = class le extends N {
 
           <footer class="footer">
             <span class="dot" aria-hidden="true"></span>
-            <span>${re}</span>
+            <span>${fe}</span>
           </footer>
         </div>
       </ha-card>
     `;
   }
 };
-le.properties = {
+he.properties = {
   hass: { attribute: !1 },
   _config: { state: !0 },
   _history: { state: !0 },
@@ -2476,9 +2483,9 @@ le.properties = {
   _historyFailed: { state: !0 },
   _activeChartIndex: { state: !0 },
   _chartPointer: { state: !0 }
-}, le.styles = Dt;
-let we = le;
-typeof customElements < "u" && (customElements.get("solar-battery-card-editor") || customElements.define("solar-battery-card-editor", be), customElements.get("solar-battery-card") || customElements.define("solar-battery-card", we));
+}, he.styles = Dt;
+let ke = he;
+typeof customElements < "u" && (customElements.get("solar-battery-card-editor") || customElements.define("solar-battery-card-editor", $e), customElements.get("solar-battery-card") || customElements.define("solar-battery-card", ke));
 typeof window < "u" && (window.customCards = window.customCards || [], window.customCards.some((o) => o.type === "solar-battery-card") || window.customCards.push({
   type: "solar-battery-card",
   name: "Solar & Battery Card",
@@ -2486,6 +2493,6 @@ typeof window < "u" && (window.customCards = window.customCards || [], window.cu
   description: "A battery-first solar, power and daily energy overview."
 }));
 export {
-  we as SolarBatteryCard
+  ke as SolarBatteryCard
 };
 //# sourceMappingURL=solar-battery-card.js.map
