@@ -5,6 +5,27 @@ Semantic Versioning.
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-10-12
+
+### Fixed
+
+- The live grid tile now switches between Import and Export (Netzbezug and
+  Einspeisung in German) and shows a non-negative power value for either direction.
+  Both grid sensor sign conventions are supported with the existing
+  `grid_positive_is_export` setting.
+- Zero grid power now shows a neutral Grid / Netz label. Missing or unavailable
+  grid readings show an em dash instead of appearing as zero export.
+
+Daily exported energy remains the cumulative total, independent of the current
+grid-flow direction. No configuration changes are required for correctly
+configured sensors.
+
+### Thanks
+
+- Thanks to [@whyisthisbroken](https://github.com/whyisthisbroken) for the detailed
+  report, sensor readings, and reproduction steps in
+  [#11](https://github.com/halfbuilthq/solar-battery-card/issues/11).
+
 ## [0.3.0] - 2026-10-11
 
 ### Added
