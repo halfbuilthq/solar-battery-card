@@ -6,7 +6,8 @@
 [![License: MIT](https://img.shields.io/github/license/halfbuilthq/solar-battery-card)](LICENSE)
 
 A custom Home Assistant dashboard card focused on solar generation, household
-load, battery state, grid flow, and daily energy totals.
+load, battery state, grid flow, and daily energy totals. Available directly in
+the default HACS catalogue.
 
 ![Solar & Battery Card preview](docs/production-preview.png)
 
@@ -285,7 +286,7 @@ be a finite positive number and supports 0.01-kWh input precision.
 
 [![Open your Home Assistant instance and open this repository inside HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=halfbuilthq&repository=solar-battery-card&category=plugin)
 
-1. Select the button above, or open **HACS → Dashboard** in Home Assistant.
+1. Select the button above, or open **HACS** in Home Assistant.
 2. Search for **Solar & Battery Card**—no custom repository is required.
 3. Open the repository and select **Download**.
 4. Refresh Home Assistant when prompted.

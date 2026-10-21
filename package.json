@@ -1,7 +1,7 @@
 {
   "name": "ha-solar-battery-card",
   "version": "0.3.1",
-  "description": "A battery-first solar and energy dashboard card for Home Assistant.",
+  "description": "Solar, battery, grid and household energy for Home Assistant, available in HACS.",
   "license": "MIT",
   "repository": {
     "type": "git",
