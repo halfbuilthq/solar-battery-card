@@ -462,7 +462,7 @@ export class SolarBatteryCard extends LitElement {
       hour: "numeric",
       minute: "2-digit"
     });
-    const forecastLabel = batteryForecast?.kind === "at_reserve"
+    const forecastDescription = batteryForecast?.kind === "at_reserve"
       ? localize("battery.at_reserve", locale)
       : batteryForecast
         ? localize(batteryForecast.kind === "full" ? "battery.full_by" : "battery.reserve_by", locale, {
@@ -471,6 +471,11 @@ export class SolarBatteryCard extends LitElement {
         : fullTime
           ? localize("battery.full_by", locale, { time: timeFormatter.format(fullTime) })
           : status === "charging" ? localize("battery.charging_now", locale) : statusLabel;
+    const forecastLabel = batteryForecast && "time" in batteryForecast
+      ? localize(batteryForecast.kind === "full" ? "battery.full_by" : "battery.reserve_by_short", locale, {
+          time: formatForecastTime(batteryForecast.time, locale, now, hass?.config?.time_zone, true)
+        })
+      : forecastDescription;
     const chartPoints: HistoryPoint[] =
       this._history.length > 1
         ? this._history.map((point) => ({
@@ -537,7 +542,7 @@ export class SolarBatteryCard extends LitElement {
           <section class="battery-hero" aria-label=${localize("battery.aria_status", locale)}>
             <div>
               <div class="percentage">${Math.round(stateOfCharge)}<span>%</span></div>
-              <strong class="forecast">
+              <strong class="forecast" title=${forecastDescription}>
                 ${forecastLabel}
               </strong>
             </div>

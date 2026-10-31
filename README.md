@@ -260,8 +260,10 @@ the battery or change the actual SOC graphic.
 At 50% SOC, a 5.12-kWh battery with a 10% reserve needs 2.56 kWh to fill and
 has 2.048 kWh available above reserve. At a constant 1 kW, those are 2.56 hours
 to full or 2.048 hours to reserve. Reserve does not reduce charging headroom.
-The card shows “Full by”, “Reserve reached by”, or “At/below reserve”. Estimates
-require valid SOC/power readings and charging/discharging above 50 W. Dates
+The card shows “Full by”, “Reserve by” (“Reserve um” in German), or “At/below
+reserve”. The compact caption uses a short date for estimates on another day,
+omitting the year when it is unchanged. Hover over the caption for the full
+wording and date. Estimates require valid SOC/power readings and charging/discharging above 50 W. Dates
 are included when a new-model estimate crosses midnight, using Home Assistant’s
 timezone when available. Estimates assume constant power and omit efficiency,
 charge tapering, changing loads and future solar production.
@@ -299,6 +301,9 @@ be a finite positive number and supports 0.01-kWh input precision.
 npm install
 npm run dev
 ```
+
+Live power readings are always stacked beneath their labels, including in narrow
+cards and when displaying W rather than kW.
 
 The development server serves a representative Home Assistant state fixture at
 `http://127.0.0.1:5173/demo/`. Desktop preview controls exercise display units,

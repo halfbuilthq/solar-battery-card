@@ -18,6 +18,19 @@ feat(editor): add configurable history duration
 chore(release): prepare v0.2.0
 ```
 
+## Browser layout checks
+
+After building the card, run the responsive browser regression checks:
+
+```sh
+npx playwright install chromium
+npm run test:layout
+```
+
+These checks use the built bundle and cover English/German text, W/kW units,
+280–768 pixel card widths, battery states, chart modes and compact forecast dates.
+CI installs Chromium and runs this check after the unit tests and production build.
+
 ## Versioning and releases
 
 Releases follow Semantic Versioning and use tags in the form `vX.Y.Z`:

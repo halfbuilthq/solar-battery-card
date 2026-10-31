@@ -5,6 +5,25 @@ Semantic Versioning.
 
 ## [Unreleased]
 
+### Fixed
+
+- Stack live power readings below their labels at every card width, including
+  short Solar/Home labels and W units. Keep long titles and charge lines inside
+  narrow cards and apply compact card padding based on the card's own width.
+- Shorten battery reserve estimates to “Reserve by” / “Reserve um” and use compact
+  dates below SOC. Keep the year when crossing into another year and retain the
+  full wording/date in the caption tooltip.
+
+### Tests
+
+- Add a browser regression check against the release bundle for 28 combinations
+  of width, language and power units, plus battery states, chart modes and dates.
+
+### Thanks
+
+- Thanks to [@smokermarine](https://github.com/smokermarine) for the report and
+  screenshot in [#12](https://github.com/halfbuilthq/solar-battery-card/issues/12).
+
 ## [0.3.1] - 2026-10-12
 
 ### Fixed

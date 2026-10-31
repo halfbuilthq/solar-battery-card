@@ -3,6 +3,8 @@ import { css } from "lit";
 export const cardStyles = css`
   :host {
     display: block;
+    min-width: 0;
+    container-type: inline-size;
     color: var(--primary-text-color, #111522);
     font-family: var(
       --paper-font-body1_-_font-family,
@@ -54,6 +56,10 @@ export const cardStyles = css`
   .title-group {
     min-width: 0;
     gap: 14px;
+  }
+
+  .title-group > div:last-child {
+    min-width: 0;
   }
 
   .icon-tile {
@@ -170,8 +176,9 @@ export const cardStyles = css`
     display: block;
     margin-top: 8px;
     color: var(--success-color, #2d963f);
-    font-size: 16px;
-    line-height: 1.2;
+    font-size: 14px;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
   }
 
   .battery-graphic {
@@ -211,6 +218,7 @@ export const cardStyles = css`
   .charge-line {
     grid-column: 1 / -1;
     justify-content: space-between;
+    flex-wrap: wrap;
     gap: 18px;
     padding-top: 12px;
     border-top: 1px solid
@@ -228,12 +236,15 @@ export const cardStyles = css`
 
   .power-stats {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     padding: 18px 1px 16px;
     border-bottom: 1px solid var(--divider-color, #e2e5e9);
   }
 
   .power-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     min-width: 0;
     padding: 0 7px;
     text-align: center;

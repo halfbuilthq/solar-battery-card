@@ -31,3 +31,9 @@ jobs:
 
       - name: Confirm committed bundle is current
         run: git diff --exit-code -- dist/solar-battery-card.js
+
+      - name: Install browser for layout checks
+        run: npx playwright install --with-deps chromium
+
+      - name: Verify responsive card layout
+        run: npm run test:layout

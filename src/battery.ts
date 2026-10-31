@@ -38,19 +38,26 @@ export function estimateBattery(
   return Number.isFinite(time.getTime()) ? { kind, time } : undefined;
 }
 
-/** Include a date when the estimate falls outside today's local calendar day. */
+/** Include a date outside today; compact captions omit the year unless it changes. */
 export function formatForecastTime(
   time: Date,
   locale?: string,
   now = new Date(),
-  timeZone?: string
+  timeZone?: string,
+  compact = false
 ): string {
   const day = new Intl.DateTimeFormat("en-CA", { timeZone, year: "numeric", month: "2-digit", day: "2-digit" });
   const otherDay = day.format(time) !== day.format(now);
+  const year = new Intl.DateTimeFormat("en", { timeZone, year: "numeric" });
+  const otherYear = year.format(time) !== year.format(now);
   return new Intl.DateTimeFormat(locale, {
     timeZone,
     hour: "numeric",
     minute: "2-digit",
-    ...(otherDay ? { year: "numeric", month: "short", day: "numeric" } as const : {})
+    ...(otherDay ? {
+      year: !compact || otherYear ? "numeric" : undefined,
+      month: compact ? "2-digit" : "short",
+      day: compact ? "2-digit" : "numeric"
+    } as const : {})
   }).format(time);
 }

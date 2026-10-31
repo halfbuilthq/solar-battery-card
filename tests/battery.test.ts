@@ -48,6 +48,24 @@ describe("absolute SOC battery model", () => {
 });
 
 describe("forecast dates", () => {
+  it("keeps compact captions short while preserving full date formatting for tooltips", () => {
+    const now = new Date("2026-10-30T20:43:00Z");
+    const later = new Date("2026-10-31T04:33:00Z");
+    const compact = formatForecastTime(later, "de-DE", now, "Europe/Berlin", true);
+    expect(compact).toMatch(/^31\.10\., 0?5:33$/);
+    expect(formatForecastTime(later, "de-DE", now, "Europe/Berlin")).toContain("2026");
+    expect(formatForecastTime(new Date("2026-10-30T21:00:00Z"), "de-DE", now, "Europe/Berlin", true)).toBe("22:00");
+  });
+
+  it("retains the year in compact captions across New Year and uses the HA timezone", () => {
+    const now = new Date("2026-12-31T20:00:00Z");
+    const nextYear = new Date("2027-01-01T04:00:00Z");
+    expect(formatForecastTime(nextYear, "de-DE", now, "Europe/Berlin", true)).toContain("2027");
+    const sameYear = new Date("2026-10-11T14:00:00Z");
+    const evening = new Date("2026-10-11T12:00:00Z");
+    expect(formatForecastTime(sameYear, "en-US", evening, "UTC", true)).toBe("2:00 PM");
+    expect(formatForecastTime(sameYear, "en-US", evening, "Australia/Sydney", true)).toContain("10/12");
+  });
   it("shows a date across midnight, including the year across New Year", () => {
     const now = new Date("2026-12-31T23:00:00Z");
     expect(formatForecastTime(new Date("2026-12-31T23:30:00Z"), "en-US", now, "UTC")).toBe("11:30 PM");
