@@ -1,6 +1,6 @@
 {
   "name": "ha-solar-battery-card",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "Solar, battery, grid and household energy for Home Assistant, available in HACS.",
   "license": "MIT",
   "repository": {
