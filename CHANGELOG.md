@@ -5,6 +5,13 @@ Semantic Versioning.
 
 ## [Unreleased]
 
+### Added
+- Independent Show solar and Show battery options in the visual editor and YAML.
+- Solar-only, battery-only and home/grid layouts with matching charts, titles and optional sensor requirements.
+- Hidden components retain their configuration but are excluded from history requests.
+
+## [Unreleased]
+
 ## [0.3.2] - 2026-11-01
 
 ### Fixed

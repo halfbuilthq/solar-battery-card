@@ -1,6 +1,6 @@
 import "./forecast-chart";
 import { localDay, solarForecast } from "./forecast";
-import { mdiBatteryCharging } from "@mdi/js";
+import { mdiBatteryCharging, mdiSolarPower, mdiHomeLightningBolt } from "@mdi/js";
 import { LitElement, html, nothing, svg, type PropertyValues } from "lit";
 import { estimateBattery, formatForecastTime } from "./battery";
 import { cardStyles } from "./styles";
@@ -9,7 +9,8 @@ import {
   cardTitle,
   getStubConfig,
   normalizeConfig,
-  validateConfig
+  validateConfig,
+  visiblePowerKeys
 } from "./config";
 import { ensureHaFormLoaded, SolarBatteryCardEditor } from "./editor";
 import {
@@ -143,7 +144,7 @@ export class SolarBatteryCard extends LitElement {
   }
 
   getCardSize(): number {
-    return this._config?.show_power_chart === false ? 8 : 12;
+    return (this._config?.show_power_chart === false ? 8 : 12) - (this._config?.show_battery === false ? 4 : 0);
   }
 
   getGridOptions() {
@@ -171,8 +172,13 @@ export class SolarBatteryCard extends LitElement {
     }
 
     const now = Date.now();
-    const start = config.show_forecast_line ? localDay(new Date(now), hass.config?.time_zone).start : undefined;
-    const key = [config.solar_power, config.home_power, config.battery_power, start ?? "rolling"].join("|");
+    const start = config.show_solar !== false && config.show_forecast_line ? localDay(new Date(now), hass.config?.time_zone).start : undefined;
+    const entities = {
+      solar: config.show_solar === false ? undefined : config.solar_power,
+      home: config.home_power,
+      battery: config.show_battery === false ? undefined : config.battery_power
+    };
+    const key = [entities.solar, entities.home, entities.battery, start ?? "rolling"].join("|");
     if (
       key === this._lastHistoryKey &&
       (this._historyLoading || now - this._lastHistoryFetch < HISTORY_REFRESH_MS)
@@ -188,11 +194,7 @@ export class SolarBatteryCard extends LitElement {
     this._lastHistoryFetch = now;
 
     try {
-      const history = await fetchPowerHistory(hass, {
-        solar: config.solar_power,
-        home: config.home_power,
-        battery: config.battery_power
-      }, new Date(now), start === undefined ? undefined : new Date(start));
+      const history = await fetchPowerHistory(hass, entities, new Date(now), start === undefined ? undefined : new Date(start));
       if (request === this._historyRequest) this._history = history;
     } catch {
       if (request === this._historyRequest) {
@@ -249,11 +251,8 @@ export class SolarBatteryCard extends LitElement {
   }
 
   private _renderChart(points: HistoryPoint[], locale?: string) {
-    const values = points.flatMap((point) => [
-      point.solar,
-      point.home,
-      point.battery
-    ]);
+    const keys = visiblePowerKeys(this._config);
+    const values = points.flatMap((point) => keys.map(key => point[key]));
     const minValue = Math.min(0, ...values);
     const maxValue = Math.max(
       0.1,
@@ -261,9 +260,7 @@ export class SolarBatteryCard extends LitElement {
     );
     const range = Math.max(0.1, maxValue - minValue);
     const zeroY = 4 + (maxValue / range) * (CHART_HEIGHT - 8);
-    const series: Array<{ key: ChartKey; path: string; end: [number, number] }> = (
-      ["solar", "home", "battery"] as ChartKey[]
-    ).map((key) => {
+    const series: Array<{ key: ChartKey; path: string; end: [number, number] }> = keys.map((key) => {
       const coordinates = chartCoordinates(points, key, minValue, maxValue);
       return {
         key,
@@ -288,7 +285,7 @@ export class SolarBatteryCard extends LitElement {
     const activeCoordinates =
       activeIndex === undefined
         ? []
-        : (["solar", "home", "battery"] as ChartKey[]).map((key) => ({
+        : keys.map((key) => ({
             key,
             coordinate: chartCoordinates(points, key, minValue, maxValue)[activeIndex]
           }));
@@ -386,7 +383,7 @@ export class SolarBatteryCard extends LitElement {
                     value: activePoint.battery,
                     signed: true
                   }
-                ].map(
+                ].filter(item => keys.includes(item.key as ChartKey)).map(
                   (item) => html`
                     <div class="tooltip-item ${item.key}">
                       <span><i></i>${item.label}</span>
@@ -410,17 +407,20 @@ export class SolarBatteryCard extends LitElement {
     const config = this._config;
     if (!config) return nothing;
 
+    const showSolar = config.show_solar !== false;
+    const showBattery = config.show_battery !== false;
+    const visibleTone = (tone: string) => (tone !== "solar" || showSolar) && (tone !== "battery" || showBattery);
     const hass = this.hass;
     const locale = hass?.locale?.language ?? hass?.language;
-    const rawSoc = numericState(entity(hass, config.battery_soc));
+    const rawSoc = numericState(entity(hass, showBattery ? config.battery_soc : undefined));
     const stateOfCharge = clamp(
       rawSoc ?? 0,
       0,
       100
     );
-    const solarPower = Math.max(0, powerInKw(entity(hass, config.solar_power)) ?? 0);
+    const solarPower = Math.max(0, powerInKw(entity(hass, showSolar ? config.solar_power : undefined)) ?? 0);
     const homePower = Math.max(0, powerInKw(entity(hass, config.home_power)) ?? 0);
-    const rawBatteryPower = powerInKw(entity(hass, config.battery_power));
+    const rawBatteryPower = powerInKw(entity(hass, showBattery ? config.battery_power : undefined));
     const batteryRaw = rawBatteryPower ?? 0;
     const gridRaw = powerInKw(entity(hass, config.grid_power));
     const batteryDirection =
@@ -505,10 +505,12 @@ export class SolarBatteryCard extends LitElement {
         value: energyInKwh(entity(hass, config.export_energy_today)),
         tone: "export"
       }
-    ];
+    ].filter(item => visibleTone(item.tone));
 
     const footer =
-      solarPower >= homePower && chargingPower > 0.05 && exportPower > 0.05
+      !showSolar || !showBattery
+        ? localize("footer.overview", locale)
+        : solarPower >= homePower && chargingPower > 0.05 && exportPower > 0.05
         ? localize("footer.solar_home_battery_export", locale)
         : solarPower >= homePower && chargingPower > 0.05
           ? localize("footer.solar_home_battery", locale)
@@ -522,24 +524,24 @@ export class SolarBatteryCard extends LitElement {
           <header class="header">
             <div class="title-group">
               <div class="icon-tile" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d=${mdiBatteryCharging}></path></svg>
+                <svg viewBox="0 0 24 24"><path d=${showBattery ? mdiBatteryCharging : showSolar ? mdiSolarPower : mdiHomeLightningBolt}></path></svg>
               </div>
               <div>
                 <h1>${cardTitle(config, locale)}</h1>
                 <p class="subtitle">
-                  ${localize("card.subtitle", locale)}
+                  ${localize(showBattery ? "card.subtitle" : "card.subtitle_power", locale)}
                   <span aria-hidden="true">·</span>
                   ${localize("card.today", locale)}
                 </p>
               </div>
             </div>
-            <div class="status ${status}">
+            ${showBattery ? html`<div class="status ${status}">
               <span class="dot"></span>
               ${statusLabel}
-            </div>
+            </div>` : nothing}
           </header>
 
-          <section class="battery-hero" aria-label=${localize("battery.aria_status", locale)}>
+          ${showBattery ? html`<section class="battery-hero" aria-label=${localize("battery.aria_status", locale)}>
             <div>
               <div class="percentage">${Math.round(stateOfCharge)}<span>%</span></div>
               <strong class="forecast" title=${forecastDescription}>
@@ -573,15 +575,15 @@ export class SolarBatteryCard extends LitElement {
                 })}
               </strong>
             </div>
-          </section>
+          </section>` : nothing}
 
-          <section class="power-stats" aria-label=${localize("power.aria", locale)}>
+          <section class="power-stats" style=${`--power-columns: ${2 + Number(showSolar) + Number(showBattery)}`} aria-label=${localize("power.aria", locale)}>
             ${[
               { label: localize("power.solar", locale), value: solarPower, tone: "solar", signed: false },
               { label: localize("power.home", locale), value: homePower, tone: "home", signed: false },
               { label: localize("power.battery", locale), value: chargingPower, tone: "battery", signed: true },
               { label: gridLabel, value: gridPower, tone: "export", signed: false }
-            ].map(
+            ].filter(item => visibleTone(item.tone)).map(
               (item) => html`
                 <div class="power-stat ${item.tone}">
                   <span>${item.label}</span>
@@ -598,7 +600,7 @@ export class SolarBatteryCard extends LitElement {
 
           ${config.show_power_chart === false
             ? nothing
-            : config.show_forecast_line ? html`
+            : showSolar && config.show_forecast_line ? html`
                 <section class="chart-section">
                   <solar-forecast-chart .hass=${hass} .config=${config} .history=${this._history} .historyFailed=${this._historyFailed}></solar-forecast-chart>
                 </section>
@@ -617,9 +619,7 @@ export class SolarBatteryCard extends LitElement {
                     <span>${localize("chart.axis_now", locale)}</span>
                   </div>
                   <div class="legend" aria-label=${localize("chart.legend_aria", locale)}>
-                    <span class="solar"><i></i>${localize("power.solar", locale)}</span>
-                    <span class="home"><i></i>${localize("power.home", locale)}</span>
-                    <span class="battery"><i></i>${localize("power.battery", locale)}</span>
+                    ${visiblePowerKeys(config).map(key => html`<span class=${key}><i></i>${localize(`power.${key}`, locale)}</span>`)}
                   </div>
                   ${this._historyFailed
                     ? html`<p class="history-note">${localize("chart.history_unavailable", locale)}</p>`

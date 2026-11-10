@@ -2,6 +2,7 @@ import { LitElement, css, html, nothing, svg } from "lit";
 import { energyAt, localDay, solarForecast, type EnergyPoint } from "./forecast";
 import type { HistoryPoint, HomeAssistant, SolarBatteryCardConfig } from "./types";
 import { entity, formatEnergy, formatPower, powerInKw } from "./values";
+import { visiblePowerKeys } from "./config";
 import { localize } from "./localize";
 
 const LEFT = 64;
@@ -82,7 +83,7 @@ export class SolarForecastChart extends LitElement {
     const now = Date.now();
     const day = localDay(new Date(now), timeZone);
     const forecast = solarForecast(entity(this.hass, config.solar_forecast_today), config, day);
-    const keys: PowerKey[] = ["solar", "home", "battery"];
+    const keys: PowerKey[] = visiblePowerKeys(config);
     const direction = config.battery_positive_is_charging === false ? -1 : 1;
     const current = {
       solar: powerInKw(entity(this.hass, config.solar_power)),

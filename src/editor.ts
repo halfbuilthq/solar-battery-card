@@ -50,7 +50,7 @@ export class SolarBatteryCardEditor extends LitElement {
 
   getLocalizedForm() {
     const locale = this.hass?.locale?.language ?? this.hass?.language;
-    return getConfigForm(locale);
+    return getConfigForm(locale, this._config);
   }
 
   protected render() {

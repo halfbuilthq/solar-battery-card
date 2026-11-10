@@ -90,7 +90,7 @@ describe("localized card rendering", () => {
 
     expect(labelIndex).toBeGreaterThanOrEqual(0);
     expect(chart.values[labelIndex]).toBe(
-      "Solar-, Haus- und Batterieleistung der letzten 24 Stunden"
+      "Leistung der letzten 24 Stunden"
     );
   });
 });

@@ -5,6 +5,8 @@ export const DEFAULT_CONFIG: Partial<SolarBatteryCardConfig> = {
   battery_positive_is_charging: true,
   grid_positive_is_export: true,
   show_power_chart: true,
+  show_solar: true,
+  show_battery: true,
   power_unit: "kW",
   energy_unit: "kWh",
   battery_lower_soc: 0,
@@ -27,6 +29,8 @@ const ENTITY_FIELDS = [
 ] as const;
 
 const LABELLED_FIELDS = [
+  "show_solar",
+  "show_battery",
   "title",
   "power_unit",
   "energy_unit",
@@ -57,6 +61,8 @@ const LABELLED_FIELDS = [
 ] as const;
 
 const HELPED_FIELDS = [
+  "show_solar",
+  "show_battery",
   "solar_forecast_today",
   "show_forecast_line",
   "solar_forecast_mode",
@@ -92,9 +98,31 @@ function fieldHelper(name: HelpedField, locale?: string): string {
   return localize(`editor.helper.${name}` as const, locale);
 }
 
-export function getConfigForm(locale?: string) {
+export function visiblePowerKeys(config?: Partial<SolarBatteryCardConfig>): Array<"solar" | "home" | "battery"> {
+  return [
+    ...(config?.show_solar === false ? [] : ["solar" as const]),
+    "home",
+    ...(config?.show_battery === false ? [] : ["battery" as const])
+  ];
+}
+
+interface FormField {
+  name: string;
+  title?: string;
+  schema?: FormField[];
+  [key: string]: unknown;
+}
+
+export function getConfigForm(locale?: string, config?: Partial<SolarBatteryCardConfig>) {
+  const visibleFields = (fields: FormField[]): FormField[] => fields.filter(field => {
+    if (config?.show_solar === false && (field.name.startsWith("solar_") || field.name === "show_forecast_line" || field.title === localize("editor.section.solar_forecast", locale))) return false;
+    if (config?.show_battery === false && field.name.startsWith("battery_")) return false;
+    return true;
+  }).map(field => field.schema ? { ...field, schema: visibleFields(field.schema) } : field);
   return {
-    schema: [
+    schema: visibleFields([
+      { name: "show_solar", selector: { boolean: {} } },
+      { name: "show_battery", selector: { boolean: {} } },
       { name: "title", selector: { text: {} } },
       {
         type: "expandable",
@@ -180,7 +208,7 @@ export function getConfigForm(locale?: string) {
           { name: "show_power_chart", selector: { boolean: {} } }
         ]
       }
-    ],
+    ]),
     computeLabel: (schema: { name?: string }) =>
       schema.name && isLabelledField(schema.name)
         ? fieldLabel(schema.name, locale)
@@ -203,42 +231,51 @@ export function validateConfig(
       throw new Error(localize("editor.error.unit", locale, { field: fieldLabel(field, locale) }));
     }
   }
-  if (config.solar_forecast_today !== undefined &&
-      (typeof config.solar_forecast_today !== "string" || !/^sensor\.[a-z0-9_]+$/.test(config.solar_forecast_today))) {
-    throw new Error(localize("editor.error.forecast_entity", locale));
-  }
-  if (!["daily", "hourly"].includes(config.solar_forecast_mode!)) {
-    throw new Error(localize("editor.error.forecast_mode", locale));
-  }
-  for (const field of ["show_forecast_line", "solar_forecast_time_is_end"] as const) {
+  for (const field of ["show_solar", "show_battery"] as const) {
     if (typeof config[field] !== "boolean") throw new Error(localize("editor.error.boolean", locale, { field: fieldLabel(field, locale) }));
   }
-  if (config.solar_forecast_mode === "hourly") {
-    for (const field of ["solar_forecast_attribute", "solar_forecast_time_field", "solar_forecast_value_field"] as const) {
-      if (typeof config[field] !== "string" || !/^[a-zA-Z0-9_]+(?:\.[a-zA-Z0-9_]+)*$/.test(config[field]!)) {
-        throw new Error(localize("editor.error.forecast_path", locale, { field: fieldLabel(field, locale) }));
+  if (config.show_solar !== false) {
+    if (config.solar_forecast_today !== undefined &&
+        (typeof config.solar_forecast_today !== "string" || !/^sensor\.[a-z0-9_]+$/.test(config.solar_forecast_today))) {
+      throw new Error(localize("editor.error.forecast_entity", locale));
+    }
+    if (!["daily", "hourly"].includes(config.solar_forecast_mode!)) {
+      throw new Error(localize("editor.error.forecast_mode", locale));
+    }
+    for (const field of ["show_forecast_line", "solar_forecast_time_is_end"] as const) {
+      if (typeof config[field] !== "boolean") throw new Error(localize("editor.error.boolean", locale, { field: fieldLabel(field, locale) }));
+    }
+    if (config.solar_forecast_mode === "hourly") {
+      for (const field of ["solar_forecast_attribute", "solar_forecast_time_field", "solar_forecast_value_field"] as const) {
+        if (typeof config[field] !== "string" || !/^[a-zA-Z0-9_]+(?:\.[a-zA-Z0-9_]+)*$/.test(config[field]!)) {
+          throw new Error(localize("editor.error.forecast_path", locale, { field: fieldLabel(field, locale) }));
+        }
+      }
+      if (!["Wh", "kWh", "MWh", "W", "kW"].includes(config.solar_forecast_input_unit!)) {
+        throw new Error(localize("editor.error.unit", locale, { field: fieldLabel("solar_forecast_input_unit", locale) }));
+      }
+      const minutes = config.solar_forecast_interval_minutes;
+      if (typeof minutes !== "number" || !Number.isInteger(minutes) || minutes < 1 || minutes > 1440) {
+        throw new Error(localize("editor.error.forecast_interval", locale));
       }
     }
-    if (!["Wh", "kWh", "MWh", "W", "kW"].includes(config.solar_forecast_input_unit!)) {
-      throw new Error(localize("editor.error.unit", locale, { field: fieldLabel("solar_forecast_input_unit", locale) }));
+  }
+  if (config.show_battery !== false) {
+    const capacity = config.battery_total_capacity;
+    const reserve = config.battery_lower_soc ?? 0;
+    if (capacity !== undefined && (typeof capacity !== "number" || !Number.isFinite(capacity) || capacity <= 0)) {
+      throw new Error(localize("editor.error.total_capacity", locale));
     }
-    const minutes = config.solar_forecast_interval_minutes;
-    if (typeof minutes !== "number" || !Number.isInteger(minutes) || minutes < 1 || minutes > 1440) {
-      throw new Error(localize("editor.error.forecast_interval", locale));
+    if (typeof reserve !== "number" || !Number.isFinite(reserve) || reserve < 0 || reserve >= 100) {
+      throw new Error(localize("editor.error.lower_soc", locale));
     }
-  }
-  const capacity = config.battery_total_capacity;
-  const reserve = config.battery_lower_soc ?? 0;
-  if (capacity !== undefined && (typeof capacity !== "number" || !Number.isFinite(capacity) || capacity <= 0)) {
-    throw new Error(localize("editor.error.total_capacity", locale));
-  }
-  if (typeof reserve !== "number" || !Number.isFinite(reserve) || reserve < 0 || reserve >= 100) {
-    throw new Error(localize("editor.error.lower_soc", locale));
-  }
-  if (reserve !== 0 && capacity === undefined) {
-    throw new Error(localize("editor.error.reserve_requires_capacity", locale));
+    if (reserve !== 0 && capacity === undefined) {
+      throw new Error(localize("editor.error.reserve_requires_capacity", locale));
+    }
   }
   for (const field of ENTITY_FIELDS) {
+    if (field === "solar_power" && config.show_solar === false) continue;
+    if (field.startsWith("battery_") && config.show_battery === false) continue;
     if (!config[field] || typeof config[field] !== "string") {
       throw new Error(
         localize("editor.error.required", locale, {
@@ -255,12 +292,14 @@ export function cardTitle(
 ): string {
   return config.title !== undefined
     ? config.title
-    : localize("card.default_title", locale);
+    : localize(config.show_solar === false
+      ? config.show_battery === false ? "card.title_home" : "card.title_battery"
+      : config.show_battery === false ? "card.title_solar" : "card.default_title", locale);
 }
 
 export function normalizeConfig(config: SolarBatteryCardConfig): SolarBatteryCardConfig {
   const cleaned = { ...config };
-  for (const field of ["power_unit", "energy_unit", "solar_forecast_today", "battery_total_capacity", "battery_lower_soc", "show_forecast_line", "solar_forecast_mode", "solar_forecast_attribute", "solar_forecast_time_field", "solar_forecast_value_field", "solar_forecast_input_unit", "solar_forecast_interval_minutes", "solar_forecast_time_is_end"] as const) {
+  for (const field of ["show_solar", "show_battery", "power_unit", "energy_unit", "solar_forecast_today", "battery_total_capacity", "battery_lower_soc", "show_forecast_line", "solar_forecast_mode", "solar_forecast_attribute", "solar_forecast_time_field", "solar_forecast_value_field", "solar_forecast_input_unit", "solar_forecast_interval_minutes", "solar_forecast_time_is_end"] as const) {
     const value: unknown = cleaned[field];
     if (value === undefined || value === null || value === "") delete cleaned[field];
   }
