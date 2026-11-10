@@ -13,6 +13,7 @@ the default HACS catalogue.
 
 ## Features
 
+- Independent solar and battery visibility for solar-only or battery-only systems
 - Battery state of charge and charging/discharging outlook
 - Live solar, home, battery, and grid power in kW
 - Interactive 24-hour power history with mouse, touch, and keyboard inspection
@@ -41,8 +42,50 @@ grid_positive_is_export: true
 show_power_chart: true
 ```
 
-The first five entity fields are required. Daily energy entities and usable
-battery capacity are optional.
+Home and grid power entities are always required. Solar power is required only
+when solar is shown; battery SOC and power are required only when the battery is
+shown. Daily energy entities and battery capacity are optional.
+
+### Systems without solar or a battery
+
+Use **Show solar** and **Show battery** at the top of the visual editor, or set
+`show_solar` and `show_battery` in YAML. Both default to `true`, preserving existing
+cards. You can also turn both off for a home/grid overview.
+
+| Setting | When `false` |
+| --- | --- |
+| `show_solar` | Hides solar power, generated energy, solar forecasts and solar chart series. Solar sensors are not required or requested in power history. |
+| `show_battery` | Hides battery SOC/graphic, charging status, estimates, battery power, stored energy and battery chart series. Battery sensors are not required or requested in power history. |
+
+Related settings disappear from the editor while hidden. Saved sensor selections
+and options are retained for when you turn the section back on. The default title
+adapts to the visible sections; an explicit `title` is always preserved. Home,
+grid import/export and their daily totals remain visible.
+
+Battery and grid, without solar:
+
+```yaml
+type: custom:solar-battery-card
+show_solar: false
+battery_soc: sensor.battery_state_of_charge
+battery_power: sensor.battery_power
+home_power: sensor.home_power
+grid_power: sensor.grid_power
+```
+
+Solar and grid, without a battery:
+
+```yaml
+type: custom:solar-battery-card
+show_battery: false
+solar_power: sensor.solar_power
+home_power: sensor.home_power
+grid_power: sensor.grid_power
+```
+
+When solar is hidden, a saved `show_forecast_line: true` setting is ignored and
+the chart uses its normal 24-hour power view. Turning solar back on restores the
+forecast configuration.
 
 ### Choosing the correct entities
 

@@ -4,9 +4,9 @@ import { powerInKw } from "./values";
 type HistoryResponse = HassEntity[][];
 
 interface PowerEntities {
-  solar: string;
+  solar?: string;
   home: string;
-  battery: string;
+  battery?: string;
 }
 
 const HISTORY_HOURS = 24;
@@ -14,8 +14,9 @@ const BUCKET_COUNT = 24;
 
 function seriesByEntity(
   response: HistoryResponse,
-  entityId: string
+  entityId: string | undefined
 ): HassEntity[] {
+  if (!entityId) return [];
   return (
     response.find((series) => series.some((state) => state.entity_id === entityId)) ??
     []
@@ -82,7 +83,7 @@ export async function fetchPowerHistory(
   start = new Date(now.getTime() - HISTORY_HOURS * 60 * 60 * 1000)
 ): Promise<HistoryPoint[]> {
   const end = now;
-  const entityIds = [entities.solar, entities.home, entities.battery];
+  const entityIds = [entities.solar, entities.home, entities.battery].filter((id): id is string => !!id);
   const path =
     `history/period/${encodeURIComponent(start.toISOString())}` +
     `?end_time=${encodeURIComponent(end.toISOString())}` +
@@ -101,9 +102,9 @@ export async function fetchPowerHistory(
       start.getTime() + (index / (BUCKET_COUNT - 1)) * (end.getTime() - start.getTime());
     return {
       timestamp,
-      solar: Math.max(0, valueAt(solar, timestamp, hass.states[entities.solar])),
+      solar: Math.max(0, valueAt(solar, timestamp, entities.solar ? hass.states[entities.solar] : undefined)),
       home: Math.max(0, valueAt(home, timestamp, hass.states[entities.home])),
-      battery: valueAt(battery, timestamp, hass.states[entities.battery])
+      battery: valueAt(battery, timestamp, entities.battery ? hass.states[entities.battery] : undefined)
     };
   });
 }

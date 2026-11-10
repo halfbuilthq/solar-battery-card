@@ -30,10 +30,12 @@ export interface HomeAssistant {
 export interface SolarBatteryCardConfig {
   type: string;
   title?: string;
-  battery_soc: string;
-  solar_power: string;
+  show_solar?: boolean;
+  show_battery?: boolean;
+  battery_soc?: string;
+  solar_power?: string;
   home_power: string;
-  battery_power: string;
+  battery_power?: string;
   grid_power: string;
   solar_energy_today?: string;
   solar_forecast_today?: string;

@@ -28,14 +28,15 @@ try {
   await page.goto(`http://127.0.0.1:${server.address().port}/`);
   await page.waitForFunction(() => customElements.get("solar-battery-card"));
 
-  async function configure({ width = 430, language = "de-DE", units = "W", battery = "discharging", chart = "history", legacy = false } = {}) {
+  async function configure({ width = 430, language = "de-DE", units = "W", battery = "discharging", chart = "history", legacy = false, showSolar = true, showBattery = true } = {}) {
     await page.evaluate(async (options) => {
       const card = document.querySelector("solar-battery-card");
       const sensor = (entity_id, state, unit_of_measurement) => ({ entity_id, state: String(state), attributes: { unit_of_measurement } });
       card.style.width = `${options.width}px`;
       card.setConfig({ type: "custom:solar-battery-card", title: "Solar/Speicher/Strom",
-        battery_soc: "sensor.soc", solar_power: "sensor.solar", home_power: "sensor.home",
-        battery_power: "sensor.battery", grid_power: "sensor.grid", solar_energy_today: "sensor.generated",
+        show_solar: options.showSolar, show_battery: options.showBattery,
+        battery_soc: options.showBattery ? "sensor.soc" : undefined, solar_power: options.showSolar ? "sensor.solar" : undefined, home_power: "sensor.home",
+        battery_power: options.showBattery ? "sensor.battery" : undefined, grid_power: "sensor.grid", solar_energy_today: "sensor.generated",
         home_energy_today: "sensor.consumed", battery_energy_today: "sensor.stored", export_energy_today: "sensor.exported",
         battery_total_capacity: options.legacy ? undefined : 10, battery_capacity: options.legacy ? 10 : undefined,
         battery_lower_soc: options.legacy ? 0 : 35, power_unit: options.units,
@@ -51,7 +52,7 @@ try {
           "sensor.exported": sensor("sensor.exported", 3.1, "kWh"), "sensor.forecast": sensor("sensor.forecast", 8.2, "kWh")
         } };
       await card.updateComplete;
-    }, { width, language, units, battery, chart, legacy });
+    }, { width, language, units, battery, chart, legacy, showSolar, showBattery });
   }
 
   await configure();
@@ -96,6 +97,51 @@ try {
       assert.equal(await page.locator("solar-battery-card .power-stat").count(), 4);
     }
   }
+  let visibilityCases = 0;
+  for (const showSolar of [true, false]) {
+    for (const showBattery of [true, false]) {
+      for (const chart of ["history", "forecast", "hidden"]) {
+        for (const language of ["en-AU", "de-DE"]) {
+          for (const width of [280, 390, 768]) {
+            await configure({ showSolar, showBattery, chart, language, width });
+            const card = page.locator("solar-battery-card");
+            assert.equal(await card.locator(".battery-hero").count(), Number(showBattery));
+            assert.equal(await card.locator(".status").count(), Number(showBattery));
+            assert.equal(await card.locator(".power-stat").count(), 2 + Number(showSolar) + Number(showBattery));
+            assert.equal(await card.locator(".energy-stat").count(), 2 + Number(showSolar) + Number(showBattery));
+            assert.equal(await card.locator(".power-stat.solar,.energy-stat.solar").count(), showSolar ? 2 : 0);
+            assert.equal(await card.locator(".power-stat.battery,.energy-stat.battery").count(), showBattery ? 2 : 0);
+            assert.equal(await card.locator("solar-forecast-chart").count(), Number(showSolar && chart === "forecast"));
+            if (chart !== "hidden") {
+              const forecast = showSolar && chart === "forecast";
+              const plot = card.locator(forecast ? "solar-forecast-chart .plot" : ".chart-wrap");
+              await plot.focus(); await page.keyboard.press("Home");
+              const chartRoot = forecast ? card.locator("solar-forecast-chart") : card.locator(".chart-section");
+              assert.equal(await chartRoot.locator(forecast ? ".line.solar" : ".chart-line.solar").count(), Number(showSolar));
+              assert.equal(await chartRoot.locator(forecast ? ".line.battery" : ".chart-line.battery").count(), Number(showBattery));
+              assert.equal(await chartRoot.locator(".legend .solar").count(), Number(showSolar));
+              assert.equal(await chartRoot.locator(".legend .battery").count(), Number(showBattery));
+              const inspection = await chartRoot.locator(forecast ? ".inspection" : ".chart-tooltip").textContent();
+              if (!showSolar) assert(!inspection.includes("Solar"));
+              if (!showBattery) assert(!/Battery|Batterie/.test(inspection));
+            }
+            const overflow = await card.evaluate(card => {
+              const root = card.shadowRoot; const box = root.querySelector("ha-card").getBoundingClientRect();
+              return [...root.querySelectorAll(".header,.power-stat,.energy-stat,.chart-section,.footer")]
+                .filter(el => { const rect = el.getBoundingClientRect(); return rect.left < box.left - 1 || rect.right > box.right + 1; })
+                .map(el => el.className);
+            });
+            assert.deepEqual(overflow, [], `Visibility overflow ${showSolar}/${showBattery}/${width}/${language}/${chart}`);
+            if (screenshotDirectory && width === 390 && language === "en-AU" && chart === "history") {
+              await card.screenshot({ path: resolve(screenshotDirectory, `visibility-solar-${showSolar}-battery-${showBattery}.png`) });
+            }
+            visibilityCases++;
+          }
+        }
+      }
+    }
+  }
+
   await configure({ legacy: true, battery: "charging", language: "en-AU" });
   assert.match(await page.locator("solar-battery-card .forecast").textContent(), /Full by/);
   await page.clock.setFixedTime(new Date("2026-12-31T20:43:00Z"));
@@ -120,7 +166,7 @@ try {
 
   }
   assert.deepEqual(errors, [], "Browser runtime errors");
-  console.log(`Passed ${cases} width/locale/unit combinations, four battery states, both charts, hidden chart, legacy estimate, year boundary and full-date tooltips.`);
+  console.log(`Passed ${visibilityCases} visibility/width/locale/chart combinations and ${cases} width/locale/unit combinations, four battery states, both charts, hidden chart, legacy estimate, year boundary and full-date tooltips.`);
 } finally {
   await browser?.close();
   await new Promise((done) => server.close(done));

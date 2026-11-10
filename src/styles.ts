@@ -236,7 +236,7 @@ export const cardStyles = css`
 
   .power-stats {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--power-columns, 4), minmax(0, 1fr));
     padding: 18px 1px 16px;
     border-bottom: 1px solid var(--divider-color, #e2e5e9);
   }
@@ -545,6 +545,11 @@ export const cardStyles = css`
     border-right: 1px solid var(--divider-color, #e2e5e9);
   }
 
+  .energy-stat:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    border-right: 0;
+  }
+
   .energy-stat:nth-child(n + 3) {
     border-top: 1px solid var(--divider-color, #e2e5e9);
   }
@@ -669,6 +674,10 @@ export const cardStyles = css`
     .power-stats {
       grid-template-columns: repeat(2, 1fr);
       row-gap: 14px;
+    }
+
+    .power-stat:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
     }
 
     .power-stat:nth-child(3) {

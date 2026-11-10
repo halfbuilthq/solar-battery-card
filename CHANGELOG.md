@@ -5,6 +5,45 @@ Semantic Versioning.
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-11-10
+
+### Added
+
+- Independent **Show solar** and **Show battery** switches in the visual editor,
+  with matching `show_solar` and `show_battery` YAML options.
+- Support for battery-only, solar-only and home/grid configurations. Hidden
+  components no longer require sensors or appear in live readings, daily totals,
+  chart lines, legends or chart inspection values.
+- Layouts, default titles and header icons adapt to the visible components.
+  Hiding the battery also removes its graphic, charging status and estimates.
+- English and German labels, help text and configuration examples.
+
+### Behaviour
+
+- Both switches default to **on**. Existing cards need no configuration changes.
+- Hiding solar also hides its forecasts and returns the chart to the usual
+  24-hour power view. Hidden sensors are excluded from history requests.
+- Saved sensor selections and options are retained when hidden and restored when
+  enabled again. Custom card titles remain unchanged.
+
+### Getting started
+
+Open the card's visual editor and turn off **Show solar** or **Show battery**.
+For YAML configuration, add `show_solar: false` for a battery-only system or
+`show_battery: false` for a system without a battery. Home and grid power sensors
+remain required; both sections can be hidden for a home/grid overview.
+
+### Tests
+
+- 187 unit tests, TypeScript checks and the production build pass.
+- Browser regression checks cover 72 visibility/width/language/chart combinations
+  alongside 28 existing width/language/unit combinations and battery/date cases.
+
+### Thanks
+
+- Thanks to [@MattCheetham](https://github.com/MattCheetham) for requesting support
+  for systems without solar in [#13](https://github.com/halfbuilthq/solar-battery-card/issues/13).
+
 ## [0.3.2] - 2026-11-01
 
 ### Fixed

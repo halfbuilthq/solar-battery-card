@@ -1,7 +1,7 @@
 import type { HassEntity, HomeAssistant, SolarBatteryCardConfig } from "../src/types";
 import { SolarBatteryCard } from "../src/solar-battery-card";
 
-export const config: SolarBatteryCardConfig = {
+export const config = {
   type: "custom:solar-battery-card",
   battery_soc: "sensor.soc",
   solar_power: "sensor.solar",
@@ -12,7 +12,7 @@ export const config: SolarBatteryCardConfig = {
   home_energy_today: "sensor.consumed",
   battery_energy_today: "sensor.stored",
   export_energy_today: "sensor.exported"
-};
+} satisfies SolarBatteryCardConfig;
 
 export function sensor(value: string | number, unit: string): HassEntity {
   return { entity_id: "sensor.test", state: String(value), attributes: { unit_of_measurement: unit } };
